@@ -21,6 +21,7 @@ private:
 	int				m_nMaxHP;
 
 	int arr[65];
+	int test;
 
 public:
 	HRESULT init();
