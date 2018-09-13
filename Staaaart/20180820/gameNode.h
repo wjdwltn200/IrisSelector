@@ -9,7 +9,7 @@ public:
 	virtual void update();
 	virtual void render(HDC hdc);
 
-	image* getBackBuffer() { return NULL; }// m_pBackBuffer; }
+	image* getBackBuffer() { return NULL; }// m_pBackBuffer; Å×½ºÆ® 
 
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
