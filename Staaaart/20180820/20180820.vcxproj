@@ -148,6 +148,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="font.h" />
+    <ClInclude Include="fontManager.h" />
     <ClInclude Include="Iris_Selector.h" />
     <ClInclude Include="action.h" />
     <ClInclude Include="animation.h" />
@@ -190,6 +192,8 @@
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="font.cpp" />
+    <ClCompile Include="fontManager.cpp" />
     <ClCompile Include="Iris_Selector.cpp" />
     <ClCompile Include="action.cpp" />
     <ClCompile Include="animation.cpp" />

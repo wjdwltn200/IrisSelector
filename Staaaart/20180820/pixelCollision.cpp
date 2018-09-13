@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "pixelCollision.h"
-
+#include "font.h"
 
 HRESULT pixelCollision::init()
 {
@@ -18,6 +18,8 @@ HRESULT pixelCollision::init()
 		m_pImgBall->getWidth(), m_pImgBall->getHeight());
 
 	m_currY = m_position.y + m_pImgBall->getHeight() / 2;
+
+	m_font->init(100.0f, 100.0f, "½Ã¹ß!", 200, 100, 0, 0, 2, 0, 0, 0, 1, _T("±¼¸²Ã¼"));
 
 	return S_OK;
 }
@@ -53,11 +55,14 @@ void pixelCollision::update()
 			break;
 		}
 	}
+
 }
 
 void pixelCollision::render(HDC hdc)
 {
 	IMAGEMANAGER->findImage("image/background.bmp")->render(hdc, 0, 0);
+
+	m_font->render(hdc);
 
 	m_pImgMountain->render(hdc, 0, 0);
 	m_pImgBall->render(hdc, m_position.x, m_position.y);

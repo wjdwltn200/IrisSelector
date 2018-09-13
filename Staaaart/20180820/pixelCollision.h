@@ -1,11 +1,15 @@
 #pragma once
 #include "scene.h"
 
+class font;
+
 class pixelCollision : public scene
 {
 private:
 	image * m_pImgBall;
 	image * m_pImgMountain;
+
+	font * m_font;
 
 	RECT	m_rc;
 	FPOINT	m_position;

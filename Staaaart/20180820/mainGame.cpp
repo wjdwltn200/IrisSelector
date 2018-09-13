@@ -21,6 +21,8 @@ HRESULT mainGame::init()
 	IMAGEMANAGER->init();
 	TIMEMANAGER->init();
 	SCENEMANAGER->init();
+	//FONTMANAGER
+	EFFECTMANAGER->init();
 
 	setBackBuffer();
 
@@ -67,12 +69,14 @@ void mainGame::release()
 	IMAGEMANAGER->release();
 	TIMEMANAGER->release();
 	SCENEMANAGER->release();
+	EFFECTMANAGER->release();
 
 	TXTDATA->releaseSingleton();
 	KEYMANAGER->releaseSingleton();
 	IMAGEMANAGER->releaseSingleton();
 	TIMEMANAGER->releaseSingleton();
 	SCENEMANAGER->releaseSingleton();
+	EFFECTMANAGER->releaseSingleton();
 
 }
 
