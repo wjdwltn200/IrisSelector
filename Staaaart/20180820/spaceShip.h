@@ -20,6 +20,8 @@ private:
 	int				m_nCurrHP;
 	int				m_nMaxHP;
 
+	int arr[65];
+
 public:
 	HRESULT init();
 	void release();
