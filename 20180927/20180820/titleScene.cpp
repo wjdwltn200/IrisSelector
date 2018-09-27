@@ -10,6 +10,7 @@ HRESULT titleScene::init()
 
 void titleScene::release()
 {
+	
 }
 
 void titleScene::update()
