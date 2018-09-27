@@ -144,7 +144,7 @@
     <ClInclude Include="tileMap.h">
       <Filter>2DGameFramework\tileMap</Filter>
     </ClInclude>
-    <ClInclude Include="editorScene.h">
+    <ClInclude Include="titleScene.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -221,7 +221,7 @@
     <ClCompile Include="tileMap.cpp">
       <Filter>2DGameFramework\tileMap</Filter>
     </ClCompile>
-    <ClCompile Include="editorScene.cpp">
+    <ClCompile Include="titleScene.cpp">
       <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>

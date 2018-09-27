@@ -152,7 +152,6 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="commonMacroFunction.h" />
-    <ClInclude Include="editorScene.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
     <ClInclude Include="gameNode.h" />
@@ -172,6 +171,7 @@
     <ClInclude Include="tileMap.h" />
     <ClInclude Include="timeManager.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="titleScene.h" />
     <ClInclude Include="txtData.h" />
     <ClInclude Include="uiButton.h" />
     <ClInclude Include="uiImageView.h" />
@@ -183,7 +183,6 @@
     <ClCompile Include="20180820.cpp" />
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="button.cpp" />
-    <ClCompile Include="editorScene.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
@@ -204,6 +203,7 @@
     <ClCompile Include="tileMap.cpp" />
     <ClCompile Include="timeManager.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="titleScene.cpp" />
     <ClCompile Include="txtData.cpp" />
     <ClCompile Include="uiButton.cpp" />
     <ClCompile Include="uiImageView.cpp" />
