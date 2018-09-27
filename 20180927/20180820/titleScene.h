@@ -6,8 +6,21 @@ class titleScene : public scene
 
 
 private:
-	image * m_titleScene;
+	struct buttonSelect
+	{
+		RECT	m_rc;
+		int		m_fX;
+		int		m_fY;
+		int		carrFrameX;
+		int		carrFrameY;
+		float	m_moveSpeed;
+	};
 
+	image* m_titleScene;
+	image* m_button;
+
+	int m_buttonSetX;
+	int m_buttonSetY;
 
 public:
 
