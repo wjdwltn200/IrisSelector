@@ -28,7 +28,7 @@ HRESULT mainGame::init()
 	SCENEMANAGER->addScene("tileMap", m_pTileMapScene);
 	
 	SCENEMANAGER->changeScene("tileMap");
-
+	// 민욱이는 과연 누구인가?
 	return S_OK;
 }
 
