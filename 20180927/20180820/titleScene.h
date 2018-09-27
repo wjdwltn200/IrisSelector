@@ -1,10 +1,12 @@
 #pragma once
-class titleScene
+#include "scene.h"
+
+class titleScene : public scene
 {
 
 
 private:
-	image * TitleScene;
+	image * m_titleScene;
 
 
 public:
