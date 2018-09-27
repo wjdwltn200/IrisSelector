@@ -10,3 +10,13 @@ editorScene::editorScene()
 editorScene::~editorScene()
 {
 }
+
+
+editorScene::editorScene()
+{
+}
+
+
+editorScene::~editorScene()
+{
+}

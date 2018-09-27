@@ -14,3 +14,10 @@ public:
 	~editorScene();
 };
 
+class editorScene
+{
+public:
+	editorScene();
+	~editorScene();
+};
+

@@ -156,6 +156,9 @@
     <ClInclude Include="stageScene.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
+    <ClInclude Include="editorScene.h">
+      <Filter>MainGame\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -240,6 +243,9 @@
       <Filter>MainGame\scene</Filter>
     </ClCompile>
     <ClCompile Include="stageScene.cpp">
+      <Filter>MainGame\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="editorScene.cpp">
       <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
