@@ -52,9 +52,6 @@
     <Filter Include="2DGameFramework\ui">
       <UniqueIdentifier>{beba1027-b6f3-45c0-a9b8-574089432df2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2DGameFramework\tileMap">
-      <UniqueIdentifier>{4f553f96-487c-4e80-9bea-e1fa442b4466}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -141,10 +138,7 @@
     <ClInclude Include="soundManager.h">
       <Filter>2DGameFramework\manager</Filter>
     </ClInclude>
-    <ClInclude Include="tileMap.h">
-      <Filter>2DGameFramework\tileMap</Filter>
-    </ClInclude>
-    <ClInclude Include="titleScene.h">
+    <ClInclude Include="editorScene.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
     <ClInclude Include="loadingScene.h">
@@ -156,7 +150,7 @@
     <ClInclude Include="stageScene.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
-    <ClInclude Include="editorScene.h">
+    <ClInclude Include="tileMap.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -230,10 +224,7 @@
     <ClCompile Include="soundManager.cpp">
       <Filter>2DGameFramework\manager</Filter>
     </ClCompile>
-    <ClCompile Include="tileMap.cpp">
-      <Filter>2DGameFramework\tileMap</Filter>
-    </ClCompile>
-    <ClCompile Include="titleScene.cpp">
+    <ClCompile Include="editorScene.cpp">
       <Filter>MainGame\scene</Filter>
     </ClCompile>
     <ClCompile Include="loadingScene.cpp">
@@ -245,7 +236,7 @@
     <ClCompile Include="stageScene.cpp">
       <Filter>MainGame\scene</Filter>
     </ClCompile>
-    <ClCompile Include="editorScene.cpp">
+    <ClCompile Include="tileMap.cpp">
       <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
