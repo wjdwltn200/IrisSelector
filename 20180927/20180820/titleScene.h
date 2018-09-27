@@ -6,8 +6,11 @@ class titleScene : public scene
 
 
 private:
-	image * m_titleScene;
+	image* m_titleScene;
+	image* m_button;
 
+	int m_buttonSetX;
+	int m_buttonSetY;
 
 public:
 
