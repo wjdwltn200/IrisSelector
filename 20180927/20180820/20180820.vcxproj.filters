@@ -147,6 +147,15 @@
     <ClInclude Include="titleScene.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
+    <ClInclude Include="loadingScene.h">
+      <Filter>MainGame\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="titleScene.h">
+      <Filter>MainGame\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="stageScene.h">
+      <Filter>MainGame\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -222,6 +231,15 @@
       <Filter>2DGameFramework\tileMap</Filter>
     </ClCompile>
     <ClCompile Include="titleScene.cpp">
+      <Filter>MainGame\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="loadingScene.cpp">
+      <Filter>MainGame\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="titleScene.cpp">
+      <Filter>MainGame\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="stageScene.cpp">
       <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
