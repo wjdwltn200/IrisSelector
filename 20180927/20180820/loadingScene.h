@@ -1,5 +1,7 @@
 #pragma once
-class loadingScene
+#include "scene.h"
+
+class loadingScene : public scene
 {
 public:
 	loadingScene();
