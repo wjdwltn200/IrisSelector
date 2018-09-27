@@ -152,6 +152,7 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="commonMacroFunction.h" />
+    <ClInclude Include="editorScene.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
     <ClInclude Include="gameNode.h" />
@@ -182,6 +183,7 @@
     <ClCompile Include="20180820.cpp" />
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="editorScene.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
     <ClCompile Include="gameNode.cpp" />

@@ -144,6 +144,9 @@
     <ClInclude Include="tileMap.h">
       <Filter>2DGameFramework\tileMap</Filter>
     </ClInclude>
+    <ClInclude Include="editorScene.h">
+      <Filter>MainGame\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="tileMap.cpp">
       <Filter>2DGameFramework\tileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="editorScene.cpp">
+      <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
