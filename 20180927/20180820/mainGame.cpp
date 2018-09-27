@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "mainGame.h"
-#include "tileMap.h"
-
+#include "editorScene.h"
+#include "titleScene.h"
+#include "stageScene.h"
+#include "loadingScene.h"
 
 
 void mainGame::setBackBuffer()
@@ -24,10 +26,22 @@ HRESULT mainGame::init()
 
 	// 필요한 리소스 미리 로드
 	
-	m_pTileMapScene = new tileMap;
-	SCENEMANAGER->addScene("tileMap", m_pTileMapScene);
+	//m_pTileMapScene = new tileMap;
+	//SCENEMANAGER->addScene("tileMap", m_pTileMapScene);
+
+	m_pEditorScene = new editorScene;
+	SCENEMANAGER->addScene("editor", m_pEditorScene);
+
+	m_pTitleScene = new titleScene;
+	SCENEMANAGER->addScene("title", m_pTitleScene);
+
+	m_pStageScene = new stageScene;
+	SCENEMANAGER->addScene("stage", m_pStageScene);
+
+	m_pLoadingScene = new loadingScene;
+	SCENEMANAGER->addLoadingScene("loading", m_pLoadingScene);
 	
-	SCENEMANAGER->changeScene("tileMap");
+	SCENEMANAGER->changeScene("editor");
 	// 민욱이는 과연 누구인가? 알랄라 내첫사랑 지수 ㅇㅇ
 	// 이순현 테스트
 	// 정지수 로그인 테스트
@@ -86,21 +100,6 @@ LRESULT mainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
-		case 0:
-			m_pTileMapScene->mapSave();
-			break;
-		case 1:
-			m_pTileMapScene->mapLoad();
-			break;
-		case 2:
-			m_pTileMapScene->tilePrint();
-			break;
-		case 3:
-			m_pTileMapScene->objectPrint();
-			break;
-		case 4:
-			m_pTileMapScene->tileEraser();
-			break;
 		default:
 			break;
 		}

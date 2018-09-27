@@ -1,10 +1,9 @@
 #pragma once
+class editorScene;
+class loadingScene;
+class stageScene;
 class titleScene;
-class battleScene;
-class loadingScene_1;
-class uiTestScene;
-class pixelCollision;
-class tileMap;
+
 
 class mainGame
 {
@@ -18,20 +17,10 @@ private:
 
 	char m_szText[128];
 
-	// scene test
-	titleScene*		m_pTitleScene;
-	battleScene*	m_pBattleScene;
-
-	loadingScene_1*	m_pLoadingScene;
-
-	// ui test
-	uiTestScene*	m_pUiTestScene;
-
-	// pixel collision test
-	pixelCollision*	m_pPixelCollisionScene;
-
-	// map Tool
-	tileMap*	m_pTileMapScene;
+	editorScene * m_pEditorScene;
+	loadingScene * m_pLoadingScene;
+	stageScene * m_pStageScene;
+	titleScene * m_pTitleScene;
 
 public:
 	HRESULT init();
