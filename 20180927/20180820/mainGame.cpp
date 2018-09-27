@@ -30,6 +30,7 @@ HRESULT mainGame::init()
 	SCENEMANAGER->changeScene("tileMap");
 	// 민욱이는 과연 누구인가? 알랄라 내첫사랑 지수 ㅇㅇ
 	// 이순현 테스트
+	// 정지수 로그인 테스트
 	return S_OK;
 }
 
