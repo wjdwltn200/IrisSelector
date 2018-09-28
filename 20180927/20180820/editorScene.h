@@ -16,8 +16,11 @@ private :
 	image* m_pImg_Box2;
 	image* m_pImg_Box3;
 	image* m_pImg_Box4;
-
 	image*  m_pImg_BG;
+	image* m_pImg_Lspace;
+	image* m_pImg_Rspace;
+
+
 	image*	m_pTileSet;
 	image*	m_pObjSet;
 
