@@ -362,10 +362,10 @@ void image::frameAlphaRender(HDC hdc, int destX, int destY, int currFrameX, int 
 
 										// 대상
 			m_pImageInfo->hMemDC,	// 복사할 대상 DC
-			(m_pImageInfo->nFrameWidth * m_pImageInfo->nCurrFrameX),
-			(m_pImageInfo->nFrameHeight * m_pImageInfo->nCurrFrameY),					// 복사될 영역 시작좌표
-			m_pImageInfo->nFrameWidth * scale,
-			m_pImageInfo->nFrameHeight * scale,	// 복사될 영역지정 좌표
+			(m_pImageInfo->nFrameWidth)* m_pImageInfo->nCurrFrameX,
+			(m_pImageInfo->nFrameHeight) * m_pImageInfo->nCurrFrameY,					// 복사될 영역 시작좌표
+			m_pImageInfo->nFrameWidth,
+			m_pImageInfo->nFrameHeight,	// 복사될 영역지정 좌표
 
 			m_transColor);			// 복사에서 제외할 색상
 
@@ -386,14 +386,14 @@ void image::frameAlphaRender(HDC hdc, int destX, int destY, int currFrameX, int 
 			// 복사할 목표
 			hdc,
 			destX, destY,
-			(m_pImageInfo->nFrameWidth * m_pImageInfo->nCurrFrameX) * scale,
-			(m_pImageInfo->nFrameHeight * m_pImageInfo->nCurrFrameY) * scale,
+			(m_pImageInfo->nFrameWidth * scale) * m_pImageInfo->nCurrFrameX,
+			(m_pImageInfo->nFrameHeight * scale) * m_pImageInfo->nCurrFrameY,
 
 			// 복사할 대상
 			m_pBlendImage->hMemDC,
 			0, 0,
-			(m_pImageInfo->nFrameWidth * m_pImageInfo->nCurrFrameX) * scale,
-			(m_pImageInfo->nFrameHeight * m_pImageInfo->nCurrFrameY) * scale,
+			(m_pImageInfo->nFrameWidth * scale) * m_pImageInfo->nCurrFrameX,
+			(m_pImageInfo->nFrameHeight * scale) * m_pImageInfo->nCurrFrameY,
 			m_blendFunc);
 	}
 }
