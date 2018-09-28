@@ -59,13 +59,13 @@ void titleScene::render(HDC hdc)
 		m_titleScene->render(hdc,0,0);
 
 		// 센터
-		m_button->frameAlphaRender(hdc, (WINSIZEX / 2) - (m_button->getFrameWidth() / 2), (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2), 0, m_tButtonInfo.carrFrameX, 0, 1.0f);
+		m_button->frameAlphaRender(hdc, (WINSIZEX / 2) - (m_button->getFrameWidth() / 2), (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2), 0, m_tButtonInfo.carrFrameX, 1.5f, 0);
 		// 우측 대기
 		if (!(m_tButtonInfo.carrFrameX == TITEL::GAME_START_SC))
-			m_button->frameAlphaRender(hdc, (WINSIZEX / 2) - ((WINSIZEX / 2) / 2) - (m_button->getFrameWidth() / 2), (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2), 0, m_tButtonInfo.carrFrameX - 1, 150, 1.0f);
+			m_button->frameAlphaRender(hdc, (WINSIZEX / 2) - ((WINSIZEX / 2) / 2) - (m_button->getFrameWidth() / 2), (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2), 0, m_tButtonInfo.carrFrameX - 1, 1.0f, 150);
 		// 좌측 대기
 		if (!(m_tButtonInfo.carrFrameX == TITEL::EXIT_SC))
-			m_button->frameAlphaRender(hdc, (WINSIZEX / 2) + ((WINSIZEX / 2) / 2) - (m_button->getFrameWidth() / 2), (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2), 0, m_tButtonInfo.carrFrameX + 1, 150, 1.0f);
+			m_button->frameAlphaRender(hdc, (WINSIZEX / 2) + ((WINSIZEX / 2) / 2) - (m_button->getFrameWidth() / 2), (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2), 0, m_tButtonInfo.carrFrameX + 1, 1.0f ,150);
 	}
 
 }
