@@ -14,6 +14,7 @@ private:
 		int		carrFrameX;
 		int		carrFrameY;
 		float	m_moveSpeed;
+		bool	m_isMovement;
 	};
 
 	image* m_titleScene;
