@@ -42,7 +42,7 @@ void button::update()
 			&& m_state == BUTTON_STATE::DOWN)
 		{
 			m_state = BUTTON_STATE::UP;
-			//m_callbackFunction();
+			m_callbackFunction();
 			//((battleScene*)m_pScene->*m_callbackFunction)();
 			//((battleScene*)m_pScene)->buttonFunc1();
 		}
