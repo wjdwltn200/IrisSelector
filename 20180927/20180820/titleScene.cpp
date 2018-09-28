@@ -5,6 +5,12 @@
 HRESULT titleScene::init()
 {
 
+	//img_titleScene = IMAGEMANAGER->addImage("titleScene.bmp", WINSIZEX, WINSIZEY);
+	//img_button = IMAGEMANAGER->addImage("button", "image/button.bmp", 135, 147, 2, 6, true, RGB(166, 166, 166));
+
+	m_titleScene = IMAGEMANAGER->addImage("titleScene.bmp", WINSIZEX, WINSIZEY);
+	m_button = IMAGEMANAGER->addImage("button", "image/button.bmp", 135, 147, 2, 6, true, RGB(166, 166, 166));
+
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
 	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162, 360, 1, 6, true, RGB(166, 166, 166));
 
@@ -42,6 +48,12 @@ void titleScene::update()
 
 void titleScene::render(HDC hdc)
 {
+
+	/*if (img_titleScene)
+	{
+		img_titleScene->render(hdc,0,0);
+	}*/
+
 	if (m_titleScene)
 	{
 		m_titleScene->render(hdc,0,0);
@@ -55,6 +67,7 @@ void titleScene::render(HDC hdc)
 		if (!(m_tButtonInfo.carrFrameX == TITEL::EXIT_SC))
 			m_button->frameAlphaRender(hdc, (WINSIZEX / 2) + ((WINSIZEX / 2) / 2) - (m_button->getFrameWidth() / 2), (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2), 0, m_tButtonInfo.carrFrameX + 1, 150, 1.0f);
 	}
+
 }
 
 titleScene::titleScene()
