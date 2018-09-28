@@ -9,8 +9,8 @@ private:
 	struct buttonSelect
 	{
 		RECT	m_rc;
-		int		m_fX;
-		int		m_fY;
+		float	m_fX;
+		float	m_fY;
 		int		carrFrameX;
 		int		carrFrameY;
 		float	m_moveSpeed;
@@ -18,6 +18,7 @@ private:
 
 	image* m_titleScene;
 	image* m_button;
+	buttonSelect m_tButtonInfo;
 
 	int m_buttonSetX;
 	int m_buttonSetY;
