@@ -5,9 +5,11 @@
 
 HRESULT editorScene::init()
 {
-	IMAGEMANAGER->addImage("white", "image/wook/white.bmp", (WINSIZEX / 3) * 2, (WINSIZEY / 5) * 4, true ,RGB(255,0,255));
-	IMAGEMANAGER->addImage("white2", "image/wook/white.bmp", (WINSIZEX / 3) * 1 - 10, (WINSIZEY / 5) * 4, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("BG", "image/wook/BG.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	m_pImg_Box1 = IMAGEMANAGER->addImage("box1", "image/wook/white.bmp", (WINSIZEX / 3) * 2 - 20, (WINSIZEY / 8) * 7 - 20, true ,RGB(255,0,255));
+	m_pImg_Box2 = IMAGEMANAGER->addImage("box2", "image/wook/white.bmp", (WINSIZEX / 3) * 1 - 20, (WINSIZEY / 8) * 2 - 20, true, RGB(255, 0, 255));
+	m_pImg_Box3 = IMAGEMANAGER->addImage("box3", "image/wook/white.bmp", (WINSIZEX / 3) * 1 - 20, (WINSIZEY / 8) * 5 - 20, true, RGB(255, 0, 255));
+	m_pImg_Box4 = IMAGEMANAGER->addImage("box4", "image/wook/white.bmp", (WINSIZEX) * 1 - 20, (WINSIZEY / 8) * 1 - 20, true, RGB(255, 0, 255));
+	m_pImg_BG = IMAGEMANAGER->addImage("BG", "image/wook/BG.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 
 
 	return S_OK;
