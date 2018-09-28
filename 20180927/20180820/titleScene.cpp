@@ -4,8 +4,8 @@
 
 HRESULT titleScene::init()
 {
-	img_titleScene = IMAGEMANAGER->addImage("titleScene.bmp", WINSIZEX, WINSIZEY);
-	img_button = IMAGEMANAGER->addImage("button", "image/button.bmp", 135, 147, 2, 6, true, RGB(166, 166, 166));
+	m_titleScene = IMAGEMANAGER->addImage("titleScene.bmp", WINSIZEX, WINSIZEY);
+	m_button = IMAGEMANAGER->addImage("button", "image/button.bmp", 135, 147, 2, 6, true, RGB(166, 166, 166));
 
 	return S_OK;
 }
@@ -25,9 +25,9 @@ void titleScene::update()
 
 void titleScene::render(HDC hdc)
 {
-	if (img_titleScene)
+	if (m_titleScene)
 	{
-		img_titleScene->render(hdc,0,0);
+		m_titleScene->render(hdc,0,0);
 	}
 }
 
