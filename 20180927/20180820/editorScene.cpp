@@ -10,7 +10,8 @@ HRESULT editorScene::init()
 	m_pImg_Box3 = IMAGEMANAGER->addImage("box3", "image/wook/white.bmp", (WINSIZEX / 3) * 1 - 20, (WINSIZEY / 8) * 5 - 20, true, RGB(255, 0, 255));
 	m_pImg_Box4 = IMAGEMANAGER->addImage("box4", "image/wook/white.bmp", (WINSIZEX) * 1 - 20, (WINSIZEY / 8) * 1 - 20, true, RGB(255, 0, 255));
 	m_pImg_BG = IMAGEMANAGER->addImage("BG", "image/wook/BG.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
-
+	
+	m_pTileSet;
 
 	return S_OK;
 
