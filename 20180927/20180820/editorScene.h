@@ -2,6 +2,7 @@
 #include "scene.h"
 
 class image;
+class button;
 
 class editorScene : public scene
 {
@@ -17,8 +18,9 @@ private :
 	image* m_pImg_Box3;
 	image* m_pImg_Box4;
 	image*  m_pImg_BG;
-	image* m_pImg_Lspace;
-	image* m_pImg_Rspace;
+
+	button * m_pBtnLspace;
+	button * m_pBtnRspace;
 
 
 	image*	m_pTileSet;
@@ -32,8 +34,14 @@ private :
 
 	bool m_bObjPrint;
 	
+	static int isClick_left;
+	static int isClick_right;
 
 public:
+	friend void SpaceFunc_left(void);
+	friend void SpaceFunc_right(void);
+
+
 	HRESULT init();
 	void release();
 	void update();
