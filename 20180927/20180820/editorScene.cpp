@@ -25,14 +25,14 @@ HRESULT editorScene::init()
 	m_pImg_Box4 = IMAGEMANAGER->addImage("box4", "image/wook/white.bmp", (WINSIZEX) * 1 - 15, (WINSIZEY / 8) * 1 - 10, true, RGB(255, 0, 255));
 	m_pImg_BG = IMAGEMANAGER->addImage("BG", "image/wook/BG.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	
-	IMAGEMANAGER->addImage("space_left", "image/wook/space_left.bmp", 42, 84,1,2, true, RGB(255, 255, 255));
-	IMAGEMANAGER->addImage("space_right", "image/wook/space_right.bmp", 42, 84,1,2, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("space_left", "image/wook/space_left.bmp", 36, 72,1,2, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("space_right", "image/wook/space_right.bmp", 36, 72,1,2, true, RGB(255, 255, 255));
 
 	m_pBtnLspace = new button;
 	m_pBtnLspace->init("space_left", IMAGEMANAGER->findImage("space_left")->getWidth()/2 + 10, 530, PointMake(0, 1), PointMake(0, 0), SpaceFunc_left);
 
 	m_pBtnRspace = new button;
-	m_pBtnRspace->init("space_right", IMAGEMANAGER->findImage("space_right")->getWidth() / 2 + (WINSIZEX / 3) -42, 530, PointMake(0, 1), PointMake(0, 0), SpaceFunc_right);
+	m_pBtnRspace->init("space_right", IMAGEMANAGER->findImage("space_right")->getWidth() / 2 + (WINSIZEX / 3) -36, 530, PointMake(0, 1), PointMake(0, 0), SpaceFunc_right);
 
 
 	return S_OK;
