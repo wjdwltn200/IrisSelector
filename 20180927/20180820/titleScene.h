@@ -16,11 +16,9 @@ private:
 		float	m_moveSpeed;
 	};
 
-	image* m_titleScene;
-	image* m_button;
-
-	int m_buttonSetX;
-	int m_buttonSetY;
+	image* img_titleScene;
+	image* img_button;
+	buttonSelect	m_button;
 
 public:
 
