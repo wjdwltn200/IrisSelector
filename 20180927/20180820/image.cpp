@@ -263,7 +263,7 @@ void image::render(HDC hdc, int destX, int destY)
 }
 
 void image::render(HDC hdc, int destX, int destY, 
-	int sourX, int sourY, int sourWidth, int sourHeight, int scalar)
+	int sourX, int sourY, int sourWidth, int sourHeight, float scalar)
 {
 	if (m_isTransparent)
 	{
@@ -288,6 +288,67 @@ void image::render(HDC hdc, int destX, int destY,
 			sourX, sourY,
 			m_pImageInfo->hMemDC,
 			0, 0, SRCCOPY);
+	}
+}
+
+void image::render(HDC hdc, int destX, int destY,
+	int sourX, int sourY, int sourWidth, int sourHeight, float scalar, BYTE alpha)
+{
+	m_blendFunc.SourceConstantAlpha = alpha;
+
+	if (m_isTransparent)
+	{
+		// 1. 출력해야되는 DC에 그려져있는 내용을 blendImage에 복사
+		BitBlt(
+			// 목적지
+			m_pBlendImage->hMemDC,
+			0, 0,
+			sourWidth * scalar, sourHeight * scalar,
+
+			// 대상
+			hdc,
+			destX, destY,
+			SRCCOPY);
+
+		// 2. 출력할 이미지를 blendImage에 복사
+		GdiTransparentBlt(
+			// 목적지
+			m_pBlendImage->hMemDC,
+			0, 0,
+			sourWidth * scalar, sourHeight * scalar,
+
+			// 대상
+			m_pImageInfo->hMemDC,	// 복사할 대상 DC
+			sourX, sourY,			// 복사될 영역 시작좌표
+			sourWidth, sourHeight,
+
+			m_transColor);			// 복사에서 제외할 색상
+									// 3. blendDC를 출력해야되는 DC에 복사
+		AlphaBlend(
+			// 목적지
+			hdc,
+			destX, destY,
+			sourWidth * scalar, sourHeight * scalar,
+
+			// 대상
+			m_pBlendImage->hMemDC,
+			0, 0,
+			sourWidth * scalar, sourHeight * scalar,
+			m_blendFunc);
+	}
+	else
+	{
+		AlphaBlend(
+			// 복사할 목표
+			hdc,
+			destX, destY,
+			sourWidth * scalar, sourHeight * scalar,
+
+			// 대상
+			m_pBlendImage->hMemDC,
+			0, 0,
+			sourWidth * scalar, sourHeight * scalar,
+			m_blendFunc);
 	}
 }
 
@@ -502,11 +563,20 @@ void image::alphaRender(HDC hdc, int destX, int destY, BYTE alpha)
 	}
 }
 
-void image::aniRender(HDC hdc, int destX, int destY, animation * ani, int scalar)
+void image::aniRender(HDC hdc, int destX, int destY, animation * ani, float scalar, bool isAlpha, BYTE alpha)
 {
-	render(hdc, destX, destY,
-		ani->getFramePos().x, ani->getFramePos().y,
-		ani->getFrameWidth(), ani->getFrameHeight(), scalar);
+	if (isAlpha)
+	{
+		render(hdc, destX, destY,
+			ani->getFramePos().x, ani->getFramePos().y,
+			ani->getFrameWidth(), ani->getFrameHeight(), scalar, alpha);
+	}
+	else
+	{
+		render(hdc, destX, destY,
+			ani->getFramePos().x, ani->getFramePos().y,
+			ani->getFrameWidth(), ani->getFrameHeight(), scalar);
+	}
 }
 
 void image::setTransColor(bool trans, COLORREF transColor)

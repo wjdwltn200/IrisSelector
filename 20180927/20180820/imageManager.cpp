@@ -61,7 +61,7 @@ image * imageManager::addImage(std::string strKey,
 }
 
 image * imageManager::addImage(std::string strKey, 
-	const char * szFileName, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor)
+	const char * szFileName, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor, float setX, float setY)
 {
 	image* img = findImage(strKey);
 	if (img)	return img;
@@ -69,7 +69,7 @@ image * imageManager::addImage(std::string strKey,
 	img = new image;
 
 	if (FAILED(img->init(
-		szFileName, 0, 0, width, height,
+		szFileName, setX, setY, width, height,
 		frameX, frameY, trans, transColor)))
 	{
 		delete img;

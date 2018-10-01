@@ -30,7 +30,7 @@ public:
 		bool trans = false, COLORREF transColor = RGB(0, 0, 0));
 	image* addImage(std::string strKey, const char* szFileName, 
 		int width, int height, int frameX, int frameY,
-		bool trans, COLORREF transColor);
+		bool trans, COLORREF transColor, float setX = 0.0f, float setY = 0.0f);
 	image* findImage(std::string strKey);
 	bool deleteImage(std::string strKey);
 	bool deleteImageAll();
