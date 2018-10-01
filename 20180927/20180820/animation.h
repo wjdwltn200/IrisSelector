@@ -30,7 +30,7 @@ public:
 
 	void setFPS(int fps);		// 초당 갱신 횟수 설정
 
-	void frameUpdate(float elapsedTime);	// 프레임 업데이트
+	void frameUpdate(float elapsedTime = (TIMEMANAGER->getElapsedTime()));	// 프레임 업데이트
 
 	void start();
 	void stop();
