@@ -12,7 +12,12 @@ private :
 	HWND	m_hBtnSelectObject;
 	HWND	m_hBtnEraser;
 
-	image*  m_pBG;
+	image* m_pImg_Box1;
+	image* m_pImg_Box2;
+	image* m_pImg_Box3;
+	image* m_pImg_Box4;
+
+	image*  m_pImg_BG;
 	image*	m_pTileSet;
 	image*	m_pObjSet;
 
