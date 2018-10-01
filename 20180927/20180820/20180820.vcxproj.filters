@@ -153,6 +153,15 @@
     <ClInclude Include="tileMap.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
+    <ClInclude Include="bulletManger.h">
+      <Filter>2DGameFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCharacter.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -238,6 +247,15 @@
     </ClCompile>
     <ClCompile Include="tileMap.cpp">
       <Filter>MainGame\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="bulletManger.cpp">
+      <Filter>2DGameFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCharacter.cpp">
+      <Filter>MainGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
