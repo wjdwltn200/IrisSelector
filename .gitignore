@@ -654,6 +654,8 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/.vs/20180820/v15/.suo
 >>>>>>> 9fd70233eead33c7de173c4f1422dc0b0a883f0e
 20180927/.vs/20180820/v15/.suo
+<<<<<<< HEAD
+=======
 20180927/20180820/Debug/20180820.obj
 20180927/20180820/Debug/20180820.pch
 20180927/20180820/Debug/20180820.tlog/CL.command.1.tlog
@@ -694,6 +696,16 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/Debug/20180820.exe
 20180927/Debug/20180820.ilk
 20180927/Debug/20180820.pdb
+<<<<<<< HEAD
+20180927/.vs/20180820/v15/.suo
+20180927/20180820/Debug/20180820.tlog/CL.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.write.1.tlog
+20180927/20180820/Debug/editorscene.obj.enc
+20180927/20180820/Debug/mainGame.obj
+20180927/20180820/Debug/maingame.obj.enc
+20180927/20180820/Debug/uiObject.obj
+20180927/20180820/Debug/uiobject.obj.enc
+=======
 20180927/20180820/Debug/20180820.obj
 20180927/20180820/Debug/20180820.pch
 20180927/20180820/Debug/20180820.tlog/20180820.lastbuildstate
@@ -732,11 +744,13 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/20180820/Debug/uiManager.obj
 20180927/20180820/Debug/uiObject.obj
 20180927/20180820/Debug/utils.obj
+>>>>>>> 3ef830739d39158a3623990bc0fb11118c2252f4
 20180927/20180820/Debug/vc141.idb
 20180927/20180820/Debug/vc141.pdb
 20180927/Debug/20180820.exe
 20180927/Debug/20180820.ilk
 20180927/Debug/20180820.pdb
+<<<<<<< HEAD
 20180927/20180820/Debug/vc141.pdb
 20180927/20180820/Debug/vc141.idb
 20180927/20180820/Debug/utils.obj
@@ -775,3 +789,9 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/Debug/20180820.ilk
 20180927/Debug/20180820.exe
 20180927/.vs/20180820/v15/.suo
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 206e8ed8eedbcdfe25d2003356b9faac098e584a
+>>>>>>> 3ef830739d39158a3623990bc0fb11118c2252f4
+>>>>>>> 668b75b229b5b66d503bda2e79b06a9b1f2d1af3

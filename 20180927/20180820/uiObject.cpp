@@ -53,27 +53,49 @@ void uiObject::addChild(uiObject * pChild)
 
 void uiObject::OnClick(uiButton * pSender)
 {
+	// 이미지 숨기는 버튼
+	if (pSender->getTag() == 0)
+	{
+		for (auto child : m_vecChild)
+		{
+			if (child->getTag() == 3)
+			{
+				child->setHidden(true);
+				break;
+			}
+		}
+	}
+	// 이미지를 보여주는 버튼
+	else if (pSender->getTag() == 1)
+	{
+		for (auto child : m_vecChild)
+		{
+			if (child->getTag() == 3)
+			{
+				child->setHidden(false);
+				break;
+			}
+		}
+	}
+/*
+
+
 	switch (pSender->getTag())
 	{
 	case 1:
 		m_editorScene->setMapSize(800);
-		break;
+		return;
 	case 2:
 		m_editorScene->setMapSize(1600);
-		break;
+		return;
 	case 3:
 		m_editorScene->setMapSize(2000);
-		break;
+		return;
 	case 4:
 		m_editorScene->setMapSize(2400);
-		break;
-	}
+		return;
+	}*/
 }
-
-//void uiObject::OnClick(uiButton * pSender)
-//{
-//
-//}
 
 uiObject::uiObject()
 	: m_isHidden(false)
