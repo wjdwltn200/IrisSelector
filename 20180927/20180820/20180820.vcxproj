@@ -150,6 +150,8 @@
   <ItemGroup>
     <ClInclude Include="20180820.h" />
     <ClInclude Include="animation.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="bulletManger.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="editorScene.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="loadingScene.h" />
     <ClInclude Include="mainGame.h" />
+    <ClInclude Include="PlayerCharacter.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Resource.h" />
@@ -185,6 +188,8 @@
   <ItemGroup>
     <ClCompile Include="20180820.cpp" />
     <ClCompile Include="animation.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="bulletManger.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="editorScene.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -195,6 +200,7 @@
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="loadingScene.cpp" />
     <ClCompile Include="mainGame.cpp" />
+    <ClCompile Include="PlayerCharacter.cpp" />
     <ClCompile Include="progressBar.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sceneManager.cpp" />
