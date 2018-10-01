@@ -43,6 +43,8 @@ private :
 	image* m_pImg_Box3;
 	image* m_pImg_Box4;
 	image*  m_pImg_BG;
+	image* m_pImg_VerticalBar;
+	image* m_pImg_HorizontalBar;
 
 	button * m_pBtn800x;
 	button * m_pBtn1600x;
@@ -81,7 +83,7 @@ private :
 	HWND	m_hBtnLoad;
 	HWND	m_hBtnEraser;
 
-	tagTile * m_pTiles = new tagTile[800];
+	tagTile * m_pTiles = new tagTile[1600];
 
 	static bool m_bIsSizeCheck;
 	static int m_nMapSize;
@@ -100,6 +102,7 @@ public:
 	friend void Func_MapCheck(void);
 
 	void ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam);
+	void MouseEvent();
 	void SaveEvent();
 	void LoadEvent();
 	void TileSetting();

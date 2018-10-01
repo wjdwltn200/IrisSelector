@@ -5,7 +5,6 @@
 HRESULT bullet::init(const char * imageName, float scale, float radius,
 	float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle)
 {
-	IMAGEMANAGER->addImage();
 	m_pImg = IMAGEMANAGER->findImage(imageName);
 	m_pAni = new animation;
 	m_pAni->init(m_pImg->getWidth() * scale, m_pImg->getHeight() * scale, m_pImg->getFrameWidth() * scale, m_pImg->getFrameHeight() * scale);

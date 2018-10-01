@@ -8,7 +8,7 @@
 
 char szFileName[512];
 
-int editorScene::m_nMapSize = 0;
+int editorScene::m_nMapSize = 800;
 int editorScene::m_nPreviewNum = 0;
 bool editorScene::m_bIsSizeCheck = false;
 
@@ -69,7 +69,50 @@ void editorScene::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 			break;
 		}
 	}
-	
+}
+
+void editorScene::MouseEvent()
+{
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		btnState = BUTTONSTATE::BUTTON_DOWN;
+	}
+	else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && btnState == BUTTONSTATE::BUTTON_DOWN)
+	{
+		for (int i = 0; i < SAMPLE_X * SAMPLE_Y; ++i)
+		{
+			if (PtInRect(&m_pSampleTiles[i].rc, g_ptMouse))
+			{
+				btnState = BUTTONSTATE::BUTTON_UP;
+				m_rcSelectedTile.left = m_pSampleTiles[i].frameX;
+				m_rcSelectedTile.top = m_pSampleTiles[i].frameY;
+				m_isSel = true; 
+			}
+			else
+			{
+				btnState = BUTTONSTATE::BUTTON_IDLE;
+			}
+		}
+	}
+
+	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON) && m_isSel == true)
+	{
+		for (int i = 0; i < m_nTile_MaxCountX * m_nTile_MaxCountY; ++i)
+		{
+			if (PtInRect(&m_pTiles[i].rc, g_ptMouse))
+			{
+				m_pTiles[i].terrainFrameX = m_rcSelectedTile.left;
+				m_pTiles[i].terrainFrameY = m_rcSelectedTile.top;
+			}
+
+		}
+	}
+
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && g_ptMouse.x < (WINSIZEX / 3) * 2)
+	{
+		m_isSel = false;
+	}
+
 }
 
 void editorScene::SaveEvent()
@@ -80,9 +123,25 @@ void editorScene::LoadEvent()
 {
 }
 
+void editorScene::TileSetting()
+{
+	// 기본 타일 정보 셋팅
+	for (int x = 0; x < m_nTile_MaxCountX; x++)
+	{
+		for (int y = 0; y < m_nTile_MaxCountY; y++)
+		{
+			m_pTiles[x * m_nTile_MaxCountX + y].rc = RectMake(WINSIZEX/3 * 1 +  x * TILE_SIZE_Map, 140 +  y * TILE_SIZE_Map, TILE_SIZE_Map, TILE_SIZE_Map);
+			m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameX = 2;
+			m_pTiles[x * m_nTile_MaxCountY + y].terrainFrameY = 0;  // 29
+		}
+	}
+
+}
+
 
 HRESULT editorScene::init()
 {
+	m_bWindowPrint = false;
 	m_nMapSize = 800;
 
 	m_pImg_SizeBox = IMAGEMANAGER->addImage("size_box","image/wook/size_box.bmp", 640, 640);
@@ -102,6 +161,10 @@ HRESULT editorScene::init()
 	m_pTileSet3 = IMAGEMANAGER->addImage("tiles3", "image/wook/tiles3.bmp", 200, 360, 20, 9, true, RGB(255, 0, 255));
 	m_pTileSet4 = IMAGEMANAGER->addImage("tiles4", "image/wook/tiles4.bmp", 200, 360, 20, 9, true, RGB(255, 0, 255));
 
+	m_pImg_HorizontalBar = IMAGEMANAGER->addImage("horizontal_bar", "image/wook/width_bar.bmp", WINSIZEX, 15, true, RGB(255,0,255));
+	m_pImg_VerticalBar = IMAGEMANAGER->addImage("vertical_bar", "image/wook/height_bar.bmp", 15, WINSIZEY, true, RGB(255, 0, 255));
+
+
 
 	
 	IMAGEMANAGER->addImage("space_left", "image/wook/space_left.bmp", 36, 72,1,2, true, RGB(255, 255, 255));
@@ -112,6 +175,7 @@ HRESULT editorScene::init()
 
 	m_pBtnRspace = new button;
 	m_pBtnRspace->init("space_right", IMAGEMANAGER->findImage("space_right")->getWidth() / 2 + (WINSIZEX / 3) -36, 530, PointMake(0, 1), PointMake(0, 0), SpaceFunc_right);
+
 
 	for (int j = 0; j < SAMPLE_Y; ++j)
 	{
@@ -125,11 +189,6 @@ HRESULT editorScene::init()
 	}
 
 	SetSize();
-	m_nTile_MaxCountX = m_nMapSize / 40;
-	m_nTile_MaxCountY = m_nMapSize / 40;
-	tagTile * m_pTiles = new tagTile[m_nTile_MaxCountX * m_nTile_MaxCountY]; // 입력된 수만큼 배열생성 (최대 맵 사이즈 설정된다.)
-
-	TileSetting();
 
 	return S_OK;
 
@@ -155,22 +214,6 @@ void editorScene::SetSize()
 	m_pBtnSizeCheck->init("size_check", WINSIZEX/ 2  + m_pImg_SizeBox->getWidth()/2 - IMAGEMANAGER->findImage("size_check")->getWidth()/ 2, WINSIZEY / 2 + m_pImg_SizeBox->getHeight() / 2 - (IMAGEMANAGER->findImage("size_check")->getHeight() / 2 + 84), PointMake(0, 1), PointMake(0, 0), Func_MapCheck);
 }
 
-void editorScene::TileSetting()
-{
-	// 기본 타일 정보 셋팅
-	for (int x = 0; x < m_nTile_MaxCountX; x++)
-	{
-		for (int y = 0; y < m_nTile_MaxCountY; y++)
-		{
-			m_pTiles[x * m_nTile_MaxCountX + y].rc = RectMake(x * TILE_SIZE_Map, y * TILE_SIZE_Map, TILE_SIZE_Map, TILE_SIZE_Map);
-			m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameX = 2;
-			m_pTiles[x * m_nTile_MaxCountY + y].terrainFrameY = 0;  // 29
-		}
-	}
-
-}
-
-
 
 void editorScene::release()
 {
@@ -193,16 +236,25 @@ void editorScene::update()
 		if (m_pBtnRspace)
 			m_pBtnRspace->update();
 
+
 		if (m_bWindowPrint == false)
 		{
 			m_hBtnSave = CreateWindow("button", "Save", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-				WINSIZEY - 234, 60, 74, 40, g_hWnd, HMENU(0), g_hInstance, NULL);
+				WINSIZEY - 264, 60, 74, 40, g_hWnd, HMENU(0), g_hInstance, NULL);
 
 			m_hBtnLoad = CreateWindow("button", "Load", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-				WINSIZEY - 156, 60, 74, 40, g_hWnd, HMENU(1), g_hInstance, NULL);
+				WINSIZEY - 176, 60, 74, 40, g_hWnd, HMENU(1), g_hInstance, NULL);
 
 			m_hBtnEraser = CreateWindow("button", "Erase", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-				WINSIZEY - 78, 60, 74, 40, g_hWnd, HMENU(2), g_hInstance, NULL);
+				WINSIZEY - 88, 60, 74, 40, g_hWnd, HMENU(2), g_hInstance, NULL);
+		
+			m_nTile_MaxCountX = editorScene::m_nMapSize / TILE_SIZE_Map;
+			m_nTile_MaxCountY = editorScene::m_nMapSize / TILE_SIZE_Map;
+			//tagTile * m_pTiles = new tagTile; // 입력된 수만큼 배열생성 (최대 맵 사이즈 설정된다.)
+			TileSetting();
+
+
+
 			m_bWindowPrint = true;
 		}
 		
@@ -223,6 +275,7 @@ void editorScene::update()
 	}
 	
 
+	MouseEvent();
 }
 
 
@@ -249,6 +302,62 @@ void editorScene::render(HDC hdc)
 			m_pTileSet4->render(hdc, 40, (WINSIZEY / 8) * 3 + 10);
 		m_pBtnLspace->render(hdc);
 		m_pBtnRspace->render(hdc);
+	
+
+		for (int x = 0; x < m_nTile_MaxCountX; ++x)
+		{
+			for (int y = 0; y < m_nTile_MaxCountY; ++y)
+			{
+				m_pTileSet1->frameRender(hdc,
+					m_pTiles[x * m_nTile_MaxCountX + y].rc.left,
+					m_pTiles[x * m_nTile_MaxCountX + y].rc.top,
+					m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameX,
+					m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameY);
+
+				m_pTileSet2->frameRender(hdc,
+					m_pTiles[x * m_nTile_MaxCountX + y].rc.left,
+					m_pTiles[x * m_nTile_MaxCountX + y].rc.top,
+					m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameX,
+					m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameY);
+
+				m_pTileSet3->frameRender(hdc,
+					m_pTiles[x * m_nTile_MaxCountX + y].rc.left,
+					m_pTiles[x * m_nTile_MaxCountX + y].rc.top,
+					m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameX,
+					m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameY);
+
+				m_pTileSet4->frameRender(hdc,
+					m_pTiles[x * m_nTile_MaxCountX + y].rc.left,
+					m_pTiles[x * m_nTile_MaxCountX + y].rc.top,
+					m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameX,
+					m_pTiles[x * m_nTile_MaxCountX + y].terrainFrameY);
+			}
+		}
+
+	
+		if (m_isSel == true)
+		{
+			m_pTileSet1->frameRender(hdc,
+				g_ptMouse.x,
+				g_ptMouse.y,
+				m_rcSelectedTile.left,
+				m_rcSelectedTile.top);
+			m_pTileSet2->frameRender(hdc,
+				g_ptMouse.x,
+				g_ptMouse.y,
+				m_rcSelectedTile.left,
+				m_rcSelectedTile.top);
+			m_pTileSet3->frameRender(hdc,
+				g_ptMouse.x,
+				g_ptMouse.y,
+				m_rcSelectedTile.left,
+				m_rcSelectedTile.top);
+			m_pTileSet4->frameRender(hdc,
+				g_ptMouse.x,
+				g_ptMouse.y,
+				m_rcSelectedTile.left,
+				m_rcSelectedTile.top);
+		}
 	}
 
 
@@ -264,6 +373,8 @@ void editorScene::render(HDC hdc)
 		m_pImg_Box5->render(hdc, WINSIZEX / 2 - m_pImg_Box5->getWidth() / 2, 440);
 	}
 
+	m_pImg_HorizontalBar->render(hdc, 0, WINSIZEY - 15);
+	m_pImg_VerticalBar->render(hdc, WINSIZEX - 15, 0);
 
 }
 
