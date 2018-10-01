@@ -3,6 +3,7 @@
 
 class image;
 class button;
+class uiObject;
 
 enum BUTTONSTATE
 {
@@ -36,6 +37,9 @@ private :
 	HWND	m_hBtnSelectObject;
 	HWND	m_hBtnEraser;
 
+	uiObject * m_pUiPopup;
+
+	image* m_pImg_SizeBox;
 	image* m_pImg_Box1;
 	image* m_pImg_Box2;
 	image* m_pImg_Box3;
@@ -64,13 +68,20 @@ private :
 
 	bool m_bObjPrint;
 	
+	int m_nMapSize;
+
 	static int isClick_left;
 	static int isClick_right;
 	static int m_nPreviewNum;
 
 public:
+	void setMapSize(int mapSize) { m_nMapSize = mapSize; }
+	int getMapSize() { return m_nMapSize; }
+
 	friend void SpaceFunc_left(void);
 	friend void SpaceFunc_right(void);
+
+	void SetSize();
 
 	void Preview();
 
