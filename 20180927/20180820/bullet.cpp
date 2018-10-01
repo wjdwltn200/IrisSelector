@@ -11,7 +11,7 @@ HRESULT bullet::init(const char * imageName, float scale, float radius,
 	// 이미지 초기화
 	m_pImg = IMAGEMANAGER->findImage(imageName);
 	m_pAni = new animation;
-	m_pAni->init(m_pImg->getWidth() * scale, m_pImg->getHeight() * scale, m_pImg->getFrameWidth() * scale, m_pImg->getFrameHeight() * scale);
+	m_pAni->init(m_pImg->getWidth(), m_pImg->getHeight(), m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
 	m_pAni->setDefPlayFrame(false, true);
 	m_pAni->setFPS(30);
 	m_pAni->start();
@@ -42,6 +42,7 @@ void bullet::release()
 
 void bullet::update()
 {
+	if (!m_isAlive) return;
 	movement();
 
 	m_pAni->frameUpdate();
@@ -59,6 +60,13 @@ void bullet::movement()
 
 	m_fX += cosf(m_fAngle) * m_fSpeed;
 	m_fY += -sinf(m_fAngle) * m_fSpeed;
+
+	m_fRange -= m_fSpeed;
+	// 거리만큼 이동하면 삭제
+	if (m_fRange < 0.0f)
+	{
+		m_isAlive = false;
+	}
 }
 
 bullet::bullet()

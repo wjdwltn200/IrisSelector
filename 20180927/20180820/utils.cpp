@@ -31,4 +31,20 @@ namespace MY_UTIL
 
 		return angle;
 	}
+
+	float getMouseAngle(float startX, float startY)
+	{
+		float a = g_ptMouse.x - startX;
+		float b = g_ptMouse.y - startY;
+
+		float d = sqrt(a * a + b * b);
+		float angle = acosf(a / d);
+
+		if (g_ptMouse.y > startY)
+		{
+			angle = PI * 2 - angle;
+		}
+
+		return angle;
+	}
 }
