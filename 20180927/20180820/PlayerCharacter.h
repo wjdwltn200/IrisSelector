@@ -8,6 +8,10 @@ private:
 	image * img_leftRun;
 	image * img_rightRun;
 
+	animation * ani_stay;
+	animation * ani_leftRun;
+	animation * ani_rightRun;
+
 	RECT m_rc;
 	float m_fX = WINSIZEX / 2;
 	float m_fY = WINSIZEY / 2;
