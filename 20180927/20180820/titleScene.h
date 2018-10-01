@@ -1,5 +1,6 @@
 #pragma once
 #include "scene.h"
+class PlayerCharacter;
 
 class titleScene : public scene
 {
@@ -16,10 +17,11 @@ private:
 		float	m_moveSpeed;
 		bool	m_isMovement;
 	};
-
+	PlayerCharacter* m_player;
 	image* m_titleScene;
 	image* m_button;
 	buttonSelect m_tButtonInfo;
+
 
 	int m_buttonSetX;
 	int m_buttonSetY;
