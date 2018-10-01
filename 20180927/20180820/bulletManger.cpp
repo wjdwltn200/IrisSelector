@@ -50,15 +50,6 @@ void bulletManger::fire(const char * imageName, float scale, float radius,
 
 			return;
 		}
-		else // 없을 경우
-		{
-			bullet * pBullet = new bullet;
-			pBullet->init(imageName, scale, radius,
-				speed, posX, posY, range, expRadius, dmage, knokBack, angle);
-
-			m_vecBullet.push_back((pBullet));
-			return;
-		}
 	}
 
 	bullet * pBullet = new bullet;
