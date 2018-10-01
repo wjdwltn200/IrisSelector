@@ -1,6 +1,7 @@
 #pragma once
 //#include "uiButton.h"
 class uiButton;
+class editorScene;
 
 class iButtonDelegate
 {
@@ -22,6 +23,8 @@ protected:
 	SYNTHESIZE(FPOINT, m_position, Position);
 	SYNTHESIZE(uiObject*, m_pParent, Parent);
 	SYNTHESIZE(bool, m_isHidden, Hidden);
+
+	editorScene * m_editorScene;
 
 public:
 	virtual HRESULT init();

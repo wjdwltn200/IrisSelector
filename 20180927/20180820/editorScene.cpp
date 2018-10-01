@@ -2,6 +2,9 @@
 #include "editorScene.h"
 #include "image.h"
 #include "button.h"
+#include "uiObject.h"
+#include "uiButton.h"
+#include "uiImageView.h"
 
 int editorScene::isClick_left = 0;
 int editorScene::isClick_right = 0;
@@ -19,9 +22,56 @@ static void SpaceFunc_right(void)
 		editorScene::m_nPreviewNum += 1;
 }
 
+void editorScene::SetSize()
+{
+	m_pUiPopup = new uiObject;
+
+	// 배경 이미지
+	uiImageView* pImageView = new uiImageView;	// 왜 지역변수일까?
+	pImageView->init("size_box", WINSIZEX - IMAGEMANAGER->findImage("sizebox")->getWidth() / 2, WINSIZEX - IMAGEMANAGER->findImage("sizebox")->getHeight() / 2);
+	m_pUiPopup->addChild(pImageView);
+
+	// 버튼 1
+	uiButton* pButton1 = new uiButton;
+	pButton1->init("800x", 300, 100,
+		PointMake(0, 1), PointMake(0, 0));
+	m_pUiPopup->addChild(pButton1);
+	pButton1->setDelegate(m_pUiPopup);
+	pButton1->setTag(1);
+
+	uiButton* pButton2 = new uiButton;
+	pButton2->init("1600x", 300, 200,
+		PointMake(0, 1), PointMake(0, 0));
+	m_pUiPopup->addChild(pButton2);
+	pButton2->setDelegate(m_pUiPopup);
+	pButton2->setTag(2);
+
+	uiButton* pButton3 = new uiButton;
+	pButton3->init("2000x", 300, 300,
+		PointMake(0, 1), PointMake(0, 0));
+	m_pUiPopup->addChild(pButton3);
+	pButton3->setDelegate(m_pUiPopup);
+	pButton3->setTag(3);
+
+	uiButton* pButton4 = new uiButton;
+	pButton4->init("2400x", 300, 400,
+		PointMake(0, 1), PointMake(0, 0));
+	m_pUiPopup->addChild(pButton4);
+	pButton4->setDelegate(m_pUiPopup);
+	pButton4->setTag(4);
+	
+
+}
 
 HRESULT editorScene::init()
 {
+	IMAGEMANAGER->addImage("size_box","image/wook/size_box.bmp", 640, 640);
+	IMAGEMANAGER->addImage("800x", "image/wook/800x.bmp", 320, 168);
+	IMAGEMANAGER->addImage("1600x", "image/wook/1600x.bmp", 320, 168);
+	IMAGEMANAGER->addImage("2000x", "image/wook/2000x.bmp", 320, 168);
+	IMAGEMANAGER->addImage("2400x", "image/wook/2400x.bmp", 320, 168);
+
+
 	m_pImg_Box1 = IMAGEMANAGER->addImage("box1", "image/wook/white.bmp", (WINSIZEX / 3) * 2 - 15, (WINSIZEY / 8) * 7 - 15, true ,RGB(255,0,255));
 	m_pImg_Box2 = IMAGEMANAGER->addImage("box2", "image/wook/white.bmp", (WINSIZEX / 3) * 1 - 10, (WINSIZEY / 8) * 2 - 10, true, RGB(255, 0, 255));
 	m_pImg_Box3 = IMAGEMANAGER->addImage("box3", "image/wook/white.bmp", (WINSIZEX / 3) * 1 - 10, (WINSIZEY / 8) * 5 - 15, true, RGB(255, 0, 255));
@@ -54,8 +104,7 @@ HRESULT editorScene::init()
 		}
 	}
 
-
-
+	SetSize();
 
 	return S_OK;
 
@@ -65,7 +114,7 @@ void editorScene::release()
 {
 	SAFE_DELETE(m_pBtnLspace);
 	SAFE_DELETE(m_pBtnRspace);
-
+	m_pUiPopup->release();
 }
 
 void editorScene::update()
@@ -78,6 +127,7 @@ void editorScene::update()
 	if (m_pBtnRspace)
 		m_pBtnRspace->update();
 	
+	m_pUiPopup->update();
 	Preview();
 }
 
@@ -129,6 +179,8 @@ void editorScene::render(HDC hdc)
 	m_pImg_Box3->render(hdc, 10, (WINSIZEY / 8) * 3 + 10);
 	m_pImg_Box4->render(hdc, 10, 10);
 
+	m_pUiPopup->render(hdc);
+
 	if(m_pTileSet1 && editorScene::m_nPreviewNum == 0 )
 		m_pTileSet1->render(hdc, 40 , (WINSIZEY / 8) * 3 + 10);
 	if (m_pTileSet2 && editorScene::m_nPreviewNum == 1)
@@ -137,7 +189,6 @@ void editorScene::render(HDC hdc)
 		m_pTileSet3->render(hdc, 40, (WINSIZEY / 8) * 3 + 10);
 	if (m_pTileSet4 && editorScene::m_nPreviewNum == 3)
 		m_pTileSet4->render(hdc, 40, (WINSIZEY / 8) * 3 + 10);
-
 
 
 	m_pBtnLspace->render(hdc);

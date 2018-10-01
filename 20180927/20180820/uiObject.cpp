@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "uiObject.h"
 #include "uiButton.h"
+#include "editorScene.h"
 
 HRESULT uiObject::init()
 {
@@ -52,29 +53,20 @@ void uiObject::addChild(uiObject * pChild)
 
 void uiObject::OnClick(uiButton * pSender)
 {
-	// 이미지 숨기는 버튼
-	if (pSender->getTag() == 0)
+	switch (pSender->getTag())
 	{
-		for (auto child : m_vecChild)
-		{
-			if (child->getTag() == 3)
-			{
-				child->setHidden(true);
-				break;
-			}
-		}
-	}
-	// 이미지를 보여주는 버튼
-	else if (pSender->getTag() == 1)
-	{
-		for (auto child : m_vecChild)
-		{
-			if (child->getTag() == 3)
-			{
-				child->setHidden(false);
-				break;
-			}
-		}
+	case 1:
+		m_editorScene->setMapSize(800);
+		break;
+	case 2:
+		m_editorScene->setMapSize(1600);
+		break;
+	case 3:
+		m_editorScene->setMapSize(2000);
+		break;
+	case 4:
+		m_editorScene->setMapSize(2400);
+		break;
 	}
 }
 
