@@ -7,10 +7,8 @@
 
 HRESULT titleScene::init()
 {
-<<<<<<< HEAD
 	m_player = new PlayerCharacter;
 	m_player->init();
-=======
 	m_pBulletMag = new bulletManger;
 	m_pBulletMag->init(10);
 
@@ -22,7 +20,6 @@ HRESULT titleScene::init()
 	m_player->init();
 //	m_player->setBulletPointer(&m_pBulletMag);
 
->>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
 	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162, 360, 1, 6, true, RGB(166, 166, 166));
 	// 버튼 tag 초기화
@@ -74,12 +71,8 @@ void titleScene::update()
 	
 	m_player->update();
 	m_pBulletMag->update();
-<<<<<<< HEAD
 	m_player->update();
-=======
 	m_pEffMagr->update();
->>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
-
 }
 
 void titleScene::render(HDC hdc)
@@ -102,10 +95,7 @@ void titleScene::render(HDC hdc)
 	m_player->render(hdc);
 	m_pEffMagr->render(hdc);
 	TIMEMANAGER->render(hdc);
-<<<<<<< HEAD
 	m_player->render(hdc);
-=======
->>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
 }
 
 titleScene::titleScene()

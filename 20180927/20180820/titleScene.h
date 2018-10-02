@@ -1,21 +1,9 @@
 #pragma once
 #include "scene.h"
-<<<<<<< HEAD
-#include "bulletManger.h"
 
 class PlayerCharacter;
-
-=======
-<<<<<<< HEAD
-
-#include "bulletManger.h"
-=======
-#include "bulletManger.h"
-#include "effectManager.h"
->>>>>>> b0058aa65c4bd430f6f1c85977b9adcf24eae3e8
-
-class PlayerCharacter;
->>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
+class bulletManger;
+class effectManager;
 
 class titleScene : public scene
 {
@@ -36,19 +24,9 @@ private:
 	image* m_titleScene;
 	image* m_button;
 	buttonSelect m_tButtonInfo;
-
-
 	bulletManger * m_pBulletMag;
 
-<<<<<<< HEAD
-=======
-
-=======
 	effectManager * m_pEffMagr;
-
-	bulletManger * m_pBulletMag;
->>>>>>> b0058aa65c4bd430f6f1c85977b9adcf24eae3e8
->>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
 
 	int m_buttonSetX;
 	int m_buttonSetY;
