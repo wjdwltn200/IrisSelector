@@ -8,9 +8,9 @@
 
 char szFileName[512];
 
-int editorScene::m_nMapSize = 0;
 int editorScene::m_nPreviewNum = 0;
-bool editorScene::m_bIsSizeCheck = false;
+//bool editorScene::m_bIsSizeCheck = false;
+//int editorScene::m_nMapSize = 0;
 
 static void SpaceFunc_left(void)
 {
@@ -24,31 +24,6 @@ static void SpaceFunc_right(void)
 		editorScene::m_nPreviewNum += 1;
 }
 
-
-static void Func_MapSize1(void)
-{
-	editorScene::m_nMapSize = 800;
-}
-
-static void Func_MapSize2(void)
-{
-	editorScene::m_nMapSize = 1600;
-}
-
-static void Func_MapSize3(void)
-{
-	editorScene::m_nMapSize = 2000;
-}
-
-static void Func_MapSize4(void)
-{
-	editorScene::m_nMapSize = 2400;
-}
-
-static void Func_MapCheck(void)
-{
-	editorScene::m_bIsSizeCheck = true;
-}
 
 void editorScene::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 {
@@ -83,7 +58,6 @@ void editorScene::LoadEvent()
 
 HRESULT editorScene::init()
 {
-	m_nMapSize = 800;
 
 	m_pImg_SizeBox = IMAGEMANAGER->addImage("size_box","image/wook/size_box.bmp", 640, 640);
 	IMAGEMANAGER->addImage("800x", "image/wook/800x.bmp", 320, 168,1,2,true,RGB(255,0,255));
@@ -135,25 +109,6 @@ HRESULT editorScene::init()
 
 }
 
-void editorScene::SetSize()
-{
-	m_pImg_Box5 = IMAGEMANAGER->addImage("box5", "image/wook/white.bmp", 320,84, true, RGB(255, 0, 255));
-
-	m_pBtn800x = new button;
-	m_pBtn800x->init("800x", WINSIZEX / 2, 80, PointMake(0, 1), PointMake(0, 0), Func_MapSize1);
-	
-	m_pBtn1600x = new button;
-	m_pBtn1600x->init("1600x", WINSIZEX / 2 , 180, PointMake(0, 1), PointMake(0, 0), Func_MapSize2);
-
-	m_pBtn2000x = new button;
-	m_pBtn2000x->init("2000x", WINSIZEX / 2, 280, PointMake(0, 1), PointMake(0, 0), Func_MapSize3);
-
-	m_pBtn2400x = new button;
-	m_pBtn2400x->init("2400x", WINSIZEX / 2 , 380, PointMake(0, 1), PointMake(0, 0), Func_MapSize4);
-
-	m_pBtnSizeCheck = new button;
-	m_pBtnSizeCheck->init("size_check", WINSIZEX/ 2  + m_pImg_SizeBox->getWidth()/2 - IMAGEMANAGER->findImage("size_check")->getWidth()/ 2, WINSIZEY / 2 + m_pImg_SizeBox->getHeight() / 2 - (IMAGEMANAGER->findImage("size_check")->getHeight() / 2 + 84), PointMake(0, 1), PointMake(0, 0), Func_MapCheck);
-}
 
 void editorScene::TileSetting()
 {
