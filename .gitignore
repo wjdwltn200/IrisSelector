@@ -926,6 +926,7 @@ Staaaart/Debug/Iris_Selector.pdb
 =======
 >>>>>>> abaac687dc5fafa8956f18509e79d8b7f42f9588
 >>>>>>> cfc2258d5f2c1532142e467a969fd2349bd1af92
+<<<<<<< HEAD
 20180927/.vs/20180820/v15/.suo
 20180927/20180820/Debug/20180820.obj
 20180927/20180820/Debug/20180820.pch
@@ -934,6 +935,69 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/20180820/Debug/20180820.tlog/CL.write.1.tlog
 20180927/20180820/Debug/20180820.tlog/link.command.1.tlog
 20180927/20180820/Debug/20180820.tlog/rc.command.1.tlog
+=======
+<<<<<<< HEAD
+20180927/Debug/20180820.pdb
+20180927/Debug/20180820.ilk
+20180927/Debug/20180820.exe
+20180927/20180820/Debug/vc141.pdb
+20180927/20180820/Debug/vc141.idb
+20180927/20180820/Debug/utils.obj
+20180927/20180820/Debug/uiObject.obj
+20180927/20180820/Debug/uiManager.obj
+20180927/20180820/Debug/uiImageView.obj
+20180927/20180820/Debug/uiButton.obj
+20180927/20180820/Debug/txtData.obj
+20180927/20180820/Debug/titleScene.obj
+20180927/20180820/Debug/timer.obj
+20180927/20180820/Debug/timeManager.obj
+20180927/20180820/Debug/tileMap.obj
+20180927/20180820/Debug/stdafx.obj
+20180927/20180820/Debug/stageScene.obj
+20180927/20180820/Debug/soundManager.obj
+20180927/20180820/Debug/sceneManager.obj
+20180927/20180820/Debug/scene.obj
+20180927/20180820/Debug/progressBar.obj
+20180927/20180820/Debug/mainGame.obj
+20180927/20180820/Debug/loadingScene.obj
+20180927/20180820/Debug/keyManager.obj
+20180927/20180820/Debug/imageManager.obj
+20180927/20180820/Debug/image.obj
+20180927/20180820/Debug/gameNode.obj
+20180927/20180820/Debug/effectManager.obj
+20180927/20180820/Debug/effect.obj
+20180927/20180820/Debug/editorscene_size.obj.enc
+20180927/20180820/Debug/editorScene_Size.obj
+20180927/20180820/Debug/editorScene_re.obj
+20180927/20180820/Debug/editorscene.new.obj.enc
+20180927/20180820/Debug/button.obj
+20180927/20180820/Debug/animation.obj
+20180927/20180820/Debug/20180820.tlog/rc.write.1.tlog
+20180927/20180820/Debug/20180820.tlog/rc.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/rc.command.1.tlog
+20180927/20180820/Debug/20180820.tlog/link.write.1.tlog
+20180927/20180820/Debug/20180820.tlog/link.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/link.command.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.write.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.command.1.tlog
+20180927/20180820/Debug/20180820.tlog/20180820.lastbuildstate
+20180927/20180820/Debug/20180820.pch
+20180927/20180820/Debug/20180820.obj
+20180927/.vs/20180820/v15/.suo
+=======
+20180927/.vs/20180820/v15/.suo
+20180927/20180820/Debug/20180820.obj
+20180927/20180820/Debug/20180820.pch
+20180927/20180820/Debug/20180820.tlog/20180820.lastbuildstate
+20180927/20180820/Debug/20180820.tlog/CL.command.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.write.1.tlog
+20180927/20180820/Debug/20180820.tlog/link.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/link.write.1.tlog
+20180927/20180820/Debug/20180820.tlog/rc.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/rc.write.1.tlog
+>>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
 20180927/20180820/Debug/animation.obj
 20180927/20180820/Debug/button.obj
 20180927/20180820/Debug/effect.obj
@@ -968,3 +1032,47 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/Debug/20180820.exe
 20180927/Debug/20180820.ilk
 20180927/Debug/20180820.pdb
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+20180927/.vs/20180820/v15/.suo
+20180927/20180820/Debug/20180820.obj
+20180927/20180820/Debug/20180820.pch
+20180927/20180820/Debug/20180820.tlog/CL.command.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.write.1.tlog
+20180927/20180820/Debug/animation.obj
+20180927/20180820/Debug/button.obj
+20180927/20180820/Debug/effect.obj
+20180927/20180820/Debug/effectManager.obj
+20180927/20180820/Debug/gameNode.obj
+20180927/20180820/Debug/image.obj
+20180927/20180820/Debug/imageManager.obj
+20180927/20180820/Debug/keyManager.obj
+20180927/20180820/Debug/loadingScene.obj
+20180927/20180820/Debug/progressBar.obj
+20180927/20180820/Debug/scene.obj
+20180927/20180820/Debug/sceneManager.obj
+20180927/20180820/Debug/soundManager.obj
+20180927/20180820/Debug/stageScene.obj
+20180927/20180820/Debug/stdafx.obj
+20180927/20180820/Debug/tileMap.obj
+20180927/20180820/Debug/timeManager.obj
+20180927/20180820/Debug/timer.obj
+20180927/20180820/Debug/titleScene.obj
+20180927/20180820/Debug/txtData.obj
+20180927/20180820/Debug/uiButton.obj
+20180927/20180820/Debug/uiImageView.obj
+20180927/20180820/Debug/uiManager.obj
+20180927/20180820/Debug/utils.obj
+20180927/20180820/Debug/vc141.idb
+20180927/20180820/Debug/vc141.pdb
+20180927/20180820/titleScene.cpp
+=======
+>>>>>>> b0058aa65c4bd430f6f1c85977b9adcf24eae3e8
+<<<<<<< HEAD
+*.lastbuildstate
+=======
+>>>>>>> d643de54d9d599eacc1bcf6608c9adc5b54eb536
+>>>>>>> 615f4a91fce54e02222f1aae67d4edbde3aa7c05
+>>>>>>> 0b086a63c188458d2a695febe59fdc8377279598

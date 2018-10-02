@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "uiObject.h"
 #include "uiButton.h"
-#include "editorScene.h"
 
 HRESULT uiObject::init()
 {

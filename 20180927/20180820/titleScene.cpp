@@ -2,12 +2,27 @@
 #include "titleScene.h"
 #include "PlayerCharacter.h"
 #include "bulletManger.h"
-
+#include "effectManager.h"
+#include "PlayerCharacter.h"
 
 HRESULT titleScene::init()
 {
+<<<<<<< HEAD
 	m_player = new PlayerCharacter;
 	m_player->init();
+=======
+	m_pBulletMag = new bulletManger;
+	m_pBulletMag->init(10);
+
+	m_pEffMagr = new effectManager;
+	m_pEffMagr->init();
+	m_pEffMagr->addEffect("Bullet_Y_End", "image/resources/bullet_image/Bullet_Y_End.bmp",297, 27, 27, 27, 30, 5);
+
+	m_player = new PlayerCharacter;
+	m_player->init();
+//	m_player->setBulletPointer(&m_pBulletMag);
+
+>>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
 	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162, 360, 1, 6, true, RGB(166, 166, 166));
 	// 버튼 tag 초기화
@@ -18,11 +33,14 @@ HRESULT titleScene::init()
 	m_tButtonInfo.m_moveSpeed = 1.5f;
 	m_tButtonInfo.m_isMovement = false;
 
-	m_pBulletMag = new bulletManger;
-	m_pBulletMag->init(10);
+
+
+	//g_saveData.g_pBullet = &m_pBulletMag;
 
 	IMAGEMANAGER->addImage("Bullet_Y", "image/resources/bullet_image/Bullet_Y.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
-
+	IMAGEMANAGER->addImage("Bullet_B", "image/resources/bullet_image/Bullet_B.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Bullet_P", "image/resources/bullet_image/Bullet_P.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Bullet_G", "image/resources/bullet_image/Bullet_G.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 
 	return S_OK;
 }
@@ -30,24 +48,13 @@ HRESULT titleScene::init()
 void titleScene::release()
 {
 	m_pBulletMag->release();
+	m_pEffMagr->release();
 }
 
 void titleScene::update()
 {
 	if (KEYMANAGER->isOnceKeyDown(0x71))
 		SCENEMANAGER->changeScene("editor");
-
-	if (KEYMANAGER->isStayKeyDown('F'))
-	{
-		//m_pBulletMag->fire("Bullet_Y", 1.0f, 0.5f, 10.0f, WINSIZEX / 2, WINSIZEY / 2, 200.0f, 10.0f, 3.0f, 1.0f, MY_UTIL::getMouseAngle(WINSIZEX / 2, WINSIZEY / 2));
-
-
-		for (int i = 0; i < 10; i++)
-		{
-			m_pBulletMag->fire("Bullet_Y", 1.0f, 0.5f, 3.5f, WINSIZEX / 2, WINSIZEY / 2, (i * 50.0f) + 100.0f, 10.0f, 3.0f, 1.0f, PI/180.0f - (i * 10.0f));
-		}
-
-	}
 
 	if (!m_tButtonInfo.m_isMovement)
 	{
@@ -65,8 +72,13 @@ void titleScene::update()
 		}
 	}
 	
-	m_pBulletMag->update();
 	m_player->update();
+	m_pBulletMag->update();
+<<<<<<< HEAD
+	m_player->update();
+=======
+	m_pEffMagr->update();
+>>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
 
 }
 
@@ -87,8 +99,13 @@ void titleScene::render(HDC hdc)
 	}
 
 	m_pBulletMag->render(hdc);
-	TIMEMANAGER->render(hdc);
 	m_player->render(hdc);
+	m_pEffMagr->render(hdc);
+	TIMEMANAGER->render(hdc);
+<<<<<<< HEAD
+	m_player->render(hdc);
+=======
+>>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
 }
 
 titleScene::titleScene()
