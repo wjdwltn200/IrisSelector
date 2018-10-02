@@ -83,8 +83,8 @@ private :
 
 	tagTile * m_pTiles = new tagTile[800];
 
-	static bool m_bIsSizeCheck;
-	static int m_nMapSize;
+	//static bool m_bIsSizeCheck;
+	//static int m_nMapSize;
 	static int m_nPreviewNum;
 
 public:
@@ -104,7 +104,6 @@ public:
 	void LoadEvent();
 	void TileSetting();
 
-	void SetSize();
 
 
 	HRESULT init();

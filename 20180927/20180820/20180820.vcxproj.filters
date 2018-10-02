@@ -162,6 +162,9 @@
     <ClInclude Include="PlayerCharacter.h">
       <Filter>MainGame</Filter>
     </ClInclude>
+    <ClInclude Include="editorScene_Size.h">
+      <Filter>MainGame\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -256,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="PlayerCharacter.cpp">
       <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="editorScene_Size.cpp">
+      <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
