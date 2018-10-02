@@ -18,16 +18,26 @@ private:
 	float	m_fKnockBack;
 	float	m_fAngle;
 
+	float	m_fMoveAngle;
+	float	m_fAngleRadius;
+
+
 	bool	m_isAlive;
+
+	// 스트럭쳐
+	int tMoveType;
+	int	tMoveTypeCount;
+	int	tImageType;
 
 public:
 	HRESULT init(const char * imageName, float scale, float radius,
-		float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle);
+		float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle, tagBulletInfo bulletInfo);
 	void release();
 	void update();
 	void render(HDC hdc);
 
 	void movement();
+	void moveTypeAct(int moveType);
 
 	bool getIsAlive() { return m_isAlive; }
 	void setIsAlive(bool alive) { m_isAlive = alive; }

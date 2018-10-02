@@ -21,6 +21,8 @@ public:
 	void update();
 	void render(HDC hdc);
 
+	bool getIsAlive() {return m_isAlive;}
+
 	void startEffect(int x, int y);
 	void endEffect();
 
