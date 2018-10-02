@@ -15,7 +15,7 @@ HRESULT titleScene::init()
 
 	m_player = new PlayerCharacter;
 	m_player->init();
-	m_player->setBulletPointer(&m_pBulletMag);
+//	m_player->setBulletPointer(&m_pBulletMag);
 
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
 	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162, 360, 1, 6, true, RGB(166, 166, 166));
