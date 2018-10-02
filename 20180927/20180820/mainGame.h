@@ -1,5 +1,5 @@
 #pragma once
-class editorScene;
+class editorScene_re;
 class loadingScene;
 class stageScene;
 class titleScene;
@@ -17,7 +17,9 @@ private:
 
 	char m_szText[128];
 
-	editorScene * m_pEditorScene;
+	editorScene_re * m_pEditorScene_RE;
+
+
 	loadingScene * m_pLoadingScene;
 	stageScene * m_pStageScene;
 	titleScene * m_pTitleScene;
