@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "mainGame.h"
-#include "editorScene.h"
+#include "editorScene_re.h"
 #include "titleScene.h"
 #include "stageScene.h"
 #include "loadingScene.h"
@@ -29,8 +29,8 @@ HRESULT mainGame::init()
 	//m_pTileMapScene = new tileMap;
 	//SCENEMANAGER->addScene("tileMap", m_pTileMapScene);
 
-	m_pEditorScene = new editorScene;
-	SCENEMANAGER->addScene("editor", m_pEditorScene);
+	m_pEditorScene_RE = new editorScene_re;
+	SCENEMANAGER->addScene("editor_re", m_pEditorScene_RE);
 
 	m_pTitleScene = new titleScene;
 	SCENEMANAGER->addScene("title", m_pTitleScene);
@@ -41,7 +41,11 @@ HRESULT mainGame::init()
 	m_pLoadingScene = new loadingScene;
 	SCENEMANAGER->addLoadingScene("loading", m_pLoadingScene);
 	
+<<<<<<< HEAD
+	SCENEMANAGER->changeScene("editor_re");
+=======
 	SCENEMANAGER->changeScene("title");
+>>>>>>> b0058aa65c4bd430f6f1c85977b9adcf24eae3e8
 	// 민욱이는 과연 누구인가? 알랄라 내첫사랑 지수 ㅇㅇ
 	// 이순현 테스트
 	// 정지수 로그인 테스트
@@ -98,7 +102,7 @@ LRESULT mainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		return 0;
 
 	case WM_COMMAND:
-		m_pEditorScene->ButtonEvent(hWnd, iMessage, wParam);
+		m_pEditorScene_RE->ButtonEvent(hWnd, iMessage, wParam);
 	}
 	return DefWindowProc(hWnd, iMessage, wParam, lParam);
 }

@@ -138,9 +138,6 @@
     <ClInclude Include="soundManager.h">
       <Filter>2DGameFramework\manager</Filter>
     </ClInclude>
-    <ClInclude Include="editorScene.h">
-      <Filter>MainGame\scene</Filter>
-    </ClInclude>
     <ClInclude Include="loadingScene.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
@@ -162,7 +159,7 @@
     <ClInclude Include="PlayerCharacter.h">
       <Filter>MainGame</Filter>
     </ClInclude>
-    <ClInclude Include="editorScene_Size.h">
+    <ClInclude Include="editorScene_re.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -236,9 +233,6 @@
     <ClCompile Include="soundManager.cpp">
       <Filter>2DGameFramework\manager</Filter>
     </ClCompile>
-    <ClCompile Include="editorScene.cpp">
-      <Filter>MainGame\scene</Filter>
-    </ClCompile>
     <ClCompile Include="loadingScene.cpp">
       <Filter>MainGame\scene</Filter>
     </ClCompile>
@@ -260,7 +254,7 @@
     <ClCompile Include="PlayerCharacter.cpp">
       <Filter>MainGame</Filter>
     </ClCompile>
-    <ClCompile Include="editorScene_Size.cpp">
+    <ClCompile Include="editorScene_re.cpp">
       <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
