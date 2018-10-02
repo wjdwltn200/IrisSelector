@@ -2,6 +2,8 @@
 #include "bullet.h"
 #include "animation.h"
 
+// Å×½ºÆ®
+
 HRESULT bullet::init(const char * imageName, float scale, float radius,
 	float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle)
 {
