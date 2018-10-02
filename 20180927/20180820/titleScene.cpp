@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "titleScene.h"
+#include "PlayerCharacter.h"
 #include "bulletManger.h"
 
 
 HRESULT titleScene::init()
 {
+	m_player = new PlayerCharacter;
+	m_player->init();
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
 	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162, 360, 1, 6, true, RGB(166, 166, 166));
 	// 버튼 tag 초기화
@@ -63,7 +66,7 @@ void titleScene::update()
 	}
 	
 	m_pBulletMag->update();
-
+	m_player->update();
 
 }
 
@@ -85,7 +88,7 @@ void titleScene::render(HDC hdc)
 
 	m_pBulletMag->render(hdc);
 	TIMEMANAGER->render(hdc);
-
+	m_player->render(hdc);
 }
 
 titleScene::titleScene()
