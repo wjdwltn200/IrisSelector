@@ -1,10 +1,8 @@
 #pragma once
 #include "scene.h"
-<<<<<<< HEAD
 #include "bulletManger.h"
-=======
+
 class PlayerCharacter;
->>>>>>> cfc2258d5f2c1532142e467a969fd2349bd1af92
 
 class titleScene : public scene
 {
@@ -26,10 +24,7 @@ private:
 	image* m_button;
 	buttonSelect m_tButtonInfo;
 
-<<<<<<< HEAD
 	bulletManger * m_pBulletMag;
-=======
->>>>>>> cfc2258d5f2c1532142e467a969fd2349bd1af92
 
 	int m_buttonSetX;
 	int m_buttonSetY;

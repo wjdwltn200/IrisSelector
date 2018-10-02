@@ -5,13 +5,10 @@
 HRESULT bullet::init(const char * imageName, float scale, float radius,
 	float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle)
 {
-<<<<<<< HEAD
-=======
 	// 최초 초기화
 	memset(&m_rc, NULL, sizeof(m_rc));
 
 	// 이미지 초기화
->>>>>>> bdc347f6232ce28ec4e183018d29b337bb6944b5
 	m_pImg = IMAGEMANAGER->findImage(imageName);
 	m_pAni = new animation;
 	m_pAni->init(m_pImg->getWidth(), m_pImg->getHeight(), m_pImg->getFrameWidth(), m_pImg->getFrameHeight());

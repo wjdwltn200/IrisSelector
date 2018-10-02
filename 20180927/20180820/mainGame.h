@@ -3,6 +3,7 @@ class editorScene;
 class loadingScene;
 class stageScene;
 class titleScene;
+class editorScene_Size;
 
 
 class mainGame
@@ -17,6 +18,7 @@ private:
 
 	char m_szText[128];
 
+	editorScene_Size * m_pEditorScene_Size;
 	editorScene * m_pEditorScene;
 	loadingScene * m_pLoadingScene;
 	stageScene * m_pStageScene;

@@ -4,6 +4,7 @@
 #include "titleScene.h"
 #include "stageScene.h"
 #include "loadingScene.h"
+#include "editorScene_Size.h"
 
 
 void mainGame::setBackBuffer()
@@ -28,6 +29,9 @@ HRESULT mainGame::init()
 	
 	//m_pTileMapScene = new tileMap;
 	//SCENEMANAGER->addScene("tileMap", m_pTileMapScene);
+
+	m_pEditorScene_Size = new editorScene_Size;
+	SCENEMANAGER->addScene("editor_Size", m_pEditorScene_Size);
 
 	m_pEditorScene = new editorScene;
 	SCENEMANAGER->addScene("editor", m_pEditorScene);

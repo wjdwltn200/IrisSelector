@@ -42,16 +42,18 @@ private :
 	image* m_pImg_Box2;
 	image* m_pImg_Box3;
 	image* m_pImg_Box4;
-	image*  m_pImg_BG;
+	image* m_pImg_BG;
 	image* m_pImg_VerticalBar;
 	image* m_pImg_HorizontalBar;
 
-	button * m_pBtn800x;
+	/*button * m_pBtn800x;
 	button * m_pBtn1600x;
 	button * m_pBtn2000x;
 	button * m_pBtn2400x;
 	button * m_pBtnSizeCheck;
 	image * m_pImg_Box5;
+*/
+
 
 	button * m_pBtnLspace;
 	button * m_pBtnRspace;
