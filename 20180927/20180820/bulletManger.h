@@ -15,7 +15,7 @@ public:
 	void render(HDC hdc);
 
 	void fire(const char * imageName, float scale, float radius,
-		float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle);
+		float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle, tagBulletInfo bulletInfo);
 
 	bulletManger();
 	~bulletManger();
