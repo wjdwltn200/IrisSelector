@@ -40,7 +40,6 @@ HRESULT PlayerCharacter::init()
 	// 정지수 시작
 	memset(&m_rc, 0, sizeof(m_rc));
 
-	m_bulletSetMax = 1;
 	m_fRadius = img_player->getFrameWidth() / 2;
 	m_fSpeed = 1.0f;
 
@@ -50,21 +49,45 @@ HRESULT PlayerCharacter::init()
 
 	// 정지수 끝
 
-	// Player 기본 셋팅
+	// Player 기본 셋팅 (메인)
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
+	m_tBulletInfo.tBulletSetNum = 1;
 	m_tBulletInfo.tScale = 1.0f;
+	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 500.0f;
+	m_tBulletInfo.tRange = 2000.0f;
+	m_tBulletInfo.tBulletSub = 1;
 
 	m_tBulletInfo.tDmage = 10.0f;
 	m_tBulletInfo.tKnokBack = 5.0f;
-	m_tBulletInfo.tMoveSpeed = 10.0f;
+	m_tBulletInfo.tMoveSpeed = 1.0f;
 
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::PLAYER;
+	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
 	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	
+	// 서브 탄환 (이중 폭발)
+	memset(&m_tBulletInfoSub, 0, sizeof(m_tBulletInfoSub));
+
+	m_tBulletInfoSub.tBulletSetNum = 2;
+	m_tBulletInfoSub.tScale = 1.0f;
+	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
+	m_tBulletInfoSub.tRadius = 0.5f;
+	m_tBulletInfoSub.tExpRadius = 0.5f;
+	m_tBulletInfoSub.tRange = 100.0f;
+	m_tBulletInfoSub.tBulletSub = 2;
+
+	m_tBulletInfoSub.tDmage = 10.0f;
+	m_tBulletInfoSub.tKnokBack = 5.0f;
+	m_tBulletInfoSub.tMoveSpeed = 5.0f;
+
+	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::PLAYER;
+	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
+	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_B;
+	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL;
 	return S_OK;
 }
 
@@ -80,23 +103,17 @@ void PlayerCharacter::update()
 	{
 		if (m_bulletDelayCount == NULL)
 		{
-			if (m_bulletSetMax == 1)
+			if (m_tBulletInfo.tBulletSetNum == 1)
 			{
 				(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY), m_tBulletInfo);
 			}
-			else
+			else // 다방향
 			{
-				for (int i = 0; i < m_bulletSetMax; i++)
+				for (int i = 0; i < m_tBulletInfo.tBulletSetNum; i++)
 				{
-					float a = (i * (PI / 180.0f * (360.0f / m_bulletSetMax)));
-					float b = MY_UTIL::getMouseAngle(m_fX, m_fY);
-					float c = a + b;
-					float d = 0.0f;
-					(*m_pBulletMag)->fire("임시", m_fX, m_fY, b + a, m_tBulletInfo);
+					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY) + (i * (PI / 180.0f * (360.0f / m_tBulletInfo.tBulletSetNum))), m_tBulletInfo);
 				}
 			}
-
-
 			m_bulletDelayCount = m_bulletDelayCountMax;
 		}
 	}
@@ -249,7 +266,7 @@ void PlayerCharacter::render(HDC hdc)
 	TextOut(hdc, m_fX + 100, m_fY + 100, szText, strlen(szText));
 
 	sprintf_s(szText, "m_bulletSetMax : %d",
-		m_bulletSetMax);
+		m_tBulletInfo.tBulletSetNum);
 	TextOut(hdc, m_fX + 100, m_fY + 120, szText, strlen(szText));
 }
 
@@ -273,7 +290,12 @@ void PlayerCharacter::getItem(int itemInfo)
 		m_bulletDelayCountMax -= 30;
 		break;
 	case ITEM_SKILL_TYPE::BULLET_SET_MAX_UP:
-		m_bulletSetMax += 6;
+		m_tBulletInfo.tBulletSetNum += 1;
+		break;
+
+	case ITEM_SKILL_TYPE::BULLET_SCALE_SIZE_UP:
+		m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::SCALE_SIZE_UP;
+		m_tBulletInfo.tScaleMax += 0.5f;
 		break;
 
 	case ITEM_SKILL_TYPE::BULLET_CENTER_CENTRIFUGAL:

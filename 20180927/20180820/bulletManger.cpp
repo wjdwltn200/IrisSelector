@@ -44,14 +44,14 @@ void bulletManger::fire(const char * imageName, float posX, float posY, float an
 	{
 		if (!(*m_iter)->getIsAlive()) // 죽어있으면 재활용
 		{
-			(*m_iter)->init(imageName, posX, posY, angle, bulletInfo);
+			(*m_iter)->init(imageName, posX, posY, angle, bulletInfo, this);
 
 			return;
 		}
 	}
 
 	bullet * pBullet = new bullet;
-	pBullet->init(imageName, posX, posY, angle, bulletInfo);
+	pBullet->init(imageName, posX, posY, angle, bulletInfo, this);
 
 	m_vecBullet.push_back((pBullet));
 	return;

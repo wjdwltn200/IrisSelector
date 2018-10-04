@@ -1,18 +1,21 @@
 #include "stdafx.h"
 #include "bullet.h"
 #include "animation.h"
+#include "bulletManger.h"
+
 
 // 테스트
 
-HRESULT bullet::init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo)
+HRESULT bullet::init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo, bulletManger*  bulletMagPoint)
 {
 	// 최초 초기화
 	memset(&m_rc, NULL, sizeof(m_rc));
 
-
+	m_pBulletMag = bulletMagPoint;
+	
 	// 이미지 초기화
-	tImageType = bulletInfo.tImageType;
-	switch (tImageType)
+	m_bulletInfo.tImageType = bulletInfo.tImageType;
+	switch (m_bulletInfo.tImageType)
 	{
 	case BULLET_IMAGE_TYPE::COLOR_Y:
 		m_pImg = IMAGEMANAGER->findImage("Bullet_Y");
@@ -37,26 +40,29 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 	RectMakeCenter(m_fX, m_fY, m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
 
 	// 멤버 초기화
-	m_fScale = bulletInfo.tScale;
-	m_fScaleMax = m_fScale * 2.0f;
-	m_fRadius = bulletInfo.tRadius;
-	m_fExpRadius = bulletInfo.tExpRadius;
-	m_fSpeed = bulletInfo.tMoveSpeed;
-	m_fKnockBack = bulletInfo.tKnokBack;
-	m_fDmage = bulletInfo.tDmage;
-	m_fRange = bulletInfo.tRange;
+	m_bulletInfo.tScale = bulletInfo.tScale;
+	m_bulletInfo.tScaleMax = bulletInfo.tScaleMax;
+	m_bulletInfo.tRadius = bulletInfo.tRadius;
+	m_bulletInfo.tExpRadius = bulletInfo.tExpRadius;
+	m_bulletInfo.tMoveSpeed = bulletInfo.tMoveSpeed;
+	m_bulletInfo.tKnokBack = bulletInfo.tKnokBack;
+	m_bulletInfo.tDmage = bulletInfo.tDmage;
+	m_bulletInfo.tRange = bulletInfo.tRange;
+	m_bulletInfo.tMoveActType = bulletInfo.tMoveActType;
+	m_bulletInfo.tMoveType = bulletInfo.tMoveType;
+
+
+	m_ScaleCount = 0;
 	m_fX = posX;
 	m_fY = posY;
 	m_fAngle = angle;
 	m_fMoveAngle = 0.0f;
 	m_fAngleRadius = 0.0f;
 	tMoveTypeCount = 0;
-	tImageType = 0;
 
 	m_isAlive = true;
 
-	tMoveType = bulletInfo.tMoveType;
-	switch (tMoveType)
+	switch (m_bulletInfo.tMoveType)
 	{
 	case BULLET_MOVE_TYPE::ONE_LINE:
 		break;
@@ -88,8 +94,8 @@ void bullet::update()
 
 void bullet::render(HDC hdc)
 {
-	m_pImg->aniRender(hdc, m_fX - (m_pImg->getFrameWidth() / 2) * m_fScale,
-		m_fY - (m_pImg->getFrameHeight() / 2) * m_fScale, m_pAni, m_fScale, true, 255);
+	m_pImg->aniRender(hdc, m_fX - (m_pImg->getFrameWidth() / 2) * m_bulletInfo.tScale,
+		m_fY - (m_pImg->getFrameHeight() / 2) * m_bulletInfo.tScale, m_pAni, m_bulletInfo.tScale, true, 255);
 
 	char szText[256];
 
@@ -110,20 +116,39 @@ void bullet::render(HDC hdc)
 		tMoveTypeCount);
 	TextOut(hdc, 10, 140, szText, strlen(szText));
 
-	sprintf_s(szText, "m_fSpeed : %f",
-		m_fSpeed);
+	sprintf_s(szText, "m_bulletInfo.tMoveSpeed : %f",
+		m_bulletInfo.tMoveSpeed);
 	TextOut(hdc, 10, 160, szText, strlen(szText));
 }
 
 void bullet::movement()
 {
-	if (m_fSpeed == 0.0f || m_fSpeed == NULL) return;
+	if (m_bulletInfo.tMoveSpeed == 0.0f || m_bulletInfo.tMoveSpeed == NULL) return;
 
-	moveTypeAct(tMoveType);
+	moveTypeAct(m_bulletInfo.tMoveType);
+
+
+	switch (m_bulletInfo.tMoveActType)
+	{
+	case BULLET_MOVE_ACT_TYPE::SCALE_SIZE_UP:
+		if (m_ScaleCount >= 10)
+		{
+			if (m_bulletInfo.tScale <= m_bulletInfo.tScaleMax)
+			{
+				m_bulletInfo.tScale += 0.1f;
+			}
+			else
+			{
+				m_bulletInfo.tScale = m_bulletInfo.tScaleMax;
+			}
+		}
+		break;
+	}
+	m_ScaleCount++;
 
 
 	// 거리만큼 이동하면 삭제
-	if (m_fRange < 0.0f)
+	if (m_bulletInfo.tRange < 0.0f)
 	{
 		m_isAlive = false;
 	}
@@ -131,16 +156,16 @@ void bullet::movement()
 
 void bullet::moveTypeAct(int moveType)
 {
-	if (tMoveType == BULLET_MOVE_TYPE::MOVE_NUM) return;
+	if (m_bulletInfo.tMoveType == BULLET_MOVE_TYPE::MOVE_NUM) return;
 
-	switch (tMoveType)
+	switch (m_bulletInfo.tMoveType)
 	{
 	case BULLET_MOVE_TYPE::ONE_LINE:
 		m_fMoveAngle = 0.0f;
 
-		m_fX += cosf(m_fAngle) * m_fSpeed;
-		m_fY += -sinf(m_fAngle) * m_fSpeed;
-		m_fRange -= m_fSpeed;
+		m_fX += cosf(m_fAngle) * m_bulletInfo.tMoveSpeed;
+		m_fY += -sinf(m_fAngle) * m_bulletInfo.tMoveSpeed;
+		m_bulletInfo.tRange -= m_bulletInfo.tMoveSpeed;
 
 		break;
 	case BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL:
@@ -158,7 +183,7 @@ void bullet::moveTypeAct(int moveType)
 		m_fY = m_fY - sinf(m_fMoveAngle) * m_fAngleRadius;
 		tMoveTypeCount++;
 
-		m_fRange -= m_fAngleRadius;
+		m_bulletInfo.tRange -= m_fAngleRadius;
 		
 
 		break;
@@ -176,9 +201,9 @@ void bullet::moveTypeAct(int moveType)
 		m_fY += -sinf(m_fMoveAngle) * 10.0f;
 		tMoveTypeCount++;
 
-		m_fX += cosf(m_fAngle) * m_fSpeed;
-		m_fY += -sinf(m_fAngle) * m_fSpeed;
-		m_fRange -= m_fSpeed;
+		m_fX += cosf(m_fAngle) * m_bulletInfo.tMoveSpeed;
+		m_fY += -sinf(m_fAngle) * m_bulletInfo.tMoveSpeed;
+		m_bulletInfo.tRange -= m_bulletInfo.tMoveSpeed;
 		break;
 	}
 }

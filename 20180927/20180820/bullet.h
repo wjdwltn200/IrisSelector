@@ -1,6 +1,7 @@
 #pragma once
 class image;
 class animation;
+class bulletManger;
 
 class bullet
 {
@@ -9,29 +10,22 @@ private:
 	animation * m_pAni;
 
 	RECT	m_rc;
-	float	m_fScale;
-	float	m_fScaleMax;
-	float	m_fRadius;
-	float	m_fSpeed;
-	float	m_fX, m_fY;
-	float	m_fRange, m_fExpRadius;
-	float	m_fDmage;
-	float	m_fKnockBack;
-	float	m_fAngle;
+	int		m_ScaleCount;
 
+	float	m_fX, m_fY;
+	float	m_fAngle;
 	float	m_fMoveAngle;
 	float	m_fAngleRadius;
-
+	int		tMoveTypeCount;
 
 	bool	m_isAlive;
 
-	// 스트럭쳐
-	int tMoveType;
-	int	tMoveTypeCount;
-	int	tImageType;
+	bulletManger * m_pBulletMag;
+	tagBulletInfo m_bulletInfo;
+
 
 public:
-	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo);
+	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo, bulletManger* bulletMagPoint);
 	void release();
 	void update();
 	void render(HDC hdc);

@@ -31,7 +31,6 @@ private:
 	float m_fRadius;
 	float m_fSpeed;
 
-	int m_bulletSetMax;
 	int m_bulletDelayCount;
 	int	m_bulletDelayCountMax;
 
@@ -51,6 +50,7 @@ private:
 	float m_MaxHp;
 	
 	tagBulletInfo m_tBulletInfo;
+	tagBulletInfo m_tBulletInfoSub;
 
 	bulletManger** m_pBulletMag;
 
