@@ -10,6 +10,7 @@ private:
 
 	RECT	m_rc;
 	float	m_fScale;
+	float	m_fScaleMax;
 	float	m_fRadius;
 	float	m_fSpeed;
 	float	m_fX, m_fY;

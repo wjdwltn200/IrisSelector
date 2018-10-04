@@ -38,6 +38,7 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 
 	// ¸â¹ö ÃÊ±âÈ­
 	m_fScale = bulletInfo.tScale;
+	m_fScaleMax = m_fScale * 2.0f;
 	m_fRadius = bulletInfo.tRadius;
 	m_fExpRadius = bulletInfo.tExpRadius;
 	m_fSpeed = bulletInfo.tMoveSpeed;
@@ -108,6 +109,10 @@ void bullet::render(HDC hdc)
 	sprintf_s(szText, "tMoveTypeCount : %d",
 		tMoveTypeCount);
 	TextOut(hdc, 10, 140, szText, strlen(szText));
+
+	sprintf_s(szText, "m_fSpeed : %f",
+		m_fSpeed);
+	TextOut(hdc, 10, 160, szText, strlen(szText));
 }
 
 void bullet::movement()

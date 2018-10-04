@@ -4,13 +4,31 @@
 #include "bulletManger.h"
 #include "effectManager.h"
 #include "PlayerCharacter.h"
+#include "itemManager.h"
 
 HRESULT titleScene::init()
 {
 	m_player = new PlayerCharacter;
 	m_player->init();
+
 	m_pBulletMag = new bulletManger;
 	m_pBulletMag->init(10);
+
+	m_pItemMag = new itemManager;
+	m_pItemMag->init(10);
+	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/item_object.bmp", 105, 60, 7, 4, true, RGB(255, 0, 255));
+
+	for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
+	{
+		tagItemInfo ItemInfo;
+		ItemInfo.tImageCurrX = i;
+		ItemInfo.tImageCurrY = i;
+		ItemInfo.tScale = 1.0f;
+		ItemInfo.tTimer = 1000;
+		ItemInfo.tRadius = 1.5f;
+		ItemInfo.tSkillType = i;
+		m_pItemMag->itemDrop("ItemObject", 100 , 50 * (i + 1), ItemInfo);
+	}
 
 	m_pEffMagr = new effectManager;
 	m_pEffMagr->init();
@@ -42,6 +60,7 @@ void titleScene::release()
 {
 	m_pBulletMag->release();
 	m_pEffMagr->release();
+	m_pItemMag->release();
 }
 
 void titleScene::update()
@@ -65,9 +84,11 @@ void titleScene::update()
 		}
 	}
 	
+	ColRc();
+	m_player->update();
+	m_pItemMag->update();
 	m_player->update();
 	m_pBulletMag->update();
-	m_player->update();
 	m_pEffMagr->update();
 }
 
@@ -87,11 +108,40 @@ void titleScene::render(HDC hdc)
 			m_button->frameAlphaRender(hdc, (WINSIZEX / 2) + ((WINSIZEX / 2) / 2) - (m_button->getFrameWidth() / 2) * 0.8f, (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2) * 0.8f, 0, m_tButtonInfo.carrFrameX + 1, 0.8f ,150);
 	}
 
-	m_pBulletMag->render(hdc);
+	char szText[256];
+
+	// TRANSPARENT : 투명, OPAQUE : 불투명
+	SetBkMode(hdc, TRANSPARENT);
+
+	SetTextColor(hdc, RGB(255, 0, 255));
+
+	sprintf_s(szText, "BulletSetNum : %d",
+		m_pBulletMag->getIter());
+	TextOut(hdc, 10, WINSIZEY - 20, szText, strlen(szText));
+
+	m_pItemMag->render(hdc);
 	m_player->render(hdc);
 	m_pEffMagr->render(hdc);
-	TIMEMANAGER->render(hdc);
 	m_player->render(hdc);
+	m_pBulletMag->render(hdc);
+	TIMEMANAGER->render(hdc);
+}
+
+void titleScene::ColRc()
+{
+	//IntersectRect();
+
+	std::vector<item*> vItem = m_pItemMag->getVecItem();
+	std::vector<item*>::iterator iter;
+	for (iter = vItem.begin(); iter != vItem.end(); iter++)
+	{
+		if ((*iter)->getIsAlive() && m_player->getRadius() + (*iter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*iter)->getX(), (*iter)->getY())))
+		{
+			(*iter)->setIsAlive(false);
+			m_player->getItem((*iter)->getItemSkill());
+		}
+	}
+
 }
 
 titleScene::titleScene()

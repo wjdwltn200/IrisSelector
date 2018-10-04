@@ -4,6 +4,7 @@
 class PlayerCharacter;
 class bulletManger;
 class effectManager;
+class itemManager;
 
 class titleScene : public scene
 {
@@ -25,6 +26,7 @@ private:
 	image* m_button;
 	buttonSelect m_tButtonInfo;
 	bulletManger * m_pBulletMag;
+	itemManager * m_pItemMag;
 
 	effectManager * m_pEffMagr;
 
@@ -37,6 +39,9 @@ public:
 	virtual void release();
 	virtual void update();
 	virtual void render(HDC hdc);
+
+	void ColRc();
+
 public:
 
 	titleScene();

@@ -28,11 +28,14 @@ private:
 
 	// 정지수 시작
 
+	float m_fRadius;
+	float m_fSpeed;
+
+	int m_bulletSetMax;
 	int m_bulletDelayCount;
 	int	m_bulletDelayCountMax;
 
 	// 정지수 끝
-	
 
 	//enum PLAYER_RUN { LEFT_RUN, RIGHT_RUN, DEFAULT };
 
@@ -40,7 +43,7 @@ private:
 	float m_fX = WINSIZEX / 2;
 	float m_fY = WINSIZEY / 2;
 
-	float m_Speed = 1.0f;
+
 
 	
 	float m_currHpX;
@@ -59,6 +62,13 @@ public:
 	void render(HDC hdc);
 
 	void setBulletMagPointer(bulletManger** bulletP) { m_pBulletMag = bulletP; }
+
+	void getItem(int itemInfo);
+	float getRadius() { return m_fRadius; }
+
+	float getX() { return m_fX; }
+	float getY() { return m_fY; }
+	
 
 	PlayerCharacter();
 	~PlayerCharacter();

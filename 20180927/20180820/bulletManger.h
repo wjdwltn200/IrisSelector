@@ -15,6 +15,8 @@ public:
 	void render(HDC hdc);
 
 	void fire(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo);
+	
+	int getIter() { return m_vecBullet.size(); }
 
 	bulletManger();
 	~bulletManger();
