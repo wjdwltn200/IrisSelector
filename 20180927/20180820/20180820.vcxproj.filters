@@ -162,6 +162,12 @@
     <ClInclude Include="editorScene_re.h">
       <Filter>MainGame\scene</Filter>
     </ClInclude>
+    <ClInclude Include="monsterManger.h">
+      <Filter>2DGameFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="monster.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -256,6 +262,12 @@
     </ClCompile>
     <ClCompile Include="editorScene_re.cpp">
       <Filter>MainGame\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="monsterManger.cpp">
+      <Filter>2DGameFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="monster.cpp">
+      <Filter>MainGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
