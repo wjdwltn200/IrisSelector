@@ -4,8 +4,7 @@
 
 // 테스트
 
-HRESULT bullet::init(const char * imageName, float scale, float radius,
-	float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle, tagBulletInfo bulletInfo)
+HRESULT bullet::init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo)
 {
 	// 최초 초기화
 	memset(&m_rc, NULL, sizeof(m_rc));
@@ -38,15 +37,15 @@ HRESULT bullet::init(const char * imageName, float scale, float radius,
 	RectMakeCenter(m_fX, m_fY, m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
 
 	// 멤버 초기화
-	m_fScale = scale;
-	m_fRadius = radius;
-	m_fSpeed = speed;
+	m_fScale = bulletInfo.tScale;
+	m_fRadius = bulletInfo.tRadius;
+	m_fExpRadius = bulletInfo.tExpRadius;
+	m_fSpeed = bulletInfo.tMoveSpeed;
+	m_fKnockBack = bulletInfo.tKnokBack;
+	m_fDmage = bulletInfo.tDmage;
+	m_fRange = bulletInfo.tRange;
 	m_fX = posX;
 	m_fY = posY;
-	m_fRange = range;
-	m_fExpRadius = expRadius;
-	m_fDmage = dmage;
-	m_fKnockBack = knokBack;
 	m_fAngle = angle;
 	m_fMoveAngle = 0.0f;
 	m_fAngleRadius = 0.0f;

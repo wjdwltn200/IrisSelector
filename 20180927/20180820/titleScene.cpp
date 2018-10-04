@@ -18,7 +18,7 @@ HRESULT titleScene::init()
 
 	m_player = new PlayerCharacter;
 	m_player->init();
-//	m_player->setBulletPointer(&m_pBulletMag);
+	m_player->setBulletMagPointer(&m_pBulletMag);
 
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
 	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162, 360, 1, 6, true, RGB(166, 166, 166));
@@ -29,10 +29,6 @@ HRESULT titleScene::init()
 	m_tButtonInfo.carrFrameX = TITEL::GAME_START_SC;
 	m_tButtonInfo.m_moveSpeed = 1.5f;
 	m_tButtonInfo.m_isMovement = false;
-
-
-
-	//g_saveData.g_pBullet = &m_pBulletMag;
 
 	IMAGEMANAGER->addImage("Bullet_Y", "image/resources/bullet_image/Bullet_Y.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_B", "image/resources/bullet_image/Bullet_B.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));

@@ -2,6 +2,9 @@
 class animation;
 class bulletManger;
 
+#define BULLET_FIRST_DELAY 60
+
+
 class PlayerCharacter
 {
 
@@ -23,6 +26,12 @@ private:
 	bool m_isRunStart;
 	int m_RunCount = 0;
 
+	// 정지수 시작
+
+	int m_bulletDelayCount;
+	int	m_bulletDelayCountMax;
+
+	// 정지수 끝
 	
 
 	//enum PLAYER_RUN { LEFT_RUN, RIGHT_RUN, DEFAULT };
@@ -31,13 +40,15 @@ private:
 	float m_fX = WINSIZEX / 2;
 	float m_fY = WINSIZEY / 2;
 
-	float m_pSpeed = 5.0f;
+	float m_Speed = 1.0f;
 
 	
 	float m_currHpX;
 	float m_currHpY;
 	float m_MaxHp;
 	
+	tagBulletInfo m_tBulletInfo;
+
 	bulletManger** m_pBulletMag;
 
 

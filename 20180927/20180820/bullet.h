@@ -30,8 +30,7 @@ private:
 	int	tImageType;
 
 public:
-	HRESULT init(const char * imageName, float scale, float radius,
-		float speed, float posX, float posY, float range, float expRadius, float dmage, float knokBack, float angle, tagBulletInfo bulletInfo);
+	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo);
 	void release();
 	void update();
 	void render(HDC hdc);

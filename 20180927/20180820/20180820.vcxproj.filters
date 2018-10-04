@@ -168,6 +168,12 @@
     <ClInclude Include="monster.h">
       <Filter>MainGame</Filter>
     </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="itemManager.h">
+      <Filter>2DGameFramework\manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -268,6 +274,12 @@
     </ClCompile>
     <ClCompile Include="monster.cpp">
       <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="itemManager.cpp">
+      <Filter>2DGameFramework\manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

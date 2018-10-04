@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "animation.h"
 #include "PlayerCharacter.h"
+#include "bulletManger.h"
 
 
 HRESULT PlayerCharacter::init()
@@ -33,11 +34,31 @@ HRESULT PlayerCharacter::init()
 	ani_right_Run->setDefPlayFrame(false, true);
 	ani_right_Run->start();
 
-
-	
 	m_isRunState = false;
 	m_isRunStart = false;
 
+	// 정지수 시작
+	bulletManger m_pBulletMag;
+	m_bulletDelayCount = 0;
+	m_bulletDelayCountMax = BULLET_FIRST_DELAY;
+
+	// 정지수 끝
+
+	// Player 기본 셋팅
+	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
+
+	m_tBulletInfo.tScale = 1.0f;
+	m_tBulletInfo.tRadius = 0.5f;
+	m_tBulletInfo.tExpRadius = 0.5f;
+	m_tBulletInfo.tRange = 500.0f;
+
+	m_tBulletInfo.tDmage = 10.0f;
+	m_tBulletInfo.tKnokBack = 5.0f;
+	m_tBulletInfo.tMoveSpeed = 10.0f;
+
+	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::PLAYER;
+	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
+	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
 	return S_OK;
 }
 
@@ -48,7 +69,21 @@ void PlayerCharacter::release()
 
 void PlayerCharacter::update()
 {
-	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && !KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	// 총알 발사
+	if (KEYMANAGER->isStayKeyDown(VK_SPACE))
+	{
+		if (m_bulletDelayCount == NULL)
+		{
+			(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY), m_tBulletInfo);
+			m_bulletDelayCount = m_bulletDelayCountMax;
+		}
+	}
+	if (m_bulletDelayCount > 0)
+	{
+		m_bulletDelayCount--;
+	}
+
+	if (KEYMANAGER->isOnceKeyUp('A') && !KEYMANAGER->isOnceKeyUp('D'))
 	{
 		if (!m_isRunState)
 		{
@@ -60,7 +95,7 @@ void PlayerCharacter::update()
 			m_isRunStart = true;
 		}		
 	}
-	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && !KEYMANAGER->isOnceKeyUp(VK_LEFT))
+	if (KEYMANAGER->isOnceKeyUp('D') && !KEYMANAGER->isOnceKeyUp('A'))
 	{
 		if (!m_isRunState)
 		{
@@ -72,40 +107,40 @@ void PlayerCharacter::update()
 			m_isRunStart = true;
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+	if (KEYMANAGER->isStayKeyDown('A'))
 	{
 		if (m_isRunStart) // 달리고 있다면
 		{
-			m_fX -= m_pSpeed * 1.5f;
+			m_fX -= m_Speed * 1.5f;
 			ani_left_Run->setFPS(30);
 		}
 		else // 달리지 않고 있다면
 		{
 			ani_left_Run->setFPS(10);
-			m_fX -= m_pSpeed;
+			m_fX -= m_Speed;
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	if (KEYMANAGER->isStayKeyDown('D'))
 	{
 		if (m_isRunStart) // 달리고 있다면
 		{
-			m_fX += m_pSpeed * 1.5f;
+			m_fX += m_Speed * 1.5f;
 			ani_right_Run->setFPS(30);
 
 		}
 		else // 달리지 않고 있다면
 		{
-			m_fX += m_pSpeed;
+			m_fX += m_Speed;
 			ani_right_Run->setFPS(10);
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_UP))
+	if (KEYMANAGER->isStayKeyDown('W'))
 	{
-		m_fY -= m_pSpeed;
+		m_fY -= m_Speed;
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-		m_fY += m_pSpeed;
+		m_fY += m_Speed;
 	}
 
 	if (m_isRunState)
@@ -126,27 +161,27 @@ void PlayerCharacter::update()
 
 void PlayerCharacter::render(HDC hdc)
 {
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) || KEYMANAGER->isStayKeyDown(VK_UP) && m_Direction && !(KEYMANAGER->isStayKeyDown(VK_RIGHT)
-		|| KEYMANAGER->isStayKeyDown(VK_DOWN) && m_Direction && !(KEYMANAGER->isStayKeyDown(VK_RIGHT))))
+	if (KEYMANAGER->isStayKeyDown('A') || KEYMANAGER->isStayKeyDown('W') && m_Direction && !(KEYMANAGER->isStayKeyDown('D')
+		|| KEYMANAGER->isStayKeyDown('S') && m_Direction && !(KEYMANAGER->isStayKeyDown('D'))))
 	{
 		m_Direction = true;
 		img_left_Run->aniRender(hdc, m_fX, m_fY, ani_left_Run, 1.0f, true, 255);
 	}
 	
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) || KEYMANAGER->isStayKeyDown(VK_UP) && !m_Direction && !(KEYMANAGER->isStayKeyDown(VK_LEFT)
-		|| KEYMANAGER->isStayKeyDown(VK_DOWN) && !m_Direction && !(KEYMANAGER->isStayKeyDown(VK_LEFT))))
+	if (KEYMANAGER->isStayKeyDown('D') || KEYMANAGER->isStayKeyDown('W') && !m_Direction && !(KEYMANAGER->isStayKeyDown('A')
+		|| KEYMANAGER->isStayKeyDown('S') && !m_Direction && !(KEYMANAGER->isStayKeyDown('A'))))
 	{
 		m_Direction = false;
 		img_right_Run->aniRender(hdc, m_fX, m_fY, ani_right_Run, 1.0f, true, 255);
 	}
-	if (m_Direction && !(KEYMANAGER->isStayKeyDown(VK_LEFT) || KEYMANAGER->isStayKeyDown(VK_UP) && m_Direction
-		|| KEYMANAGER->isStayKeyDown(VK_DOWN) && m_Direction))
+	if (m_Direction && !(KEYMANAGER->isStayKeyDown('A') || KEYMANAGER->isStayKeyDown('W') && m_Direction
+		|| KEYMANAGER->isStayKeyDown('S') && m_Direction))
 	{
 		img_player->aniRender(hdc, m_fX, m_fY, ani_left_stay, 1.0f, true, 255);	
 	}
 
-	if (!m_Direction && !(KEYMANAGER->isStayKeyDown(VK_RIGHT) || KEYMANAGER->isStayKeyDown(VK_UP) && !m_Direction 
-		|| KEYMANAGER->isStayKeyDown(VK_DOWN) && !m_Direction))
+	if (!m_Direction && !(KEYMANAGER->isStayKeyDown('D') || KEYMANAGER->isStayKeyDown('W') && !m_Direction 
+		|| KEYMANAGER->isStayKeyDown('S') && !m_Direction))
 	{
 		img_player->aniRender(hdc, m_fX, m_fY, ani_right_stay, 1.0f, true, 255);
 	}
