@@ -51,6 +51,7 @@ private:
 	
 	tagBulletInfo m_tBulletInfo;
 	tagBulletInfo m_tBulletInfoSub;
+	tagBulletInfo * m_tBulletInfoSubPoint;
 
 	bulletManger** m_pBulletMag;
 
