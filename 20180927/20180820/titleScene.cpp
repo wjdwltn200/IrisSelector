@@ -9,6 +9,11 @@
 
 HRESULT titleScene::init()
 {
+	m_monster = new monster;
+	m_monster->init("BG_Gargoyle",100,100, 1.0f);
+
+	
+
 	m_player = new PlayerCharacter;
 	m_player->init();
 
@@ -86,6 +91,7 @@ void titleScene::update()
 	}
 	
 	ColRc();
+	m_monster->update();
 	m_player->update();
 	m_pItemMag->update();
 	m_player->update();
@@ -119,7 +125,7 @@ void titleScene::render(HDC hdc)
 	sprintf_s(szText, "BulletSetNum : %d",
 		m_pBulletMag->getIter());
 	TextOut(hdc, 10, WINSIZEY - 20, szText, strlen(szText));
-
+	m_monster->render(hdc);
 	m_pItemMag->render(hdc);
 	m_player->render(hdc);
 	m_pEffMagr->render(hdc);

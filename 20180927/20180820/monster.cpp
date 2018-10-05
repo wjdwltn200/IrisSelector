@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "animation.h"
 #include "monster.h"
+#include "PlayerCharacter.h"
 
 
-HRESULT monster::init()
+HRESULT monster::init(const char * strKey, int fX, int fY, float speed)
 {
 	IMAGEMANAGER->addImage("BG_Beholder", "image/resources/monster_image/BG_Beholder_Run.bmp", 1860, 78, 12, 1, true, RGB(255, 0, 255),
 		m_Mon.m_fX, m_Mon.m_fY);
@@ -44,22 +45,30 @@ HRESULT monster::init()
 	IMAGEMANAGER->addImage("BG_Knife_dude", "image/resources/monster_image/BG_Knife_dude.bmp", 930, 60, 6, 1, true, RGB(255, 0, 255),
 		m_Mon.m_fX, m_Mon.m_fY);
 
-	for (int i = 0; i < 4; i++)
-	{
-	ani_monsterMove = new animation;
-	}
+	m_player = new PlayerCharacter;
 
-	ani_monsterMove->init(IMAGEMANAGER->findImage("BG_Beholder")->getWidth(),IMAGEMANAGER->findImage("BG_Beholder")->getHeight(), 155, 78);
-	ani_monsterMove->init(IMAGEMANAGER->findImage("BG_Blue_Guardian")->getWidth(),IMAGEMANAGER->findImage("BG_Blue_Guardian")->getHeight(), 155, 57);
-	ani_monsterMove->init(IMAGEMANAGER->findImage("BG_Blue_Guardian")->getWidth(), IMAGEMANAGER->findImage("BG_Blue_Guardian")->getHeight(), 155, 57);
-	ani_monsterMove->init(IMAGEMANAGER->findImage("BG_Bugman")->getWidth(), IMAGEMANAGER->findImage("BG_Bugman")->getHeight(), 155, 57);
+	m_monsterType = IMAGEMANAGER->findImage(strKey);
+	m_monsterMove = new animation;
+	m_monsterMove->init(m_monsterType->getWidth(), m_monsterType->getHeight(),
+		m_monsterType->getFrameWidth(), m_monsterType->getFrameHeight());
 
-	ani_monsterMove->setDefPlayFrame(false, true);
-	ani_monsterMove->setFPS(10);
-	ani_monsterMove->start();
-	m_Mon.m_fX = WINSIZEX / 2;
-	m_Mon.m_fY = WINSIZEY / 2;
+	isAlive = true;
+	
+	m_monsterMove->setDefPlayFrame(false, true);
+	m_monsterMove->setFPS(10);
+	m_monsterMove->start();
 
+
+
+	m_Mon.m_CurrHpX = 0.0f;
+	m_Mon.m_CurrHpY = 0.0f;
+	m_Mon.m_fX = fX;
+	m_Mon.m_fY = fY;
+	m_Mon.m_MaxHp = 0.0f;
+	m_Mon.m_Speed = speed;
+	
+
+	
 	
 
 
@@ -69,21 +78,25 @@ HRESULT monster::init()
 void monster::release()
 {
 }
+void monster::Move()
+{
+	if (isAlive == true)
+	{
+		m_Mon.m_Angle = MY_UTIL::getAngle(m_Mon.m_fX, m_Mon.m_fY, m_player->getX(), m_player->getY());
+		m_Mon.m_fX += cosf(m_Mon.m_Angle)*m_Mon.m_Speed;
+		m_Mon.m_fY += -sinf(m_Mon.m_Angle)*m_Mon.m_Speed;	
+	}
+}
 
 void monster::update()
 {
-	ani_monsterMove->frameUpdate();
+	m_monsterMove->frameUpdate();
+	Move();
 }
 
 void monster::render(HDC hdc)
 {
-	IMAGEMANAGER->findImage("BG_Bugman")->aniRender(hdc, m_Mon.m_fX, m_Mon.m_fY, ani_monsterMove, 1.0f, true, 255);
-	IMAGEMANAGER->findImage("BG_Blue_Guardian")->aniRender(hdc, m_Mon.m_fX-100, m_Mon.m_fY, ani_monsterMove, 1.0f, true, 255);
-
-}
-
-void monster::Move()
-{
+	m_monsterType->aniRender(hdc, m_Mon.m_fX, m_Mon.m_fY, m_monsterMove, 1.0f, true, 255);
 }
 
 monster::monster()

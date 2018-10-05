@@ -27,6 +27,8 @@ private:
 	buttonSelect m_tButtonInfo;
 	bulletManger * m_pBulletMag;
 	itemManager * m_pItemMag;
+	monster * m_monster;
+
 
 	effectManager * m_pEffMagr;
 
