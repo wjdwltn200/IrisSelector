@@ -6,6 +6,8 @@ private:
 	int ani_stay_Curr[6];
 	image * img_monsterType;
 	animation * ani_monsterMove;
+
+
 	int img_fX;
 	int img_fY;
 	struct monsterKinds

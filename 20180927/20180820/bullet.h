@@ -22,10 +22,12 @@ private:
 
 	bulletManger * m_pBulletMag;
 	tagBulletInfo m_bulletInfo;
+	tagBulletInfo * m_bulletInfoSub;
+
 
 
 public:
-	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo, bulletManger* bulletMagPoint);
+	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo, tagBulletInfo* bulletInfoSub, bulletManger* bulletMagPoint = NULL);
 	void release();
 	void update();
 	void render(HDC hdc);
@@ -35,6 +37,8 @@ public:
 
 	bool getIsAlive() { return m_isAlive; }
 	void setIsAlive(bool alive) { m_isAlive = alive; }
+
+	bool getIsBulletBoom() { return m_bulletInfo.tBulletBoom; }
 
 	bullet();
 	~bullet();
