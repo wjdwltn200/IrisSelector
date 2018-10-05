@@ -67,7 +67,7 @@ void titleScene::release()
 void titleScene::update()
 {
 	if (KEYMANAGER->isOnceKeyDown(0x71))
-		SCENEMANAGER->changeScene("editor");
+		SCENEMANAGER->changeScene("editor_re");
 
 	if (!m_tButtonInfo.m_isMovement)
 	{
