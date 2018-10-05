@@ -9,6 +9,11 @@
 
 HRESULT titleScene::init()
 {
+	IMAGEMANAGER->addImage("Bullet_Y", "image/resources/bullet_image/Bullet_Y.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Bullet_B", "image/resources/bullet_image/Bullet_B.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Bullet_P", "image/resources/bullet_image/Bullet_P.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Bullet_G", "image/resources/bullet_image/Bullet_G.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
+
 	m_monster = new monster;
 	m_monster->init("BG_Gargoyle",100,100, 1.0f);
 
@@ -18,7 +23,7 @@ HRESULT titleScene::init()
 	m_player->init();
 
 	m_pBulletMag = new bulletManger;
-	m_pBulletMag->init(10);
+	m_pBulletMag->init(500);
 
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
@@ -54,10 +59,7 @@ HRESULT titleScene::init()
 	m_tButtonInfo.m_moveSpeed = 1.5f;
 	m_tButtonInfo.m_isMovement = false;
 
-	IMAGEMANAGER->addImage("Bullet_Y", "image/resources/bullet_image/Bullet_Y.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("Bullet_B", "image/resources/bullet_image/Bullet_B.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("Bullet_P", "image/resources/bullet_image/Bullet_P.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("Bullet_G", "image/resources/bullet_image/Bullet_G.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
+	
 
 	return S_OK;
 }
