@@ -5,6 +5,7 @@
 #include "effectManager.h"
 #include "PlayerCharacter.h"
 #include "itemManager.h"
+#include "monster.h"
 
 HRESULT titleScene::init()
 {

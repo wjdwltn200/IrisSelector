@@ -5,7 +5,7 @@ class PlayerCharacter;
 class bulletManger;
 class effectManager;
 class itemManager;
-
+class monster;
 class titleScene : public scene
 {
 

@@ -7,8 +7,6 @@ private:
 	image * img_monsterType;
 	animation * ani_monsterMove;
 
-	animation * m_BG_Beholder;
-
 
 	int img_fX;
 	int img_fY;
