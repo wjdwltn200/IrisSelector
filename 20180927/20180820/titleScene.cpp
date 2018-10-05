@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "titleScene.h"
+#include "PlayerCharacter.h"
 #include "bulletManger.h"
 #include "effectManager.h"
 #include "PlayerCharacter.h"
 
 HRESULT titleScene::init()
 {
+	m_player = new PlayerCharacter;
+	m_player->init();
 	m_pBulletMag = new bulletManger;
 	m_pBulletMag->init(10);
 
@@ -68,8 +71,8 @@ void titleScene::update()
 	
 	m_player->update();
 	m_pBulletMag->update();
+	m_player->update();
 	m_pEffMagr->update();
-
 }
 
 void titleScene::render(HDC hdc)
@@ -92,6 +95,7 @@ void titleScene::render(HDC hdc)
 	m_player->render(hdc);
 	m_pEffMagr->render(hdc);
 	TIMEMANAGER->render(hdc);
+	m_player->render(hdc);
 }
 
 titleScene::titleScene()

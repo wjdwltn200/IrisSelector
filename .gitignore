@@ -927,6 +927,16 @@ Staaaart/Debug/Iris_Selector.pdb
 >>>>>>> abaac687dc5fafa8956f18509e79d8b7f42f9588
 >>>>>>> cfc2258d5f2c1532142e467a969fd2349bd1af92
 <<<<<<< HEAD
+20180927/.vs/20180820/v15/.suo
+20180927/20180820/Debug/20180820.obj
+20180927/20180820/Debug/20180820.pch
+20180927/20180820/Debug/20180820.tlog/CL.command.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.read.1.tlog
+20180927/20180820/Debug/20180820.tlog/CL.write.1.tlog
+20180927/20180820/Debug/20180820.tlog/link.command.1.tlog
+20180927/20180820/Debug/20180820.tlog/rc.command.1.tlog
+=======
+<<<<<<< HEAD
 20180927/Debug/20180820.pdb
 20180927/Debug/20180820.ilk
 20180927/Debug/20180820.exe
@@ -987,6 +997,7 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/20180820/Debug/20180820.tlog/link.write.1.tlog
 20180927/20180820/Debug/20180820.tlog/rc.read.1.tlog
 20180927/20180820/Debug/20180820.tlog/rc.write.1.tlog
+>>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
 20180927/20180820/Debug/animation.obj
 20180927/20180820/Debug/button.obj
 20180927/20180820/Debug/effect.obj
@@ -1021,6 +1032,8 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/Debug/20180820.exe
 20180927/Debug/20180820.ilk
 20180927/Debug/20180820.pdb
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
 20180927/.vs/20180820/v15/.suo
 20180927/20180820/Debug/20180820.obj
@@ -1062,6 +1075,7 @@ Staaaart/Debug/Iris_Selector.pdb
 =======
 >>>>>>> d643de54d9d599eacc1bcf6608c9adc5b54eb536
 >>>>>>> 615f4a91fce54e02222f1aae67d4edbde3aa7c05
+<<<<<<< HEAD
 20180927/.vs/20180820/v15/.suo
 20180927/20180820/Debug/20180820.obj
 20180927/20180820/Debug/20180820.pch
@@ -1103,3 +1117,7 @@ Staaaart/Debug/Iris_Selector.pdb
 20180927/Debug/20180820.exe
 20180927/Debug/20180820.ilk
 20180927/Debug/20180820.pdb
+=======
+>>>>>>> 0b086a63c188458d2a695febe59fdc8377279598
+>>>>>>> 33ddf23458d77127ad2cc72b858e27e61b3544fb
+*.pdb
