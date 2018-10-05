@@ -44,6 +44,7 @@ static void Func_MapSize4(void)
 static void Func_MapCheck(void)
 {
 	editorScene_re::m_bIsSizeCheck = true;
+	editorScene_re::m_nPreviewNum = 0;
 }
 
 void editorScene_re::SetSize()
@@ -76,6 +77,16 @@ void editorScene_re::SetSize()
 
 void editorScene_re::init_Setting()
 {
+	m_Camera.m_nHeight = CAMERA_HEIGHT;
+	m_Camera.m_nWidth = CAMARA_WIDTH;
+	m_Camera.m_rc.left = CAMERA_destX;
+	m_Camera.m_rc.right = CAMERA_destX + m_Camera.m_nWidth;
+	m_Camera.m_rc.top = CAMERA_destY;
+	m_Camera.m_rc.bottom = CAMERA_destY + m_Camera.m_nHeight;
+	m_Camera.m_nX = m_Camera.m_rc.left;
+	m_Camera.m_nY = m_Camera.m_rc.right;
+
+
 	m_pImg_Box1 = IMAGEMANAGER->addImage("box1", "image/wook/white.bmp", (WINSIZEX / 3) * 2 - 15, (WINSIZEY / 8) * 7 - 15, true, RGB(255, 0, 255));
 	m_pImg_Box2 = IMAGEMANAGER->addImage("box2", "image/wook/white.bmp", (WINSIZEX / 3) * 1 - 10, (WINSIZEY / 8) * 2 - 10, true, RGB(255, 0, 255));
 	m_pImg_Box3 = IMAGEMANAGER->addImage("box3", "image/wook/white.bmp", (WINSIZEX / 3) * 1 - 10, (WINSIZEY / 8) * 5 - 15, true, RGB(255, 0, 255));
@@ -94,17 +105,6 @@ void editorScene_re::init_Setting()
 
 	m_pBtnRspace = new button;
 	m_pBtnRspace->init("space_right", IMAGEMANAGER->findImage("space_right")->getWidth() / 2 + (WINSIZEX / 3) - 36, 530, PointMake(0, 1), PointMake(0, 0), SpaceFunc_right);
-
-	for (int j = 0; j < SAMPLE_COUNTY; ++j)
-	{
-		for (int i = 0; i < SAMPLE_COUNTX; ++i)
-		{
-			m_pSampleTiles[j * SAMPLE_COUNTX + i].rc = RectMake((40 + m_pTileSet[0]->getWidth()) - (m_pTileSet[0]->getWidth()) + i * TILE_SIZEX,
-				(WINSIZEY / 8) * 3 + 10 + j * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
-			m_pSampleTiles[j * SAMPLE_COUNTX + i].frameX = i;
-			m_pSampleTiles[j * SAMPLE_COUNTX + i].frameY = j;
-		}
-	}
 
 }
 
@@ -132,6 +132,62 @@ void editorScene_re::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 	}
 }
 
+void editorScene_re::MouseEvent()
+{
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		m_mouseSt = MOUSE_STATE::MOUSE_DOWN;
+	}
+	else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && m_mouseSt == MOUSE_STATE::MOUSE_DOWN)
+	{
+		for (int i = 0; i < SAMPLE_COUNTX * SAMPLE_COUNTY; ++i)
+		{
+			if (PtInRect(&m_pSampleTiles[i].rc, g_ptMouse))
+			{
+				m_mouseSt = MOUSE_STATE::MOUSE_UP;
+				m_rcSelectedTile.left = m_pSampleTiles[i].frameX;
+				m_rcSelectedTile.top = m_pSampleTiles[i].frameY;
+				m_isSel = true;
+			}
+			else
+			{
+				m_mouseSt = MOUSE_STATE::MOUSE_IDLE;
+			}
+		}
+	}
+
+	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON) && m_isSel == true)
+	{
+		for (int i = 0; i < m_nTileMaxCountX * m_nTileMaxCountY; ++i)
+		{
+			if (PtInRect(&m_pTiles[i].rc, g_ptMouse))
+			{
+				m_pTiles[i].terrainFrameX = m_rcSelectedTile.left;
+				m_pTiles[i].terrainFrameY = m_rcSelectedTile.top;
+			}
+
+		}
+	}
+
+}
+
+void editorScene_re::CameraUpdate()
+{
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && m_Camera.m_rc.right < m_nMapSize)
+		m_Camera.m_nX += CAMERA_SPEED;
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && m_Camera.m_rc.left > CAMERA_destX)
+		m_Camera.m_nX -= CAMERA_SPEED;
+	if (KEYMANAGER->isStayKeyDown(VK_UP) && m_Camera.m_rc.top > CAMERA_destY)
+		m_Camera.m_nY -= CAMERA_SPEED;
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN) && m_Camera.m_rc.bottom < m_nMapSize)
+		m_Camera.m_nY += CAMERA_SPEED;
+
+	m_Camera.m_rc.left = m_Camera.m_nX;
+	m_Camera.m_rc.right = m_Camera.m_nX + m_Camera.m_nWidth;
+	m_Camera.m_rc.top = m_Camera.m_nY;
+	m_Camera.m_rc.bottom = m_Camera.m_nY + m_Camera.m_nHeight;
+}
+
 void editorScene_re::SaveEvent()
 {
 }
@@ -143,6 +199,7 @@ void editorScene_re::LoadEvent()
 HRESULT editorScene_re::init()
 {
 	m_editSt = STATE_SETSIZE;
+	m_nPreviewNum = 100;
 	SetSize();
 	init_Setting();
 
@@ -158,6 +215,10 @@ void editorScene_re::update()
 {
 	if (KEYMANAGER->isOnceKeyDown(0x71))
 		SCENEMANAGER->changeScene("title");
+
+
+
+
 
 	if (m_editSt != STATE_SETSIZE && m_bWindowPrint == false)
 	{
@@ -186,31 +247,74 @@ void editorScene_re::update()
 			m_pBtnSizeCheck->update();
 
 		if (m_bIsSizeCheck == true)
+			editorScene_re::m_editSt = STATE_MAP1;
+
+	}
+	else
+	{
+
+		if (m_pTileSet[0] && editorScene_re::m_nPreviewNum == 0)
+			m_editSt = STATE_MAP1;
+		if (m_pTileSet[1] && editorScene_re::m_nPreviewNum == 1)
+			m_editSt = STATE_MAP2;
+		if (m_pTileSet[2] && editorScene_re::m_nPreviewNum == 2)
+			m_editSt = STATE_MAP3;
+		if (m_pTileSet[3] && editorScene_re::m_nPreviewNum == 3)
+			m_editSt = STATE_MAP4;
+
+		for (int j = 0; j < SAMPLE_COUNTY; ++j)
+		{
+			for (int i = 0; i < SAMPLE_COUNTX; ++i)
+			{
+				m_pSampleTiles[j * SAMPLE_COUNTX + i].rc = RectMake((40 + m_pTileSet[0]->getWidth()) - (m_pTileSet[0]->getWidth()) + i * TILE_SIZEX,
+					(WINSIZEY / 8) * 3 + 10 + j * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
+				m_pSampleTiles[j * SAMPLE_COUNTX + i].frameX = i; // 4까지
+				m_pSampleTiles[j * SAMPLE_COUNTX + i].frameY = j; // 8까지
+				//m_pSampleTiles[j * SAMPLE_COUNTX + i].SampleNum = (int)m_editSt;
+			}
+		}
+
+
+		if (m_bTempTrigger == false)
 		{
 			m_nTileMaxCountX = editorScene_re::m_nMapSize / 40;
 			m_nTileMaxCountY = editorScene_re::m_nMapSize / 40;
+
+			// 기본 타일 정보 초기화 /// terrainFrameX 와 terrainFrameY가 100일경우 안보이게된다.
+			for (int x = 0; x < m_nTileMaxCountX; x++)
+			{
+				for (int y = 0; y < m_nTileMaxCountY; y++)
+				{
+					m_pTiles[x * m_nTileMaxCountX + y].rc = RectMake(((WINSIZEX / 3) * 1 + 10) + x * TILE_SIZEX, ((WINSIZEY / 8) * 1 + 10) + y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
+					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX = 100;
+					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY = 100;  // 29
+					m_pTiles[x * m_nTileMaxCountX + y].SampleNum = 1;
+				}
+			}
+
 
 			// 기본 타일 정보 셋팅
 			for (int x = 0; x < m_nTileMaxCountX; x++)
 			{
 				for (int y = 0; y < m_nTileMaxCountY; y++)
 				{
-					m_pTiles[x * m_nTileMaxCountX + y].rc = RectMake((WINSIZEX / 3) * 1 + 10 + x * TILE_SIZEX, (WINSIZEY / 8) * 1 + 10 +  y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
-					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX = 1;
+					m_pTiles[x * m_nTileMaxCountX + y].rc = RectMake(((WINSIZEX / 3) * 1 + 10) + x * TILE_SIZEX, ((WINSIZEY / 8) * 1 + 10) + y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
+					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX = 0;
 					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY = 0;  // 29
+					m_pTiles[x * m_nTileMaxCountX + y].SampleNum = 1;
 				}
 			}
-
-			m_editSt = STATE_MAP1;
+			m_pTiles[181].terrainFrameX = 4;
+			m_bTempTrigger = true;
 		}
-	}
-	else
-	{
-		if(m_pBtnLspace)
+
+		if (m_pBtnLspace)
 			m_pBtnLspace->update();
-		if(m_pBtnRspace)
+		if (m_pBtnRspace)
 			m_pBtnRspace->update();
 
+		MouseEvent();
+		CameraUpdate();
 	}
 
 
@@ -239,6 +343,7 @@ void editorScene_re::render(HDC hdc)
 		m_pBtnLspace->render(hdc);
 		m_pBtnRspace->render(hdc);
 
+		// 왼쪽에 나타나는 타일 미리보기 렌더링//
 		if (m_pTileSet[0] && editorScene_re::m_nPreviewNum == 0)
 			m_pTileSet[0]->render(hdc, 40, (WINSIZEY / 8) * 3 + 10);
 		if (m_pTileSet[1] && editorScene_re::m_nPreviewNum == 1)
@@ -247,6 +352,28 @@ void editorScene_re::render(HDC hdc)
 			m_pTileSet[2]->render(hdc, 40, (WINSIZEY / 8) * 3 + 10);
 		if (m_pTileSet[3] && editorScene_re::m_nPreviewNum == 3)
 			m_pTileSet[3]->render(hdc, 40, (WINSIZEY / 8) * 3 + 10);
+		///////////////////////////////////
+
+		for (int x = 0; x < m_nTileMaxCountX; x++)
+		{
+			for (int y = 0; y < m_nTileMaxCountY; y++)
+			{
+				for (int z = 0; z < 4; ++z)
+				{
+					RECT rc;
+					if (m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX != 100 &&
+						m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY != 100 &&
+						IntersectRect(&rc, &(m_pTiles[x * m_nTileMaxCountX + y].rc), &(m_Camera.m_rc)))
+					{
+						m_pTileSet[z]->frameRender(hdc,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.left,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.top,
+							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX,
+							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY);
+					}
+				}
+			}
+		}
 
 
 		for (int i = 0; i < 4; ++i)
@@ -257,22 +384,6 @@ void editorScene_re::render(HDC hdc)
 				m_rcSelectedTile.left,
 				m_rcSelectedTile.top);
 		}
-
-		for (int x = 0; x < SAMPLE_COUNTX; x++)
-		{
-			for (int y = 0; y < SAMPLE_COUNTY; y++)
-			{
-				for (int x = 0; x < 4; ++x)
-				{
-					m_pTileSet[x]->frameRender(hdc,
-						m_pTiles[x * SAMPLE_COUNTX + y].rc.left,
-						m_pTiles[x * SAMPLE_COUNTX + y].rc.top,
-						m_pTiles[x * SAMPLE_COUNTX + y].terrainFrameX,
-						m_pTiles[x * SAMPLE_COUNTX + y].terrainFrameY);
-				}
-			}
-		}
-
 
 	}
 }

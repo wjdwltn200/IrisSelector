@@ -12,9 +12,15 @@ class button;
 #define SAMPLE_COUNTX 5
 #define SAMPLE_COUNTY 9
 
+#define CAMERA_destX 277
+#define CAMERA_destY 110
+#define CAMARA_WIDTH 518 
+#define CAMERA_HEIGHT 684
+#define CAMERA_SPEED 7
+
 enum EDITOR_STATE
 {
-	STATE_SETSIZE,STATE_MAP1, STATE_MAP2, STATE_MAP3, STATE_MAP4
+	STATE_SETSIZE, STATE_MAP1, STATE_MAP2, STATE_MAP3, STATE_MAP4
 };
 
 enum MOUSE_STATE
@@ -25,14 +31,24 @@ enum MOUSE_STATE
 	MOUSE_NUM
 };
 
+struct tagCurrentCamera
+{
+	RECT m_rc;
+	int m_nX;
+	int m_nY;
+	int m_nWidth;
+	int m_nHeight;
+};
+
 class editorScene_re : public scene
 {
 private:
 	EDITOR_STATE  m_editSt;
 	MOUSE_STATE  m_mouseSt;
-	
+
 	tagTile		  m_pTiles[MAX_TILECOUNTX * MAX_TILECOUNTY];  // 그려줄 타일의 정보 // 실제로 구성이 되는 타일의 정보
 	tagSampleTile m_pSampleTiles[SAMPLE_COUNTX * SAMPLE_COUNTY]; // 오른쪽의 타일정보들
+	tagCurrentCamera m_Camera;
 	//tagSampleTile m_pSampleObjs[SAMPLE_OBJ_X * SAMPLE_OBJ_Y];
 
 	//RECT		  m_rcSelectedObj;
@@ -57,6 +73,8 @@ private:
 	int m_nTileMaxCountX;
 	int m_nTileMaxCountY;
 
+
+	bool m_bTempTrigger;
 	bool m_bWindowPrint;
 	//////////////////////////////////
 
@@ -74,8 +92,6 @@ private:
 	image* m_pImg_Box3;
 	image* m_pImg_Box4;
 	image* m_pImg_BG;
-
-
 	//////////////////////
 
 public:
@@ -94,6 +110,8 @@ public:
 	void init_Setting();
 
 	void ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam);
+	void MouseEvent();
+	void CameraUpdate();
 	void SaveEvent();
 	void LoadEvent();
 	HRESULT init();
