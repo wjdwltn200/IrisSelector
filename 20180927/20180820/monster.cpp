@@ -44,8 +44,11 @@ HRESULT monster::init()
 	IMAGEMANAGER->addImage("BG_Knife_dude", "image/resources/monster_image/BG_Knife_dude.bmp", 930, 60, 6, 1, true, RGB(255, 0, 255),
 		m_Mon.m_fX, m_Mon.m_fY);
 
-
+	for (int i = 0; i < 4; i++)
+	{
 	ani_monsterMove = new animation;
+	}
+
 	ani_monsterMove->init(IMAGEMANAGER->findImage("BG_Beholder")->getWidth(),IMAGEMANAGER->findImage("BG_Beholder")->getHeight(), 155, 78);
 	ani_monsterMove->init(IMAGEMANAGER->findImage("BG_Blue_Guardian")->getWidth(),IMAGEMANAGER->findImage("BG_Blue_Guardian")->getHeight(), 155, 57);
 	ani_monsterMove->init(IMAGEMANAGER->findImage("BG_Blue_Guardian")->getWidth(), IMAGEMANAGER->findImage("BG_Blue_Guardian")->getHeight(), 155, 57);
