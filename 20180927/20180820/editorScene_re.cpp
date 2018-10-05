@@ -195,9 +195,9 @@ void editorScene_re::update()
 			{
 				for (int y = 0; y < m_nTileMaxCountY; y++)
 				{
-					m_pTiles[x * m_nTileMaxCountX + y].rc = RectMake((WINSIZEX / 3) * 1 + 10 + x * TILE_SIZEX, (WINSIZEY / 8) * 1 + 10 +  y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
-					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX = 1;
-					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY = 0;  // 29
+					m_pTiles[x * m_nTileMaxCountX + y].rc = RectMake((WINSIZEX / 3) * 1 + 10 + x * TILE_SIZEX, ((WINSIZEY / 8) * 1 + 10 )+  y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
+					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX = 3;
+					m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY = 4;  // 29
 				}
 			}
 
