@@ -104,7 +104,7 @@ vector<string> txtData::charArraySeparation(char charArray[])
 	return vecStr;
 }
 
-void txtData::mapSave(const char * saveFileName, tagTile* tiles,RECT* sample)
+void txtData::mapSave(const char * saveFileName, tagTile* tiles, int* MapSize)
 {
 	DWORD write;
 
@@ -125,15 +125,15 @@ void txtData::mapSave(const char * saveFileName, tagTile* tiles,RECT* sample)
 		NULL);
 
 	// 파일에 내용을 쓴다
-	WriteFile(hFile, tiles, sizeof(tagTile) *TILE_X *TILE_Y, &write, NULL);
-	WriteFile(hFile, sample, sizeof(RECT), &write, NULL);
+	WriteFile(hFile, tiles, sizeof(tagTile) *g_saveData.gTileMaxCountX *g_saveData.gTileMaxCountY, &write, NULL);
+	WriteFile(hFile, MapSize, sizeof(int), &write, NULL);
 
 	// 다 쓴 파일 핸들을 삭제
 	CloseHandle(hFile);
 }
 
 
-void txtData::mapLoad(const char * loadFileName, tagTile* tiles, RECT* sample)
+void txtData::mapLoad(const char * loadFileName, tagTile* tiles, int* MapSize)
 {
 	DWORD read;
 
@@ -146,8 +146,8 @@ void txtData::mapLoad(const char * loadFileName, tagTile* tiles, RECT* sample)
 		FILE_ATTRIBUTE_NORMAL,
 		NULL);
 
-	ReadFile(hFile, tiles, sizeof(tagTile) *TILE_X *TILE_Y, &read, NULL);
-	//ReadFile(hFile, sample, sizeof(RECT), &read, NULL);
+	ReadFile(hFile, tiles, sizeof(tagTile) *g_saveData.gTileMaxCountX *g_saveData.gTileMaxCountY, &read, NULL);
+	ReadFile(hFile, MapSize, sizeof(int), &read, NULL);
 
 	CloseHandle(hFile);
 }

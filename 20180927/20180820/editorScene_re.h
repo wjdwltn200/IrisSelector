@@ -3,8 +3,6 @@
 
 class button;
 
-#define TILE_SIZEX 40
-#define TILE_SIZEY 40
 
 #define SAMPLE_COUNTX 5
 #define SAMPLE_COUNTY 9
@@ -104,6 +102,7 @@ private:
 	int m_nTileMaxCountX;
 	int m_nTileMaxCountY;
 
+	int m_nLoadMapSIze;
 
 	bool m_bTempTrigger;
 	bool m_bWindowPrint;

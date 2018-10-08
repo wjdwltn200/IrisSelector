@@ -3,7 +3,7 @@
 #include "button.h"
 #include "image.h"
 
-char szFileName[512];
+char szFileName1[512];
 
 int stageScene::buttonNum = 0;
 
@@ -24,6 +24,14 @@ static void Func_button2(void)
 
 HRESULT stageScene::init()
 {
+	//tagTile * m_pTiles = new tagTile[g_saveData.gTileMaxCountX * g_saveData.gTileMaxCountY];
+	m_pTileSet[0] = IMAGEMANAGER->findImage("tiles1");
+	m_pTileSet[1] = IMAGEMANAGER->findImage("tiles2");
+	m_pTileSet[2] = IMAGEMANAGER->findImage("tiles3");
+	m_pTileSet[3] = IMAGEMANAGER->findImage("tiles4");
+
+
+
 	m_pImage_BG1 = IMAGEMANAGER->findImage("black");
 	m_pImage_checkBox = IMAGEMANAGER->findImage("size_box");
 
@@ -49,7 +57,9 @@ void stageScene::update()
 	}
 	if (buttonNum == 1)
 	{
-
+		FixedLoadEvent(); // 시나리오의 맵 최대크기는 1600 1600
+		g_saveData.gTileMaxCountX = 40;
+		g_saveData.gTileMaxCountY = 40;
 		buttonNum = 3;
 	}
 	if (buttonNum == 2)
@@ -57,7 +67,25 @@ void stageScene::update()
 		LoadEvent();
 		buttonNum = 3;
 	}
+	if (buttonNum == 3)
+	{
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
+			{
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX , y * TILE_SIZEY , TILE_SIZEX, TILE_SIZEY);
+				
+				/*if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 100 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 100)
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+				else
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
+			}
+		}
+	
 
+
+	}
+	
 		
 
 }
@@ -71,6 +99,53 @@ void stageScene::render(HDC hdc)
 		m_pButton1->render(hdc);
 		m_pButton2->render(hdc);
 	}
+	if (buttonNum == 3)
+	{
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
+			{
+
+				switch (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum )
+				{
+				case 1:
+					m_pTileSet[0]->frameRender(hdc,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+					break;
+				case 2:
+					m_pTileSet[1]->frameRender(hdc,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+					break;
+				case 3:
+					m_pTileSet[2]->frameRender(hdc,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+					break;
+				case 4:
+					m_pTileSet[3]->frameRender(hdc,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+					break;
+				}
+
+				/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
+
+			}
+		}
+
+	}
 }
 
 void stageScene::LoadEvent()
@@ -82,15 +157,19 @@ void stageScene::LoadEvent()
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = g_hWnd;
 	ofn.lpstrFilter = "txt Files(*.txt)\0*.txt\0All Files (*.*)\0*.*\0"; //"All Files(*.*)\0*.*\0";
-	ofn.lpstrFile = szFileName;
+	ofn.lpstrFile = szFileName1;
 	ofn.nMaxFile = 512;
 
 	if (0 != GetOpenFileName(&ofn))
 	{
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
-		TXTDATA->getSingleton()->mapLoad(szFileName, m_pTiles, &m_rcSelectedTile);
+		TXTDATA->getSingleton()->mapLoad(szFileName1, m_pTiles, &MapSize);
 	}
+}
 
+void stageScene::FixedLoadEvent()
+{
+	TXTDATA->getSingleton()->mapLoad("mainGame.map", m_pTiles, &MapSize);
 }
 
 stageScene::stageScene()
