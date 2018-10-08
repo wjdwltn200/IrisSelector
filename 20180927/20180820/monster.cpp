@@ -50,7 +50,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_pBulletMag = bulletP;
 	m_PlayerCharPoint = playerPoint;
 
-	// Player 기본 셋팅 (메인)
+	// Monster Bullet 기본 셋팅 (메인)
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 	m_tBulletInfo.tIsAlive = true;
@@ -109,6 +109,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	// 몬스터 정보 초기화
 	memset(&m_tMonInfo.m_rc, 0, sizeof(m_tMonInfo.m_rc));
 	memset(&m_tMonInfo, 0, sizeof(m_tMonInfo));
+	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, 100, 100);
 	m_tMonInfo.tIsAlive = monInfo.tIsAlive;
 	m_tMonInfo.tHp = monInfo.tHp;
 	m_tMonInfo.tHpMax= monInfo.tHpMax;
@@ -118,7 +119,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.tFireDelay = monInfo.tFireDelay;
 	m_tMonInfo.tFireAngle = monInfo.tFireAngle;
 	m_tMonInfo.tMoveAngle = monInfo.tMoveAngle;
-	m_tMonInfo.tRadius = monInfo.tRadius;
+	m_tMonInfo.tRadius = 50.0f;//monInfo.tRadius;
 	m_tMonInfo.tScale = monInfo.tScale;
 	m_tMonInfo.tScaleMax = monInfo.tScaleMax;
 	m_tMonInfo.tUnKnokBack = monInfo.tUnKnokBack;
@@ -140,6 +141,8 @@ void monster::release()
 void monster::Move()
 {
 	if (!m_tMonInfo.tIsAlive) return;
+
+	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
 	m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
 	m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
 	m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
@@ -155,7 +158,7 @@ void monster::fireAtk()
 			m_tMonInfo.tPosX,
 			m_tMonInfo.tPosY,
 			m_tMonInfo.tFireAngle,
-			m_tBulletInfo,
+			&m_tBulletInfo,
 			&m_tBulletInfoSub);
 		m_tMonInfo.tFireCount = m_tMonInfo.tFireDelay;
 	}
@@ -176,6 +179,9 @@ void monster::update()
 
 void monster::render(HDC hdc)
 {
+	Ellipse(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
+	//EllipseMakeCenter(hdc, m_tMonInfo.tPosX, m_tMonInfo.tPosY, 10, 10);
+
 	m_monsterType->aniRender(hdc,
 		m_tMonInfo.tPosX - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
 		m_tMonInfo.tPosY - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale,

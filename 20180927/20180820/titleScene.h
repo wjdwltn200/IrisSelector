@@ -6,6 +6,7 @@ class bulletManger;
 class effectManager;
 class itemManager;
 class monsterManger;
+class animation;
 
 class titleScene : public scene
 {

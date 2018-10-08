@@ -12,6 +12,7 @@ private:
 	PlayerCharacter * m_player;
 
 	tagBulletInfo m_tBulletInfo;
+	tagBulletInfo * m_tBulletInfoPoint;
 	tagBulletInfo m_tBulletInfoSub;
 	tagBulletInfo * m_tBulletInfoSubPoint;
 
@@ -28,8 +29,6 @@ public:
 	void render(HDC hdc);
 
 	tagMonInfo getMonInfo() { return m_tMonInfo; }
-
-	bool getAlive() { return m_tMonInfo.tIsAlive; }
 	void setAlive(bool Alive) { m_tMonInfo.tIsAlive = Alive; };
 	monster();
 	~monster();

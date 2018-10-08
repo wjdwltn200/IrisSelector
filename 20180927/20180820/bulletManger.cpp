@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "bulletManger.h"
+#include "animation.h"
 
 
 HRESULT bulletManger::init(int vecMaxSize)
@@ -8,13 +9,18 @@ HRESULT bulletManger::init(int vecMaxSize)
 	{
 		memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
+		m_pAni = new animation;
+
 		m_tBulletInfo.tIsAlive = false;
 
 		bullet * pBullet = new bullet;
-		pBullet->init("임시", 0, 0, 0, m_tBulletInfo, &m_tBulletInfo, this);
+		pBullet->init("임시", 0, 0, 0, &m_tBulletInfo, &m_tBulletInfo, m_pAni, this);
 		m_vecBullet.push_back((pBullet));
+		m_vecNextFire.push_back((pBullet));
 	}
+
 	m_vecBullet.reserve(vecMaxSize);
+	
 
 	return S_OK;
 }
@@ -33,10 +39,9 @@ void bulletManger::update()
 {
 	for (m_iter = m_vecBullet.begin(); m_iter != m_vecBullet.end(); m_iter++)
 	{
-		if ((*m_iter)->getIsAlive())
-		{
-			(*m_iter)->update();
-		}
+		if (!(*m_iter)->getIsAlive()) continue;
+
+		(*m_iter)->update();
 	}
 }
 
@@ -44,31 +49,43 @@ void bulletManger::render(HDC hdc)
 {
 	for (m_iter = m_vecBullet.begin(); m_iter != m_vecBullet.end(); m_iter++)
 	{
-		if ((*m_iter)->getIsAlive())
-		{
-			(*m_iter)->render(hdc);
-		}
+		if (!(*m_iter)->getIsAlive()) continue;
+
+		(*m_iter)->render(hdc);
 	}
 }
 
-void bulletManger::fire(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo, tagBulletInfo* bulletInfoSub)
+void bulletManger::fire(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub)
 {
-	//if (bulletInfo.tBulletBoom)
-	//{
-		for (m_iter = m_vecBullet.begin(); m_iter != m_vecBullet.end(); m_iter++)
+	for (m_iter = m_vecBullet.begin(); m_iter != m_vecBullet.end(); m_iter++)
+	{
+		if (!(*m_iter)->getIsAlive()) // 죽어있으면 재활용
 		{
-			if (!(*m_iter)->getIsAlive()) // 죽어있으면 재활용
-			{
-				(*m_iter)->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, this);
-				return;
-			}
+			(*m_iter)->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, this);
+			return;
 		}
-	//}
+	}
 
 	bullet * pBullet = new bullet;
-	pBullet->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, this);
-
+	pBullet->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, this);
 	m_vecBullet.push_back((pBullet));
+	return;
+}
+
+void bulletManger::NextFire(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub)
+{
+	for (m_NextIter = m_vecNextFire.begin(); m_NextIter != m_vecNextFire.end(); m_NextIter++)
+	{
+		if (!(*m_NextIter)->getIsAlive()) // 죽어있으면 재활용
+		{
+			(*m_NextIter)->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, this);
+			return;
+		}
+	}
+
+	bullet * pBullet = new bullet;
+	pBullet->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, this);
+	m_vecNextFire.push_back((pBullet));
 	return;
 }
 

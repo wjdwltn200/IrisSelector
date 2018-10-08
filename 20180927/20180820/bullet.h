@@ -27,7 +27,7 @@ private:
 
 
 public:
-	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo, tagBulletInfo* bulletInfoSub, bulletManger* bulletMagPoint = NULL);
+	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub, animation * pAni, bulletManger* bulletMagPoint = NULL);
 	void release();
 	void update();
 	void render(HDC hdc);

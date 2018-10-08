@@ -52,31 +52,33 @@ HRESULT PlayerCharacter::init()
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 	m_tBulletInfo.tIsAlive = true;
-	m_tBulletInfo.tBulletSetNum = 1;
+	m_tBulletInfo.tBulletSetNum = 10;
 	m_tBulletInfo.tScale = 1.0f;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 200.0f;
+	m_tBulletInfo.tRange = 100.0f;
 	m_tBulletInfo.tBulletBoom = true;
 
 	m_tBulletInfo.tDmage = 10.0f;
 	m_tBulletInfo.tKnokBack = 5.0f;
-	m_tBulletInfo.tMoveSpeed = 5.0f;
+	m_tBulletInfo.tMoveSpeed = 20.0f;
 
 	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
+	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::CUFF_SHOOT;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
-	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL;
 	
+	m_tBulletInfoPoint = &m_tBulletInfo;
+
 	// 서브 탄환 (이중 폭발)
 
 	memset(&m_tBulletInfoSub, 0, sizeof(m_tBulletInfoSub));
 
 	m_tBulletInfoSub.tIsAlive = true;
-	m_tBulletInfoSub.tBulletSetNum = 2;
+	m_tBulletInfoSub.tBulletSetNum = 3;
 	m_tBulletInfoSub.tScale = 1.0f;
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfoSub.tRadius = 0.5f;
@@ -86,14 +88,14 @@ HRESULT PlayerCharacter::init()
 
 	m_tBulletInfoSub.tDmage = 10.0f;
 	m_tBulletInfoSub.tKnokBack = 5.0f;
-	m_tBulletInfoSub.tMoveSpeed = 5.0f;
+	m_tBulletInfoSub.tMoveSpeed = 10.0f;
 
 	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
 	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
-	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_B;
-	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_P;
+	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL;
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
 
@@ -116,13 +118,13 @@ void PlayerCharacter::update()
 			{
 				if (m_tBulletInfo.tBulletSetNum == 1)
 				{
-					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY), m_tBulletInfo, m_tBulletInfoSubPoint);
+					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 				}
 				else // 총알 개수 만큼 방향을 분리
 				{
 					for (int i = 0; i < m_tBulletInfo.tBulletSetNum; i++)
 					{
-						(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY) - (i * (PI / 180.0f * (30.0f))) - ((PI / 180.0f) * MY_UTIL::getMouseAngle(m_fX, m_fY) - ((m_tBulletInfo.tBulletSetNum - 1) * (PI / 180.0f * (30.0f)))) / 2, m_tBulletInfo, m_tBulletInfoSubPoint);
+						(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY) - (i * (PI / 180.0f * (30.0f))) - ((PI / 180.0f) * MY_UTIL::getMouseAngle(m_fX, m_fY) - ((m_tBulletInfo.tBulletSetNum - 1) * (PI / 180.0f * (30.0f)))) / 2, m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 					}
 				}
 			}
@@ -130,13 +132,13 @@ void PlayerCharacter::update()
 			{
 				if (m_tBulletInfo.tBulletSetNum == 1)
 				{
-					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY), m_tBulletInfo, m_tBulletInfoSubPoint);
+					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 				}
 				else // 총알 개수 만큼 방향을 분리
 				{
 					for (int i = 0; i < m_tBulletInfo.tBulletSetNum; i++)
 					{
-						(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY) + (i * (PI / 180.0f * (360.0f / m_tBulletInfo.tBulletSetNum))), m_tBulletInfo, m_tBulletInfoSubPoint);
+						(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY) + (i * (PI / 180.0f * (360.0f / m_tBulletInfo.tBulletSetNum))), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 					}
 				}
 			}

@@ -2,7 +2,7 @@
 class animation;
 class bulletManger;
 
-#define BULLET_FIRST_DELAY 60
+#define BULLET_FIRST_DELAY 10
 
 
 class PlayerCharacter
@@ -50,6 +50,7 @@ private:
 	float m_MaxHp;
 	
 	tagBulletInfo m_tBulletInfo;
+	tagBulletInfo * m_tBulletInfoPoint;
 	tagBulletInfo m_tBulletInfoSub;
 	tagBulletInfo * m_tBulletInfoSubPoint;
 

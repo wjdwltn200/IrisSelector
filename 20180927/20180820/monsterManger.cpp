@@ -31,7 +31,7 @@ void monsterManger::Regeneration(const char*strKey, tagMonInfo moninfo, bulletMa
 {
 	for (m_iter = m_vecMonster.begin(); m_iter != m_vecMonster.end(); m_iter++)
 	{
-		if (!(*m_iter)->getAlive())
+		if (!(*m_iter)->getMonInfo().tIsAlive)
 		{
 			(*m_iter)->init(strKey, moninfo, bulletInfo, playerInfo);
 			return;
@@ -47,9 +47,9 @@ void monsterManger::render(HDC hdc)
 {
 	for (m_iter = m_vecMonster.begin(); m_iter != m_vecMonster.end(); m_iter++)
 	{
-		if ((*m_iter)->getAlive() )
+		if ((*m_iter)->getMonInfo().tIsAlive)
 		{
-		(*m_iter)->render(hdc);
+			(*m_iter)->render(hdc);
 		}
 	}
 

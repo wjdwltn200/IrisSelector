@@ -6,6 +6,7 @@
 #include "PlayerCharacter.h"
 #include "itemManager.h"
 #include "monsterManger.h"
+#include "animation.h"
 
 HRESULT titleScene::init()
 {
@@ -42,15 +43,13 @@ HRESULT titleScene::init()
 	m_pBulletMag->init(500);
 
 	m_pBulletMagMons = new bulletManger;
-	m_pBulletMagMons->init(500);
+	m_pBulletMagMons->init(100);
 
-	tagMonInfo Moninfo;
-	Moninfo.tFireDelay = 120;
-	Moninfo.tMoveSpeed = 0.5f;
+
 
 	m_pMonsterMag = new monsterManger;
-	m_pMonsterMag->init(100);
-	m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
+	m_pMonsterMag->init(50);
+	//m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
@@ -102,6 +101,15 @@ void titleScene::update()
 {
 	if (KEYMANAGER->isOnceKeyDown(0x71))
 		SCENEMANAGER->changeScene("editor_re");
+
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+
+		tagMonInfo Moninfo;
+		Moninfo.tFireDelay = 120;
+		Moninfo.tMoveSpeed = 0.5f;
+		m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
+	}
 
 	if (!m_tButtonInfo.m_isMovement)
 	{
@@ -173,21 +181,25 @@ void titleScene::ColRc()
 	// 플레이어 총알 충돌
 	std::vector<bullet*> vPlayerBullet = m_pBulletMag->getVecBullet();
 	std::vector<bullet*>::iterator PlayerBulletIter;
-	for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 몬스터 백터
+	for (PlayerBulletIter = vPlayerBullet.begin(); PlayerBulletIter != vPlayerBullet.end(); PlayerBulletIter++) // 플레이어 총알 백터
 	{
-		for (PlayerBulletIter = vPlayerBullet.begin(); PlayerBulletIter != vPlayerBullet.end(); PlayerBulletIter++) // 플레이어 총알 백터
+		if (!(*PlayerBulletIter)->getIsAlive()) continue;
+
+		for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 몬스터 백터
 		{
-			//if ((*PlayerBulletIter)->getBulletMaster() == BULLET_MASTER_TYPE::PLAYER &&/*플레이어 총알*/
-			//	(*PlayerBulletIter)->getTagBulletInfo().tRadius + (*MonsIter)->getMonInfo().tRadius >
-			//	(MY_UTIL::getDistance(
-			//	(*PlayerBulletIter)->getTagBulletInfo().tPosX,
-			//	(*PlayerBulletIter)->getTagBulletInfo().tPosY,
-			//	(*MonsIter)->getMonInfo().tPosX,
-			//	(*MonsIter)->getMonInfo().tPosY))
-			//	)
-			if ((*PlayerBulletIter)->getIsAlive() && (*PlayerBulletIter)->getBulletMaster() == BULLET_MASTER_TYPE::PLAYER)
+			if (!(*MonsIter)->getMonInfo().tIsAlive) continue;
+
+			if ((*PlayerBulletIter)->getIsAlive() && (*PlayerBulletIter)->getBulletMaster() == BULLET_MASTER_TYPE::PLAYER &&/*플레이어 총알*/
+				(*PlayerBulletIter)->getTagBulletInfo().tRadius + (*MonsIter)->getMonInfo().tRadius >
+				(MY_UTIL::getDistance(
+				(*PlayerBulletIter)->getTagBulletInfo().tPosX,
+				(*PlayerBulletIter)->getTagBulletInfo().tPosY,
+				(*MonsIter)->getMonInfo().tPosX,
+				(*MonsIter)->getMonInfo().tPosY))
+				)
 			{
-				int i = 0;
+				(*MonsIter)->setAlive(false);
+				(*PlayerBulletIter)->setIsAlive(false);
 			}
 		}
 	}
