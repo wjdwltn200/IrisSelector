@@ -18,6 +18,11 @@ public:
 
 	void fire(const char * imageName, float posX, float posY, float angle, tagBulletInfo bulletInfo, tagBulletInfo* bulletInfoSub);
 	
+	inline std::vector<bullet*> getVecBullet()
+	{
+		return m_vecBullet;
+	}
+
 	int getIter() { return m_vecBullet.size(); }
 
 	bulletManger();

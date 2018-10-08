@@ -12,7 +12,7 @@ private:
 	RECT	m_rc;
 	int		m_ScaleCount;
 
-	float	m_fX, m_fY;
+	//float	m_fX, m_fY;
 	float	m_fAngle;
 	float	m_fMoveAngle;
 	float	m_fAngleRadius;
@@ -38,7 +38,10 @@ public:
 	bool getIsAlive() { return m_isAlive; }
 	void setIsAlive(bool alive) { m_isAlive = alive; }
 
+	int getBulletMaster() { return m_bulletInfo.tMasterType; }
 	bool getIsBulletBoom() { return m_bulletInfo.tBulletBoom; }
+
+	tagBulletInfo getTagBulletInfo() { return m_bulletInfo; }
 
 	bullet();
 	~bullet();

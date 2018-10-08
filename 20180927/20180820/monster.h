@@ -1,54 +1,36 @@
 #pragma once
 class animation;
 class PlayerCharacter;
+class bulletManger;
+class PlayerCharacter;
+
 class monster
 {
 private:
-
-	struct monsterKinds
-	{
-		float m_fX;
-		float m_fY;
-		RECT m_rc;
-		float m_CurrHpX;
-		float m_CurrHpY;
-		float m_MaxHp;
-		float m_Speed;
-		float m_Angle;
-	};
-	struct bossMonster
-	{
-		RECT m_rc;
-		float m_fX;
-		float m_fY;
-		float m_CurrHpX;
-		float m_CurrHpY;
-		float m_MaxHp;
-		float m_Speed;
-	};
-
-	bool isAlive;
-
 	image * m_monsterType;
 	animation * m_monsterMove;
-
-	
 	PlayerCharacter * m_player;
 
+	tagBulletInfo m_tBulletInfo;
+	tagBulletInfo m_tBulletInfoSub;
+	tagBulletInfo * m_tBulletInfoSubPoint;
 
-	monsterKinds m_Mon;
-	bossMonster m_Boss;
+	bulletManger* m_pBulletMag;
+	PlayerCharacter* m_PlayerCharPoint;
 
-	
+	tagMonInfo m_tMonInfo;
 public:
-	HRESULT init(const char * strKey, int fX, int fY, float speed);
+	HRESULT init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint);
 	void release();
 	void update();
 	void Move();
+	void fireAtk();
 	void render(HDC hdc);
 
-	bool getAlive() { return isAlive; }
-	void setAlive(bool Alive) { isAlive = Alive; };
+	tagMonInfo getMonInfo() { return m_tMonInfo; }
+
+	bool getAlive() { return m_tMonInfo.tIsAlive; }
+	void setAlive(bool Alive) { m_tMonInfo.tIsAlive = Alive; };
 	monster();
 	~monster();
 };

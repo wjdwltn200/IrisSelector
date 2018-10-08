@@ -5,7 +5,8 @@ class PlayerCharacter;
 class bulletManger;
 class effectManager;
 class itemManager;
-class monster;
+class monsterManger;
+
 class titleScene : public scene
 {
 
@@ -26,9 +27,9 @@ private:
 	image* m_button;
 	buttonSelect m_tButtonInfo;
 	bulletManger * m_pBulletMag;
+	bulletManger * m_pBulletMagMons;
 	itemManager * m_pItemMag;
-	monster * m_monster;
-
+	monsterManger * m_pMonsterMag;
 
 	effectManager * m_pEffMagr;
 
