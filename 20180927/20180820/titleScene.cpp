@@ -5,28 +5,56 @@
 #include "effectManager.h"
 #include "PlayerCharacter.h"
 #include "itemManager.h"
-#include "monster.h"
+#include "monsterManger.h"
 
 HRESULT titleScene::init()
 {
+	IMAGEMANAGER->addImage("BG_Beholder", "image/resources/monster_image/BG_Beholder_Run.bmp", 1860, 78, 12, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Blue_Guardian", "image/resources/monster_image/BG_Blue_Guardian_Run.bmp", 930, 57, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Blue_Mindflayer", "image/resources/monster_image/BG_Blue_Mindflayer_Run.bmp", 930, 54, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Bugman", "image/resources/monster_image/BG_Bugman_Run.bmp", 620, 61, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Cetus", "image/resources/monster_image/BG_Cetus_Run.bmp", 620, 37, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Coven", "image/resources/monster_image/BG_Coven_Run.bmp", 620, 33, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Cow", "image/resources/monster_image/BG_Cow.bmp", 620, 28, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Cyclops", "image/resources/monster_image/BG_Cyclops.bmp", 930, 46, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Dark_Lord", "image/resources/monster_image/BG_Dark_Lord.bmp", 620, 78, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Dog", "image/resources/monster_image/BG_Dog.bmp", 465, 37, 3, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Eye_Slime", "image/resources/monster_image/BG_Eye_Slime_Run.bmp", 465, 39, 3, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Faun_Archer", "image/resources/monster_image/BG_Faun_Archer_Run.bmp", 930, 46, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Firewolf", "image/resources/monster_image/BG_Firewolf.bmp", 620, 46, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Gargoyle", "image/resources/monster_image/BG_Gargoyle.bmp", 620, 65, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Giant_Run", "image/resources/monster_image/BG_Giant_Run.bmp", 930, 63, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Gnome_Run", "image/resources/monster_image/BG_Gnome_Run.bmp", 930, 26, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Igor", "image/resources/monster_image/BG_Igor.bmp", 930, 44, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Itchy", "image/resources/monster_image/BG_Itchy.bmp", 930, 37, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("BG_Knife_dude", "image/resources/monster_image/BG_Knife_dude.bmp", 930, 60, 6, 1, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("Bullet_Y", "image/resources/bullet_image/Bullet_Y.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_B", "image/resources/bullet_image/Bullet_B.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_P", "image/resources/bullet_image/Bullet_P.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_G", "image/resources/bullet_image/Bullet_G.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
-	m_monster = new monster;
-	m_monster->init("BG_Gargoyle",100,100, 1.0f);
-
-	
-
+	   
 	m_player = new PlayerCharacter;
 	m_player->init();
-
+	m_player->setBulletMagPointer(&m_pBulletMag);
+	
 	m_pBulletMag = new bulletManger;
 	m_pBulletMag->init(500);
 
+	m_pBulletMagMons = new bulletManger;
+	m_pBulletMagMons->init(500);
+
+	tagMonInfo Moninfo;
+	Moninfo.tFireDelay = 120;
+	Moninfo.tMoveSpeed = 0.5f;
+
+	m_pMonsterMag = new monsterManger;
+	m_pMonsterMag->init(100);
+	m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
+
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
+
 	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/item_object.bmp", 105, 60, 7, 4, true, RGB(255, 0, 255));
 
 	for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
@@ -45,9 +73,7 @@ HRESULT titleScene::init()
 	m_pEffMagr->init();
 	m_pEffMagr->addEffect("Bullet_Y_End", "image/resources/bullet_image/Bullet_Y_End.bmp",297, 27, 27, 27, 30, 5);
 
-	m_player = new PlayerCharacter;
-	m_player->init();
-	m_player->setBulletMagPointer(&m_pBulletMag);
+
 
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
 	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162, 360, 1, 6, true, RGB(166, 166, 166));
@@ -67,6 +93,7 @@ HRESULT titleScene::init()
 void titleScene::release()
 {
 	m_pBulletMag->release();
+	m_pBulletMagMons->release();
 	m_pEffMagr->release();
 	m_pItemMag->release();
 }
@@ -93,11 +120,12 @@ void titleScene::update()
 	}
 	
 	ColRc();
-	m_monster->update();
+	m_pMonsterMag->update();
 	m_player->update();
 	m_pItemMag->update();
 	m_player->update();
 	m_pBulletMag->update();
+	m_pBulletMagMons->update();
 	m_pEffMagr->update();
 }
 
@@ -127,27 +155,51 @@ void titleScene::render(HDC hdc)
 	sprintf_s(szText, "BulletSetNum : %d",
 		m_pBulletMag->getIter());
 	TextOut(hdc, 10, WINSIZEY - 20, szText, strlen(szText));
-	m_monster->render(hdc);
+	m_pMonsterMag->render(hdc);
 	m_pItemMag->render(hdc);
 	m_player->render(hdc);
 	m_pEffMagr->render(hdc);
 	m_player->render(hdc);
 	m_pBulletMag->render(hdc);
+	m_pBulletMagMons->render(hdc);
 	TIMEMANAGER->render(hdc);
 }
 
 void titleScene::ColRc()
 {
-	//IntersectRect();
+	// 몬스터 매니저 정보
+	std::vector<monster*> vMonster = m_pMonsterMag->getVecMons();
+	std::vector<monster*>::iterator MonsIter;
+	// 플레이어 총알 충돌
+	std::vector<bullet*> vPlayerBullet = m_pBulletMag->getVecBullet();
+	std::vector<bullet*>::iterator PlayerBulletIter;
+	for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 몬스터 백터
+	{
+		for (PlayerBulletIter = vPlayerBullet.begin(); PlayerBulletIter != vPlayerBullet.end(); PlayerBulletIter++) // 플레이어 총알 백터
+		{
+			//if ((*PlayerBulletIter)->getBulletMaster() == BULLET_MASTER_TYPE::PLAYER &&/*플레이어 총알*/
+			//	(*PlayerBulletIter)->getTagBulletInfo().tRadius + (*MonsIter)->getMonInfo().tRadius >
+			//	(MY_UTIL::getDistance(
+			//	(*PlayerBulletIter)->getTagBulletInfo().tPosX,
+			//	(*PlayerBulletIter)->getTagBulletInfo().tPosY,
+			//	(*MonsIter)->getMonInfo().tPosX,
+			//	(*MonsIter)->getMonInfo().tPosY))
+			//	)
+			if ((*PlayerBulletIter)->getIsAlive() && (*PlayerBulletIter)->getBulletMaster() == BULLET_MASTER_TYPE::PLAYER)
+			{
+				int i = 0;
+			}
+		}
+	}
 
 	std::vector<item*> vItem = m_pItemMag->getVecItem();
-	std::vector<item*>::iterator iter;
-	for (iter = vItem.begin(); iter != vItem.end(); iter++)
+	std::vector<item*>::iterator ItemIter;
+	for (ItemIter = vItem.begin(); ItemIter != vItem.end(); ItemIter++)
 	{
-		if ((*iter)->getIsAlive() && m_player->getRadius() + (*iter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*iter)->getX(), (*iter)->getY())))
+		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getX(), (*ItemIter)->getY())))
 		{
-			(*iter)->setIsAlive(false);
-			m_player->getItem((*iter)->getItemSkill());
+			(*ItemIter)->setIsAlive(false);
+			m_player->getItem((*ItemIter)->getItemSkill());
 		}
 	}
 

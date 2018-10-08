@@ -27,18 +27,18 @@ void monsterManger::update()
 	}
 }
 
-void monsterManger::Regeneration(const char*strKey, int fX, int fY, float speed)
+void monsterManger::Regeneration(const char*strKey, tagMonInfo moninfo, bulletManger* bulletInfo, PlayerCharacter* playerInfo)
 {
 	for (m_iter = m_vecMonster.begin(); m_iter != m_vecMonster.end(); m_iter++)
 	{
 		if (!(*m_iter)->getAlive())
 		{
-			(*m_iter)->init(strKey, fX, fY, speed);
+			(*m_iter)->init(strKey, moninfo, bulletInfo, playerInfo);
 			return;
 		}
 	}
 	monster * pMonster = new monster;
-	pMonster->init(strKey, fX, fY, speed);
+	pMonster->init(strKey, moninfo, bulletInfo, playerInfo);
 	m_vecMonster.push_back((pMonster));
 	return;
 }
