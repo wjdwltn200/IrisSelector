@@ -147,7 +147,7 @@ void txtData::mapLoad(const char * loadFileName, tagTile* tiles, RECT* sample)
 		NULL);
 
 	ReadFile(hFile, tiles, sizeof(tagTile) *TILE_X *TILE_Y, &read, NULL);
-	ReadFile(hFile, sample, sizeof(RECT), &read, NULL);
+	//ReadFile(hFile, sample, sizeof(RECT), &read, NULL);
 
 	CloseHandle(hFile);
 }

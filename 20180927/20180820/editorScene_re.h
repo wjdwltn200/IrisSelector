@@ -3,9 +3,6 @@
 
 class button;
 
-#define MAX_TILECOUNTX 60 // 2400 
-#define MAX_TILECOUNTY 60 // 2400
-
 #define TILE_SIZEX 40
 #define TILE_SIZEY 40
 
@@ -89,7 +86,6 @@ private:
 	float         m_fMiniMapSiteRate_Height;
 
 	bool		  m_isSel;
-
 
 	// 초기 설정 (사이즈 체크)에 필요한 변수////
 	image * m_pImg_SizeBox;

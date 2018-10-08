@@ -49,7 +49,9 @@ static void Func_MapCheck(void)
 
 void editorScene_re::SetSize()
 {
-	m_pImg_SizeBox = IMAGEMANAGER->addImage("size_box", "image/wook/size_box.bmp", 640, 640);
+	m_pImg_SizeBox = IMAGEMANAGER->addImage("size_box", "image/wook/size_box.bmp", 640, 640,true, RGB(255,0,255));
+	IMAGEMANAGER->addImage("black", "image/wook/black.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+
 	IMAGEMANAGER->addImage("800x", "image/wook/800x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("1600x", "image/wook/1600x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("2000x", "image/wook/2000x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
@@ -314,18 +316,22 @@ HRESULT editorScene_re::init()
 
 void editorScene_re::release()
 {
+
 }
 
 void editorScene_re::update()
 {
+
+
 	if (KEYMANAGER->isOnceKeyDown(0x71))
 		SCENEMANAGER->changeScene("title");
+	if (KEYMANAGER->isOnceKeyDown(0x72))
+		SCENEMANAGER->changeScene("stage");
 
 
 
 
-
-	if (m_editSt != STATE_SETSIZE && m_bWindowPrint == false)
+	if (m_editSt != STATE_SETSIZE && m_bWindowPrint == false )
 	{
 		m_hBtnSave = CreateWindow("button", "Save", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 			WINSIZEY - 234, 60, 74, 40, g_hWnd, HMENU(0), g_hInstance, NULL);
