@@ -49,7 +49,9 @@ static void Func_MapCheck(void)
 
 void editorScene_re::SetSize()
 {
-	m_pImg_SizeBox = IMAGEMANAGER->addImage("size_box", "image/wook/size_box.bmp", 640, 640);
+	m_pImg_SizeBox = IMAGEMANAGER->addImage("size_box", "image/wook/size_box.bmp", 640, 640,true, RGB(255,0,255));
+	IMAGEMANAGER->addImage("black", "image/wook/black.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+
 	IMAGEMANAGER->addImage("800x", "image/wook/800x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("1600x", "image/wook/1600x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("2000x", "image/wook/2000x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
@@ -277,7 +279,7 @@ void editorScene_re::SaveEvent()
 	ofn.Flags = OFN_OVERWRITEPROMPT;
 	GetSaveFileName(&ofn);
 
-	TXTDATA->mapSave(szFileName, m_pTiles, &m_rcSelectedTile);
+	TXTDATA->mapSave(szFileName, m_pTiles, &m_nMapSize);
 
 }
 
@@ -296,7 +298,7 @@ void editorScene_re::LoadEvent()
 	if (0 != GetOpenFileName(&ofn))
 	{
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
-		TXTDATA->getSingleton()->mapLoad(szFileName, m_pTiles, &m_rcSelectedTile);
+		TXTDATA->getSingleton()->mapLoad(szFileName, m_pTiles, &m_nLoadMapSIze);
 	}
 
 }
@@ -314,18 +316,32 @@ HRESULT editorScene_re::init()
 
 void editorScene_re::release()
 {
+
 }
 
 void editorScene_re::update()
 {
+
+
 	if (KEYMANAGER->isOnceKeyDown(0x71))
+	{
 		SCENEMANAGER->changeScene("title");
+		DestroyWindow(m_hBtnLoad);
+		DestroyWindow(m_hBtnSave);
+		DestroyWindow(m_hBtnEraser);
+	}
+	if (KEYMANAGER->isOnceKeyDown(0x72))
+	{
+		SCENEMANAGER->changeScene("stage");
+		DestroyWindow(m_hBtnLoad);
+		DestroyWindow(m_hBtnSave);
+		DestroyWindow(m_hBtnEraser);
+
+	}
 
 
 
-
-
-	if (m_editSt != STATE_SETSIZE && m_bWindowPrint == false)
+	if (m_editSt != STATE_SETSIZE && m_bWindowPrint == false )
 	{
 		m_hBtnSave = CreateWindow("button", "Save", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 			WINSIZEY - 234, 60, 74, 40, g_hWnd, HMENU(0), g_hInstance, NULL);
@@ -387,6 +403,9 @@ void editorScene_re::update()
 			m_fCameraSizeRate = (float)editorScene_re::m_nMapSize / CAMARA_WIDTH; // or CAMERA_HEIGHT;
 			m_fMiniMapSiteRate_Width = CAMARA_WIDTH / m_fCameraSizeRate;
 			m_fMiniMapSiteRate_Height = CAMERA_HEIGHT / m_fCameraSizeRate;
+			
+			g_saveData.gTileMaxCountX = m_nTileMaxCountX;
+			g_saveData.gTileMaxCountY = m_nTileMaxCountY;
 
 			// 기본 타일 정보 초기화 /// terrainFrameX 와 terrainFrameY가 100일경우 안보이게된다.
 			for (int x = 0; x < m_nTileMaxCountX; x++)
@@ -481,37 +500,31 @@ void editorScene_re::render(HDC hdc)
 					{
 					case 1:
 						m_pTileSet[0]->frameRender(hdc,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.left - 27,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.top - 27,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.left ,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.top ,
 							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX ,
 							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY );
 						break;
 					case 2:
 						m_pTileSet[1]->frameRender(hdc,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.left - 27,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.top - 27,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.left ,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.top ,
 							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX ,
 							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY );
 						break;
 					case 3:
 						m_pTileSet[2]->frameRender(hdc,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.left - 27,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.top - 27,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.left ,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.top,
 							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX ,
 							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY );
 						break;
 					case 4:
 						m_pTileSet[3]->frameRender(hdc,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.left - 27,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.top - 27,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.left,
+							m_pTiles[x * m_nTileMaxCountX + y].rc.top ,
 							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX ,
 							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY );
-
-						m_pTileSet[3]->frameRender(hdc,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.left - 27,
-							m_pTiles[x * m_nTileMaxCountX + y].rc.top - 27,
-							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameX,
-							m_pTiles[x * m_nTileMaxCountX + y].terrainFrameY);
 						break;
 					}
 					

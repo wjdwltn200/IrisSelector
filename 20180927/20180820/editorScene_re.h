@@ -3,11 +3,6 @@
 
 class button;
 
-#define MAX_TILECOUNTX 60 // 2400 
-#define MAX_TILECOUNTY 60 // 2400
-
-#define TILE_SIZEX 40
-#define TILE_SIZEY 40
 
 #define SAMPLE_COUNTX 5
 #define SAMPLE_COUNTY 9
@@ -90,7 +85,6 @@ private:
 
 	bool		  m_isSel;
 
-
 	// 초기 설정 (사이즈 체크)에 필요한 변수////
 	image * m_pImg_SizeBox;
 	image * m_pImg_Box5;
@@ -108,6 +102,7 @@ private:
 	int m_nTileMaxCountX;
 	int m_nTileMaxCountY;
 
+	int m_nLoadMapSIze;
 
 	bool m_bTempTrigger;
 	bool m_bWindowPrint;
