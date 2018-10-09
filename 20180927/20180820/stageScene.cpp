@@ -69,6 +69,14 @@ void stageScene::update()
 	}
 	if (buttonNum == 3)
 	{
+		// 최초 한번만 실행되는 부분
+		CAMERA->init();
+
+
+
+
+
+
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
@@ -83,6 +91,30 @@ void stageScene::update()
 		}
 	
 
+		buttonNum++;
+	}
+	if (buttonNum == 4)
+	{
+		// 단축키
+		if (KEYMANAGER->isOnceKeyDown('M') && m_bIsMiniMapOn == false)
+		{
+			m_bIsMiniMapOn = true;
+		}
+		else if (KEYMANAGER->isOnceKeyDown('M') && m_bIsMiniMapOn == true)
+		{
+			m_bIsMiniMapOn = false;
+		}
+		/////////////////////////////
+
+
+		CAMERA->update();
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
+			{
+				//m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - CAMERA->getCameraX(), y * TILE_SIZEY - CAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
+			}
+		}
 
 	}
 	
@@ -101,12 +133,16 @@ void stageScene::render(HDC hdc)
 	}
 	if (buttonNum == 3)
 	{
+
+	}
+	if (buttonNum == 4)
+	{
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
 
-				switch (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum )
+				switch (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum)
 				{
 				case 1:
 					m_pTileSet[0]->frameRender(hdc,
@@ -144,7 +180,6 @@ void stageScene::render(HDC hdc)
 
 			}
 		}
-
 	}
 }
 

@@ -20,6 +20,7 @@ private:
 	image*		  m_pTileSet[4];
 
 	int MapSize;
+	bool m_bIsMiniMapOn;
 
 	static int buttonNum;
 	static int buttonOK;

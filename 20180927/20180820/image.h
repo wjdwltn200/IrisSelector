@@ -94,6 +94,10 @@ public:
 	void frameRender(HDC hdc, int destX, int destY,	int currFrameX, int currFrameY);
 	void frameAlphaRender(HDC hdc, int destX, int destY, int currFrameX, int currFrameY, float scale, BYTE alpha);
 
+	// Á×Ã´µµ Àû¿ë ·»´õ
+	void RatioRender(HDC hdc, int destX, int destY,
+		int currFrameX, int currFrameY, int scalar,
+		int tilesizeX, int tilesizeY);
 
 	// ¾ËÆÄ ºí·»µå ·»´õ
 	void alphaRender(HDC hdc, BYTE alpha);
