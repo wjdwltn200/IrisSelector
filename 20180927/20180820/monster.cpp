@@ -56,14 +56,14 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 	m_tBulletInfo.tIsAlive = true;
 	m_tBulletInfo.tBulletSetNum = 1;
-	m_tBulletInfo.tScale = 1.0f;
+	m_tBulletInfo.tScale = 2.0f;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
 	m_tBulletInfo.tRange = 200.0f;
 	m_tBulletInfo.tBulletBoom = true;
 
-	m_tBulletInfo.tDmage = 10.0f + m_tMonInfo.tDamageSub;
+	m_tBulletInfo.tDmage = 1.0f + m_tMonInfo.tDamageSub;
 	m_tBulletInfo.tKnokBack = 5.0f;
 	m_tBulletInfo.tMoveSpeed = 5.0f;
 
@@ -71,7 +71,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::MONSTER;
 	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
-	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
+	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
 	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
 
 	// ¼­ºê ÅºÈ¯ (ÀÌÁß Æø¹ß)
@@ -87,7 +87,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfoSub.tRange = 200.0f;
 	m_tBulletInfoSub.tBulletBoom = false;
 
-	m_tBulletInfoSub.tDmage = 10.0f + m_tMonInfo.tDamageSub;
+	m_tBulletInfoSub.tDmage = 1.0f + m_tMonInfo.tDamageSub;
 	m_tBulletInfoSub.tKnokBack = 5.0f;
 	m_tBulletInfoSub.tMoveSpeed = 5.0f;
 
@@ -95,7 +95,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::MONSTER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
-	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_B;
+	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
 	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
