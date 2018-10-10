@@ -2,22 +2,25 @@
 #include "bullet.h"
 #include "animation.h"
 #include "bulletManger.h"
-
+#include "effectManager.h"
 
 // 테스트
 
-HRESULT bullet::init(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub, animation * pAni, bulletManger*  bulletMagPoint)
+HRESULT bullet::init(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub, animation * pAni, effectManager * pEff, bulletManger*  bulletMagPoint)
 {
 	// 최초 초기화
 	memset(&m_rc, NULL, sizeof(m_rc));
 	m_pBulletMag = bulletMagPoint;
 
 	// 이미지 초기화
+	m_eff = pEff;
+
 	m_bulletInfo.tImageType = bulletInfo->tImageType;
 	switch (m_bulletInfo.tImageType)
 	{
 	case BULLET_IMAGE_TYPE::COLOR_Y:
 		m_pImg = IMAGEMANAGER->findImage("Bullet_Y");
+		m_effName = "Bullet_Y_End";
 		break;
 	case BULLET_IMAGE_TYPE::COLOR_B:
 		m_pImg = IMAGEMANAGER->findImage("Bullet_B");
@@ -34,6 +37,8 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 	m_pAni->setDefPlayFrame(false, true);
 	m_pAni->setFPS(30);
 	m_pAni->start();
+
+
 
 	// 멤버 초기화
 	m_bulletInfo.tIsAlive = m_isAlive = bulletInfo->tIsAlive;
@@ -62,7 +67,7 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 	tMoveTypeCount = 0;
 
 	// RECT 초기화 (이미지 프레임 크기)
-	RectMakeCenter(m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
+	m_rc = RectMakeCenter(m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth() * m_bulletInfo.tScale, m_pImg->getFrameHeight() * m_bulletInfo.tScale);
 
 	switch (m_bulletInfo.tMoveType)
 	{
@@ -90,11 +95,15 @@ void bullet::update()
 	if (!m_isAlive) return;
 	movement();
 
+	m_eff->update();
 	m_pAni->frameUpdate();
 }
 
 void bullet::render(HDC hdc)
 {
+	//EllipseMakeCenter(hdc, m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth() * m_bulletInfo.tScale, m_pImg->getFrameHeight() * m_bulletInfo.tScale);
+	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	
 	m_pImg->aniRender(hdc, m_bulletInfo.tPosX - (m_pImg->getFrameWidth() / 2) * m_bulletInfo.tScale,
 		m_bulletInfo.tPosY - (m_pImg->getFrameHeight() / 2) * m_bulletInfo.tScale, m_pAni, m_bulletInfo.tScale, true, 255);
 
@@ -120,6 +129,9 @@ void bullet::render(HDC hdc)
 	sprintf_s(szText, "m_bulletInfo.tMoveSpeed : %f",
 		m_bulletInfo.tMoveSpeed);
 	TextOut(hdc, 10, 160, szText, strlen(szText));
+
+	m_eff->render(hdc);
+
 }
 
 void bullet::movement()
@@ -128,6 +140,7 @@ void bullet::movement()
 
 	moveTypeAct(m_bulletInfo.tMoveType);
 
+	m_rc = RectMakeCenter(m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth() * m_bulletInfo.tScale, m_pImg->getFrameHeight() * m_bulletInfo.tScale);
 
 	switch (m_bulletInfo.tMoveActType)
 	{
@@ -151,6 +164,7 @@ void bullet::movement()
 	// 거리만큼 이동하면 죽임
 	if (m_bulletInfo.tRange < 0.0f)
 	{
+		m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2)* m_bulletInfo.tScale, m_bulletInfo.tPosY - (30 / 2) * m_bulletInfo.tScale);
 		m_isAlive = false;
 
 		if (m_bulletInfo.tBulletBoom)

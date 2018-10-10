@@ -136,7 +136,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 
 	m_progressBar = new progressBar;
-	m_progressBar->init(m_tMonInfo.tPosHpX, m_tMonInfo.tPosHpY,m_progressBar->setX(),m_progressBar->setY());
+	//m_progressBar->init(m_tMonInfo.tPosHpX, m_tMonInfo.tPosHpY,m_progressBar->setX(),m_progressBar->setY());
 
 
 

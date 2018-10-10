@@ -2,10 +2,9 @@
 class animation;
 class bulletManger;
 
-#define BULLET_FIRST_DELAY 10
+#define BULLET_FIRST_DELAY 60
 #define CROSSHAIR_MAX_SCALE 5.0f
-#define CROSSHAIR_MIN_SCALE 0.5f
-
+#define CROSSHAIR_MIN_SCALE 1.0f
 
 class PlayerCharacter
 {
@@ -22,6 +21,7 @@ private:
 	animation * ani_right_Run;
 	animation * ani_CrossHair;
 
+
 	int m_count;
 	int ani_stay_Curr[4];
 
@@ -35,8 +35,8 @@ private:
 	float m_fRadius;
 	float m_fSpeed;
 	float m_fCrossHairScale;
+	float m_fCrossHairScaleMin;
 	float m_fCrossHairScaleMax;
-	int m_CrossHairScaleDelayCount;
 
 	int m_bulletDelayCount;
 	int	m_bulletDelayCountMax;
