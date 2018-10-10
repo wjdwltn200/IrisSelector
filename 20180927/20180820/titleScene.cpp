@@ -35,8 +35,14 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("Bullet_P", "image/resources/bullet_image/Bullet_P.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_G", "image/resources/bullet_image/Bullet_G.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 
+	IMAGEMANAGER->addImage("Player_HP_Point", "image/resources/UI_image/player_Ui/Player_Hp_Point.bmp", 27 * 5, 7 * 5, 3, 1, true, RGB(255, 0, 255));
+
 	m_pEffMagr = new effectManager;
 	m_pEffMagr->addEffect("Bullet_Y_End", "image/resources/bullet_image/Bullet_Y_End.bmp", 238, 30, 34, 30, 15, 100);
+	m_pEffMagr->addEffect("Item_Get1", "image/resources/item_image/Item_Get.bmp", 320, 31, (320 / 4), 31, 15, 5);
+	m_pEffMagr->addEffect("Item_Get2", "image/resources/item_image/Item_Get2.bmp", 230, 70, (230 / 5), 70, 15, 5);
+
+
 	ShowCursor(FALSE);
 
 	m_player = new PlayerCharacter;
@@ -49,8 +55,6 @@ HRESULT titleScene::init()
 	m_pBulletMagMons = new bulletManger;
 	m_pBulletMagMons->init(100, m_pEffMagr);
 
-
-
 	m_pMonsterMag = new monsterManger;
 	m_pMonsterMag->init(50);
 	//m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
@@ -58,19 +62,22 @@ HRESULT titleScene::init()
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
 
-	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/item_object.bmp", 105, 60, 7, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/Item_set.bmp", 682, 614, 20, 18, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("ItemShadow", "image/resources/item_image/Item_shadow.bmp", 32, 9, 1, 1, true, RGB(255, 0, 255));
 
-	for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
-	{
-		tagItemInfo ItemInfo;
-		ItemInfo.tImageCurrX = i;
-		ItemInfo.tImageCurrY = i;
-		ItemInfo.tScale = 1.0f;
-		ItemInfo.tTimer = 1000;
-		ItemInfo.tRadius = 1.5f;
-		ItemInfo.tSkillType = i;
-		m_pItemMag->itemDrop("ItemObject", 100 , 50 * (i + 1), ItemInfo);
-	}
+	//for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
+	//{
+	//	tagItemInfo ItemInfo;
+	//	ItemInfo.tImageCurrX = i;
+	//	ItemInfo.tImageCurrY = i;
+	//	ItemInfo.tScale = 1.0f;
+	//	ItemInfo.tTimer = 1000;
+	//	ItemInfo.tRadius = 1.5f;
+	//	ItemInfo.tSkillType = i;
+	//	ItemInfo.posX = 100;
+	//	ItemInfo.posY = 50 * (i + 1);
+	//	m_pItemMag->itemDrop("ItemObject", ItemInfo);
+	//}
 
 	
 
@@ -110,6 +117,7 @@ void titleScene::update()
 		tagMonInfo Moninfo;
 		Moninfo.tFireDelay = 120;
 		Moninfo.tMoveSpeed = 0.5f;
+		Moninfo.tHp = 20.0f;
 		m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 	}
 
@@ -168,8 +176,8 @@ void titleScene::render(HDC hdc)
 	m_pMonsterMag->render(hdc);
 	m_pItemMag->render(hdc);
 	m_player->render(hdc);
-	m_pEffMagr->render(hdc);
 	m_player->render(hdc);
+	m_pEffMagr->render(hdc);
 	m_pBulletMag->render(hdc);
 	m_pBulletMagMons->render(hdc);
 	TIMEMANAGER->render(hdc);
@@ -200,7 +208,7 @@ void titleScene::ColRc()
 				(*MonsIter)->getMonInfo().tPosY))
 				)
 			{
-				(*MonsIter)->setAlive(false);
+				(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
 				(*PlayerBulletIter)->setIsAlive(false);
 			}
 		}
@@ -210,8 +218,12 @@ void titleScene::ColRc()
 	std::vector<item*>::iterator ItemIter;
 	for (ItemIter = vItem.begin(); ItemIter != vItem.end(); ItemIter++)
 	{
-		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getX(), (*ItemIter)->getY())))
+
+		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getItemInfo().posX, (*ItemIter)->getItemInfo().posY)))
 		{
+			m_pEffMagr->play("Item_Get1", m_player->getX() - (320 / 4) / 2, m_player->getY());
+			m_pEffMagr->play("Item_Get2", m_player->getX() - (230 / 5) / 2, m_player->getY() - (70) / 2);
+
 			(*ItemIter)->setIsAlive(false);
 			m_player->getItem((*ItemIter)->getItemSkill());
 		}

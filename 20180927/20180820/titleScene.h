@@ -2,6 +2,7 @@
 #include "scene.h"
 
 class PlayerCharacter;
+class progressBar;
 class bulletManger;
 class effectManager;
 class itemManager;
@@ -31,7 +32,6 @@ private:
 	bulletManger * m_pBulletMagMons;
 	itemManager * m_pItemMag;
 	monsterManger * m_pMonsterMag;
-
 	effectManager * m_pEffMagr;
 
 

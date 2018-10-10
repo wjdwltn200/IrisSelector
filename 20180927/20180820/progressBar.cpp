@@ -3,6 +3,7 @@
 
 HRESULT progressBar::init(float x, float y, float width, float height)
 {
+	m_isBoom = false;
 	m_fX = x;
 	m_fY = y;
 	m_tMonInfo.tHp = width;
@@ -12,9 +13,9 @@ HRESULT progressBar::init(float x, float y, float width, float height)
 	m_rc = RectMake(m_fX, m_fY, m_fWidth, m_fHeight);
 
 	m_imgTop = IMAGEMANAGER->addImage("barTop", 
-		"image/resources/UI_image/Progress_Bar/hpBarTop.bmp", m_fWidth, m_fHeight, true, RGB(255, 0, 255));
+		"image/resources/UI_image/Progress_Bar/hpBarTop.BMP", m_fWidth, m_fHeight, true, RGB(255, 0, 255));
 	m_imgBottom = IMAGEMANAGER->addImage("barBottom",
-		"image/resources/UI_image/Progress_Bar/hpBarBottom.bmp", m_fWidth, m_fHeight, true, RGB(255, 0, 255));
+		"image/resources/UI_image/Progress_Bar/hpBarBottom.BMP", m_fWidth, m_fHeight, true, RGB(255, 0, 255));
 
 	return S_OK;
 }
@@ -44,9 +45,11 @@ void progressBar::setGauge(float currGauge, float maxGauge)
 
 void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo)
 {
-	m_fGaugeSub = minGaugeSub;
-	m_fMaxGaugeSub = maxGaugeSub;
-	if (m_fCurrGauge >= m_fGaugeSub)
+	m_tMonInfo.tminGaugeSub = minGaugeSub;
+	m_tMonInfo.tmaxGaugeSub = maxGaugeSub;
+	m_tMonInfo.tminGaugeInfo = minGaugeInfo;
+	m_tMonInfo.tmaxGaugeInfo = maxGaugeInfo;
+	if (m_fCurrGauge >= m_tMonInfo.tminGaugeSub)
 	{
 		switch (minGaugeInfo)
 		{
@@ -65,7 +68,7 @@ void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInf
 			break;
 		}
 	}
-	else if (m_fCurrGauge >= m_fMaxGaugeSub)
+	else if (m_fCurrGauge >= m_tMonInfo.tmaxGaugeSub)
 	{
 		switch (maxGaugeInfo)
 		{
@@ -81,7 +84,7 @@ void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInf
 		case MONSTER_SUB::MONSTER_BOOM:
 			if (m_tMonInfo.tIsAlive == false)
 			{
-
+				m_isBoom = true;
 			}
 			break;
 		}
