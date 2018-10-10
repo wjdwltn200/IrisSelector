@@ -6,6 +6,15 @@
 
 HRESULT PlayerCharacter::init()
 {
+	for (int i = 0; i < 10; i++)
+	{
+		img_HpPoint[i] = IMAGEMANAGER->findImage("Player_HP_Point");
+	}
+
+	m_currHp = BAES_HP;
+	m_currHpMax = m_currHp;
+
+
 	int ani_stay_Curr[] = { 0,1,2,3,4,5,6,7 };
 	img_player = IMAGEMANAGER->addImage("player", "image/resources/player_image/BG_Player_idle_0.bmp", 256, 54, 8, 1, true, RGB(255, 0, 255), m_fX, m_fY);
 	img_left_Run = IMAGEMANAGER->addImage("player_Left_Run", "image/resources/player_image/BG_Player_L_Run.bmp", 342, 54, 6, 1, true, RGB(255, 0, 255), m_fX, m_fY);
@@ -47,7 +56,6 @@ HRESULT PlayerCharacter::init()
 	m_fRadius = img_player->getFrameWidth() / 2;
 	m_fSpeed = 1.0f;
 
-	bulletManger m_pBulletMag;
 	m_bulletDelayCount = 0;
 	m_bulletDelayCountMax = BULLET_FIRST_DELAY;
 
@@ -120,9 +128,12 @@ void PlayerCharacter::release()
 void PlayerCharacter::update()
 {
 	// 총알 발사
-	if (KEYMANAGER->isStayKeyDown(VK_RBUTTON)) // 테스트 용
+	if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON)) // 테스트 용
 	{
-		m_fCrossHairScaleMin += 0.1f;
+		//m_fCrossHairScaleMin += 0.1f;
+		//m_currHpMax += 2;
+		//m_currHp++;
+		//m_currHp--;
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
@@ -178,77 +189,11 @@ void PlayerCharacter::update()
 	if (m_fCrossHairScale > m_fCrossHairScaleMin)
 		m_fCrossHairScale -= 0.1f;
 
-	if (KEYMANAGER->isOnceKeyUp('A') && !KEYMANAGER->isOnceKeyUp('D'))
-	{
-		if (!m_isRunState)
-		{
-			m_isRunState = true;
-			m_isRunStart = false;
-		}
-		else if (m_isRunState)
-		{
-			m_isRunStart = true;
-		}		
-	}
-	if (KEYMANAGER->isOnceKeyUp('D') && !KEYMANAGER->isOnceKeyUp('A'))
-	{
-		if (!m_isRunState)
-		{
-			m_isRunState = true;
-			m_isRunStart = false;
-		}
-		else if (m_isRunState)
-		{
-			m_isRunStart = true;
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		if (m_isRunStart) // 달리고 있다면
-		{
-			m_fX -= m_fSpeed * 1.5f;
-			ani_left_Run->setFPS(30);
-		}
-		else // 달리지 않고 있다면
-		{
-			ani_left_Run->setFPS(10);
-			m_fX -= m_fSpeed;
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		if (m_isRunStart) // 달리고 있다면
-		{
-			m_fX += m_fSpeed * 1.5f;
-			ani_right_Run->setFPS(30);
-
-		}
-		else // 달리지 않고 있다면
-		{
-			m_fX += m_fSpeed;
-			ani_right_Run->setFPS(10);
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		m_fY -= m_fSpeed;
-	}
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		m_fY += m_fSpeed;
-	}
-
-	if (m_isRunState)
-	{
-		m_count++;
-		if (m_count >= 20)
-		{
-			m_count = 0;
-			m_isRunState = false;
-		}
-	}
+	
 
 	m_rc = RectMakeCenter(m_fX, m_fY, img_player->getFrameWidth(), img_player->getFrameHeight());
+
+	MoveActKeyInput();
 
 	ani_CrossHair->frameUpdate();
 	ani_right_stay->frameUpdate();
@@ -262,30 +207,67 @@ void PlayerCharacter::render(HDC hdc)
 	EllipseMakeCenter(hdc, m_fX, m_fY, img_player->getFrameWidth(), img_player->getFrameHeight());
 	//Ellipse(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 
+	for (int i = 0; i < m_currHpMax / 2; i++)
+	{
+		if ((i+1) * 2 <= m_currHp)
+		{
+			img_HpPoint[i]->frameRender(hdc,
+				10 + i * (img_HpPoint[0]->getFrameWidth() + 10),
+				(img_HpPoint[0]->getFrameHeight() / 2),
+				2,
+				0
+			);
+		}
+		else if (((i + 1) * 2) - 1 == m_currHp)
+		{
+			img_HpPoint[i]->frameRender(hdc,
+				10 + i * (img_HpPoint[0]->getFrameWidth() + 10),
+				(img_HpPoint[0]->getFrameHeight() / 2),
+				1,
+				0
+			);
+		}
+		else
+		{
+			img_HpPoint[i]->frameRender(hdc,
+				10 + i * (img_HpPoint[0]->getFrameWidth() + 10),
+				(img_HpPoint[0]->getFrameHeight() / 2),
+				0,
+				0
+			);
+		}
+	}
 
-	if (KEYMANAGER->isStayKeyDown('A') || KEYMANAGER->isStayKeyDown('W') && m_Direction && !(KEYMANAGER->isStayKeyDown('D')
-		|| KEYMANAGER->isStayKeyDown('S') && m_Direction && !(KEYMANAGER->isStayKeyDown('D'))))
+	if ((KEYMANAGER->isStayKeyDown('A') ||
+		(KEYMANAGER->isStayKeyDown('A') && (KEYMANAGER->isStayKeyDown('W') || KEYMANAGER->isStayKeyDown('S'))))) // 왼쪽 대각선
 	{
 		m_Direction = true;
 		img_left_Run->aniRender(hdc, m_fX - (img_left_Run->getFrameWidth() / 2), m_fY - (img_left_Run->getFrameHeight() / 2), ani_left_Run, 1.0f, true, 255);
 	}
-	
-	if (KEYMANAGER->isStayKeyDown('D') || KEYMANAGER->isStayKeyDown('W') && !m_Direction && !(KEYMANAGER->isStayKeyDown('A')
-		|| KEYMANAGER->isStayKeyDown('S') && !m_Direction && !(KEYMANAGER->isStayKeyDown('A'))))
+	else if (KEYMANAGER->isStayKeyDown('D') ||
+		(KEYMANAGER->isStayKeyDown('D') && (KEYMANAGER->isStayKeyDown('W') || KEYMANAGER->isStayKeyDown('S')))) // 오른쪽 대각선
 	{
 		m_Direction = false;
 		img_right_Run->aniRender(hdc, m_fX - (img_right_Run->getFrameWidth() / 2), m_fY - (img_right_Run->getFrameHeight() / 2), ani_right_Run, 1.0f, true, 255);
 	}
-	if (m_Direction && !(KEYMANAGER->isStayKeyDown('A') || KEYMANAGER->isStayKeyDown('W') && m_Direction
-		|| KEYMANAGER->isStayKeyDown('S') && m_Direction))
+	else if (m_Direction && ((KEYMANAGER->isStayKeyDown('W')) || (KEYMANAGER->isStayKeyDown('S')))) // 왼쪽 위
+	{
+		m_Direction = true;
+		img_left_Run->aniRender(hdc, m_fX - (img_left_Run->getFrameWidth() / 2), m_fY - (img_left_Run->getFrameHeight() / 2), ani_left_Run, 1.0f, true, 255);
+	}
+	else if (!m_Direction && ((KEYMANAGER->isStayKeyDown('W')) || (KEYMANAGER->isStayKeyDown('S')))) // 오른쪽 아래
+	{
+		m_Direction = false;
+		img_right_Run->aniRender(hdc, m_fX - (img_right_Run->getFrameWidth() / 2), m_fY - (img_right_Run->getFrameHeight() / 2), ani_right_Run, 1.0f, true, 255);
+	}
+	else if (m_Direction) // 아이들
 	{
 		img_player->aniRender(hdc, m_fX - (img_player->getFrameWidth() / 2), m_fY - (img_player->getFrameHeight() / 2), ani_left_stay, 1.0f, true, 255);
 	}
-
-	if (!m_Direction && !(KEYMANAGER->isStayKeyDown('D') || KEYMANAGER->isStayKeyDown('W') && !m_Direction 
-		|| KEYMANAGER->isStayKeyDown('S') && !m_Direction))
+	else
 	{
 		img_player->aniRender(hdc, m_fX - (img_player->getFrameWidth() / 2), m_fY - (img_player->getFrameHeight() / 2), ani_right_stay, 1.0f, true, 255);
+
 	}
 
 	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
@@ -391,6 +373,79 @@ void PlayerCharacter::getItem(int itemInfo)
 	case ITEM_SKILL_TYPE::BULLET_COLOR_Y:
 		m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
 		break;
+	}
+}
+
+void PlayerCharacter::MoveActKeyInput()
+{
+	if (KEYMANAGER->isOnceKeyUp('A'))
+	{
+		if (!m_isRunState)
+		{
+			m_isRunState = true;
+			m_isRunStart = false;
+		}
+		else if (m_isRunState)
+		{
+			m_isRunStart = true;
+		}
+	}
+	if (KEYMANAGER->isOnceKeyUp('D'))
+	{
+		if (!m_isRunState)
+		{
+			m_isRunState = true;
+			m_isRunStart = false;
+		}
+		else if (m_isRunState)
+		{
+			m_isRunStart = true;
+		}
+	}
+	if (KEYMANAGER->isStayKeyDown('A'))
+	{
+		if (m_isRunStart) // 달리고 있다면
+		{
+			m_fX -= m_fSpeed * 1.5f;
+			ani_left_Run->setFPS(20);
+		}
+		else // 달리지 않고 있다면
+		{
+			ani_left_Run->setFPS(10);
+			m_fX -= m_fSpeed;
+		}
+	}
+	if (KEYMANAGER->isStayKeyDown('D'))
+	{
+		if (m_isRunStart) // 달리고 있다면
+		{
+			m_fX += m_fSpeed * 1.5f;
+			ani_right_Run->setFPS(20);
+
+		}
+		else // 달리지 않고 있다면
+		{
+			m_fX += m_fSpeed;
+			ani_right_Run->setFPS(10);
+		}
+	}
+	if (KEYMANAGER->isStayKeyDown('W'))
+	{
+		m_fY -= m_fSpeed;
+	}
+	if (KEYMANAGER->isStayKeyDown('S'))
+	{
+		m_fY += m_fSpeed;
+	}
+
+	if (m_isRunState)
+	{
+		m_count++;
+		if (m_count >= 20)
+		{
+			m_count = 0;
+			m_isRunState = false;
+		}
 	}
 }
 

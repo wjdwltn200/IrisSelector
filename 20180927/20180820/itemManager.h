@@ -14,7 +14,7 @@ public:
 	void update();
 	void render(HDC hdc);
 
-	void itemDrop(const char * imageName, float posX, float posY, tagItemInfo bulletInfo);
+	void itemDrop(const char * imageName, tagItemInfo bulletInfo);
 
 	inline std::vector<item*> getVecItem()
 	{
