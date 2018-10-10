@@ -52,7 +52,7 @@ HRESULT PlayerCharacter::init()
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 	m_tBulletInfo.tIsAlive = true;
-	m_tBulletInfo.tBulletSetNum = 10;
+	m_tBulletInfo.tBulletSetNum = 3;
 	m_tBulletInfo.tScale = 1.0f;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
@@ -65,7 +65,7 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfo.tMoveSpeed = 20.0f;
 
 	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::CUFF_SHOOT;
+	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;

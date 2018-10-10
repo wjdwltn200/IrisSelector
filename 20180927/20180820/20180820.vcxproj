@@ -153,6 +153,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="bulletManger.h" />
     <ClInclude Include="button.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="editorScene_re.h" />
     <ClInclude Include="effect.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="bulletManger.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="editorScene_re.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
