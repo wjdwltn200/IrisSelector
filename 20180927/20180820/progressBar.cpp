@@ -38,9 +38,8 @@ void progressBar::render(HDC hdc)
 void progressBar::setGauge(float currGauge, float maxGauge)
 {
 	m_tMonInfo.tHpMax = maxGauge;
-	m_fCurrGauge = currGauge;
-	m_tMonInfo.tcurrGauge = m_fCurrGauge;
-	m_fWidth = (m_fCurrGauge / m_tMonInfo.tHpMax) * m_imgTop->getWidth();
+	m_tMonInfo.tHp = currGauge;
+	m_fWidth = (m_tMonInfo.tHp / m_tMonInfo.tHpMax) * m_imgTop->getWidth();
 }
 
 void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo)
@@ -49,7 +48,7 @@ void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInf
 	m_tMonInfo.tmaxGaugeSub = maxGaugeSub;
 	m_tMonInfo.tminGaugeInfo = minGaugeInfo;
 	m_tMonInfo.tmaxGaugeInfo = maxGaugeInfo;
-	if (m_fCurrGauge >= m_tMonInfo.tminGaugeSub)
+	if (m_tMonInfo.tHp >= m_tMonInfo.tminGaugeSub)
 	{
 		switch (minGaugeInfo)
 		{
@@ -57,18 +56,18 @@ void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInf
 			m_tMonInfo.tDamageSub += 10.0f;
 			break;
 		case MONSTER_SUB::_MONSTER_DEF_UP:
-			m_tMonInfo.tcurrGauge -= 5.0f;
+			m_tMonInfo.tHp -= 5.0f;
 			break;
 		case MONSTER_SUB::MONSTER_SPEED_UP:
 			m_tMonInfo.tMoveSpeed += 5.0f;
 			break;
 		case MONSTER_SUB::MONSTER_POWER_UP:
 			m_tMonInfo.tDamageSub += 10.0f;
-			m_tMonInfo.tcurrGauge -= 5.0f;
+			m_tMonInfo.tHp -= 5.0f;
 			break;
 		}
 	}
-	else if (m_fCurrGauge >= m_tMonInfo.tmaxGaugeSub)
+	else if (m_tMonInfo.tHp >= m_tMonInfo.tmaxGaugeSub)
 	{
 		switch (maxGaugeInfo)
 		{

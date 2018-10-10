@@ -45,7 +45,7 @@ HRESULT stageScene::init()
 	m_pPlayer = new PlayerCharacter;
 	m_pPlayer->init();
 	
-
+	CAMERA->init();
 	return S_OK;
 }
 
@@ -75,7 +75,7 @@ void stageScene::update()
 	if (buttonNum == 3)
 	{
 		// 최초 한번만 실행되는 부분
-		CAMERA->init();
+		
 
 
 
@@ -108,6 +108,10 @@ void stageScene::update()
 			else if (m_bIsMiniMapOn == true)
 				m_bIsMiniMapOn = false;
 		}
+		CAMERA->keyUpdate();
+		
+
+		
 		/////////////////////////////
 
 		m_pPlayer->update();
@@ -116,7 +120,7 @@ void stageScene::update()
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
-				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - CAMERA->getCameraX(), y * TILE_SIZEY - CAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - CAMERA->getCameraX() , y * TILE_SIZEY - CAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
 			}
 		}
 
@@ -161,8 +165,8 @@ void stageScene::render(HDC hdc)
 					if (m_bIsMiniMapOn)
 					{
 						m_pTileSet[0]->RatioRender(hdc,
-							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
+							715 + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
 							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
 							10,
@@ -180,8 +184,8 @@ void stageScene::render(HDC hdc)
 					if (m_bIsMiniMapOn)
 					{
 						m_pTileSet[1]->RatioRender(hdc,
-							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+							LOC_MINIMAPX + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
+							LOC_MINIMAPY + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
 							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
 							10,
@@ -199,8 +203,8 @@ void stageScene::render(HDC hdc)
 					if (m_bIsMiniMapOn)
 					{
 						m_pTileSet[2]->RatioRender(hdc,
-							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+							LOC_MINIMAPX + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
+							LOC_MINIMAPY + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
 							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
 							10,
@@ -218,8 +222,8 @@ void stageScene::render(HDC hdc)
 					if (m_bIsMiniMapOn)
 					{
 						m_pTileSet[3]->RatioRender(hdc,
-							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+							LOC_MINIMAPX + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
+							LOC_MINIMAPY + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
 							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
 							10,
@@ -228,6 +232,21 @@ void stageScene::render(HDC hdc)
 					}
 					break;
 				}
+
+				char szText[256];
+
+				// TRANSPARENT : 투명, OPAQUE : 불투명
+				SetBkMode(hdc, TRANSPARENT);
+
+				SetTextColor(hdc, RGB(255, 0, 255));
+
+				sprintf_s(szText, "m_ptMoveCameraX : %f / m_ptMoveCameraY : %f",
+					CAMERA->getfocusCameraX(), CAMERA->getfocusCameraY());
+				TextOut(hdc, 400, 0, szText, strlen(szText));
+
+				sprintf_s(szText, "m_ptCameraX : %f / m_ptCameraY : %f",
+					CAMERA->getCameraX(), CAMERA->getCameraY());
+				TextOut(hdc, 400, 100, szText, strlen(szText));
 
 				/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,

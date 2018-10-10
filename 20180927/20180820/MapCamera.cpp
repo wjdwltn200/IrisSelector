@@ -1,22 +1,30 @@
 #include "stdafx.h"
-#include "Camera.h"
+#include "MapCamera.h"
+#include "editorScene_re.h"
 
 
-HRESULT Camera::init()
+
+
+
+
+
+
+
+
+
+HRESULT MapCamera::init()
 {
-	
-
 	MiniMapRatioInit();
 
 	return S_OK;
 }
 
-void Camera::MiniMapRatioInit()
+void MapCamera::MiniMapRatioInit()
 {
-	m_nMiniMap_LocationX = LOC_MINIMAPX;
-	m_nMiniMap_LocationY = LOC_MINIMAPY;
-	m_ptMoveCameraX = WINSIZEX / 2;
-	m_ptMoveCameraY = WINSIZEY / 2;
+	m_nMiniMap_LocationX = LOC_MINIMAPX_MAP;
+	m_nMiniMap_LocationY = LOC_MINIMAPY_MAP;
+	m_ptMoveCameraX = CAMERA_WIDTH / 2;
+	m_ptMoveCameraY = CAMERA_HEIGHT / 2;
 
 	//m_rcCamera.left = 0;
 	//m_rcCamera.right = WINSIZEX;
@@ -27,32 +35,28 @@ void Camera::MiniMapRatioInit()
 	//m_rcMiniCamera.bottom = WINSIZEY;
 
 
-	m_ptCameraMiniX = LOC_MINIMAPX;
-	m_ptCameraMiniY = LOC_MINIMAPY;
+	m_ptCameraMiniX = LOC_MINIMAPX_MAP;
+	m_ptCameraMiniY = LOC_MINIMAPY_MAP;
 }
 
-
-
-
-
-void Camera::release()
+void MapCamera::release()
 {
 }
 
-void Camera::update()
+void MapCamera::update()
 {
-	if (m_ptMoveCameraX < WINSIZEX / 2) m_ptMoveCameraX = WINSIZEX / 2;
+	if (m_ptMoveCameraX < CAMERA_WIDTH / 2) m_ptMoveCameraX = CAMERA_WIDTH / 2;
 	if (m_ptMoveCameraX > (g_saveData.gTileMaxCountX * 40)) (g_saveData.gTileMaxCountX * 40);
-	if (m_ptMoveCameraY < WINSIZEY / 2) m_ptMoveCameraY = WINSIZEY / 2;
+	if (m_ptMoveCameraY < CAMERA_HEIGHT / 2) m_ptMoveCameraY = CAMERA_HEIGHT / 2;
 	if (m_ptMoveCameraY > (g_saveData.gTileMaxCountY * 40)) (g_saveData.gTileMaxCountY * 40);
 
-	m_ptCameraX = m_ptMoveCameraX - WINSIZEX / 2;
+	m_ptCameraX = m_ptMoveCameraX - CAMERA_WIDTH / 2;
 	if (m_ptCameraX < 0) m_ptCameraX = 0;
-	if (m_ptCameraX > (g_saveData.gTileMaxCountX * 40) - WINSIZEX) m_ptCameraX = (g_saveData.gTileMaxCountX * 40) - WINSIZEX;
+	if (m_ptCameraX > (g_saveData.gTileMaxCountX * 40) - CAMERA_WIDTH) m_ptCameraX = (g_saveData.gTileMaxCountX * 40) - CAMERA_WIDTH;
 
-	m_ptCameraY = m_ptMoveCameraY - WINSIZEY / 2;
+	m_ptCameraY = m_ptMoveCameraY - CAMERA_HEIGHT / 2;
 	if (m_ptCameraY < 0) m_ptCameraY = 0;
-	if (m_ptCameraY > (g_saveData.gTileMaxCountY * 40) - WINSIZEY) m_ptCameraY = (g_saveData.gTileMaxCountY * 40) - WINSIZEY;
+	if (m_ptCameraY > (g_saveData.gTileMaxCountY * 40) - CAMERA_HEIGHT) m_ptCameraY = (g_saveData.gTileMaxCountY * 40) - CAMERA_HEIGHT;
 
 	// 미니맵
 	//if (m_ptCameraMiniX < 0) m_ptCameraMiniX = 0; // 0보다 작을시 끝에 고정
@@ -67,9 +71,10 @@ void Camera::update()
 	//m_ptMiniCameraY = m_ptCameraMiniY - LOC_MINIMAPY;
 	//if (m_ptMiniCameraY < 0) m_ptMiniCameraY = 0;
 	//if (m_ptMiniCameraY > WINSIZEY - LOC_MINIMAPY) m_ptMiniCameraY = WINSIZEY - LOC_MINIMAPY;
+
 }
 
-void Camera::keyUpdate()
+void MapCamera::keyUpdate()
 {
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
@@ -97,15 +102,15 @@ void Camera::keyUpdate()
 
 }
 
-void Camera::render(HDC hdc)
+void MapCamera::render(HDC hdc)
 {
 }
 
-Camera::Camera()
+MapCamera::MapCamera()
 {
 }
 
 
-Camera::~Camera()
+MapCamera::~MapCamera()
 {
 }
