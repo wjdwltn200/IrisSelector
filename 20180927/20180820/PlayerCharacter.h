@@ -6,6 +6,8 @@ class bulletManger;
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
 
+#define BAES_HP 10
+
 class PlayerCharacter
 {
 
@@ -14,13 +16,13 @@ private:
 	image * img_left_Run;
 	image * img_right_Run;
 	image * img_CrossHair;
+	image * img_HpPoint[10];
 
 	animation * ani_right_stay;
 	animation * ani_left_stay;
 	animation * ani_left_Run;
 	animation * ani_right_Run;
 	animation * ani_CrossHair;
-
 
 	int m_count;
 	int ani_stay_Curr[4];
@@ -48,9 +50,8 @@ private:
 	float m_fX = WINSIZEX / 2;
 	float m_fY = WINSIZEY / 2;
 	
-	float m_currHpX;
-	float m_currHpY;
-	float m_MaxHp;
+	int m_currHp;
+	int m_currHpMax;
 	
 	tagBulletInfo m_tBulletInfo;
 	tagBulletInfo * m_tBulletInfoPoint;
@@ -75,6 +76,8 @@ public:
 
 	float getX() { return m_fX; }
 	float getY() { return m_fY; }
+
+	void MoveActKeyInput();
 	
 
 	PlayerCharacter();
