@@ -13,7 +13,7 @@ HRESULT PlayerCharacter::init()
 
 	m_currHp = BAES_HP;
 	m_currHpMax = m_currHp;
-
+	m_isAlive = true;
 
 	int ani_stay_Curr[] = { 0,1,2,3,4,5,6,7 };
 	img_player = IMAGEMANAGER->addImage("player", "image/resources/player_image/BG_Player_idle_0.bmp", 256, 54, 8, 1, true, RGB(255, 0, 255), m_fX, m_fY);
@@ -83,11 +83,11 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfo.tScatter = m_fCrossHairScale * 10.0f;
 
 	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
+	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::CUFF_SHOOT;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
-	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL;
 	
 	m_tBulletInfoPoint = &m_tBulletInfo;
 
@@ -95,12 +95,12 @@ HRESULT PlayerCharacter::init()
 	memset(&m_tBulletInfoSub, 0, sizeof(m_tBulletInfoSub));
 
 	m_tBulletInfoSub.tIsAlive = true;
-	m_tBulletInfoSub.tBulletSetNum = 3;
+	m_tBulletInfoSub.tBulletSetNum = 2;
 	m_tBulletInfoSub.tScale = 1.0f;
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfoSub.tRadius = 0.5f;
 	m_tBulletInfoSub.tExpRadius = 0.5f;
-	m_tBulletInfoSub.tRange = 150.0f;
+	m_tBulletInfoSub.tRange = 300.0f;
 	m_tBulletInfoSub.tBulletBoom = true;
 
 	m_tBulletInfoSub.tDmage = 5.0f;
@@ -108,8 +108,8 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfoSub.tMoveSpeed = 10.0f;
 	m_tBulletInfoSub.tScatter = 0.0f;
 
-	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::CUFF_SHOOT;
+	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::MOUSE_POINT;
+	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_P;
@@ -431,6 +431,15 @@ void PlayerCharacter::getItem(int itemInfo)
 	case ITEM_SKILL_TYPE::BULLET_COLOR_Y:
 		m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
 		break;
+	}
+}
+
+void PlayerCharacter::PlayerDamage(int dam)
+{
+	m_currHp -= dam;
+	if (m_currHp < 0)
+	{
+		m_isAlive = false;
 	}
 }
 

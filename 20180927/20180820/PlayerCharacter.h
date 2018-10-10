@@ -2,7 +2,7 @@
 class animation;
 class bulletManger;
 
-#define BULLET_FIRST_DELAY 10
+#define BULLET_FIRST_DELAY 60
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
 
@@ -52,6 +52,7 @@ private:
 	
 	int m_currHp;
 	int m_currHpMax;
+	bool m_isAlive;
 	
 	tagBulletInfo m_tBulletInfo;
 	tagBulletInfo * m_tBulletInfoPoint;
@@ -76,6 +77,8 @@ public:
 
 	float getX() { return m_fX; }
 	float getY() { return m_fY; }
+
+	void PlayerDamage(int dam);
 
 	void MoveActKeyInput();
 	
