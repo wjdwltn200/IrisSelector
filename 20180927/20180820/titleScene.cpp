@@ -35,6 +35,8 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("Bullet_P", "image/resources/bullet_image/Bullet_P.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_G", "image/resources/bullet_image/Bullet_G.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 
+	m_pEffMagr = new effectManager;
+	m_pEffMagr->addEffect("Bullet_Y_End", "image/resources/bullet_image/Bullet_Y_End.bmp", 238, 30, 34, 30, 15, 100);
 	ShowCursor(FALSE);
 
 	m_player = new PlayerCharacter;
@@ -42,10 +44,10 @@ HRESULT titleScene::init()
 	m_player->setBulletMagPointer(&m_pBulletMag);
 	
 	m_pBulletMag = new bulletManger;
-	m_pBulletMag->init(500);
+	m_pBulletMag->init(500, m_pEffMagr);
 
 	m_pBulletMagMons = new bulletManger;
-	m_pBulletMagMons->init(100);
+	m_pBulletMagMons->init(100, m_pEffMagr);
 
 
 
@@ -70,9 +72,7 @@ HRESULT titleScene::init()
 		m_pItemMag->itemDrop("ItemObject", 100 , 50 * (i + 1), ItemInfo);
 	}
 
-	m_pEffMagr = new effectManager;
-	m_pEffMagr->init();
-	m_pEffMagr->addEffect("Bullet_Y_End", "image/resources/bullet_image/Bullet_Y_End.bmp",297, 27, 27, 27, 30, 5);
+	
 
 
 

@@ -63,7 +63,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfo.tRange = 200.0f;
 	m_tBulletInfo.tBulletBoom = true;
 
-	m_tBulletInfo.tDmage = 10.0f;
+	m_tBulletInfo.tDmage = 10.0f + m_tMonInfo.tDamageSub;
 	m_tBulletInfo.tKnokBack = 5.0f;
 	m_tBulletInfo.tMoveSpeed = 5.0f;
 
@@ -87,7 +87,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfoSub.tRange = 200.0f;
 	m_tBulletInfoSub.tBulletBoom = false;
 
-	m_tBulletInfoSub.tDmage = 10.0f;
+	m_tBulletInfoSub.tDmage = 10.0f + m_tMonInfo.tDamageSub;
 	m_tBulletInfoSub.tKnokBack = 5.0f;
 	m_tBulletInfoSub.tMoveSpeed = 5.0f;
 
@@ -126,9 +126,12 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.tUnKnokBack = monInfo.tUnKnokBack;
 	m_tMonInfo.tMoveSpeed = monInfo.tMoveSpeed;
 
-	m_tMonInfo.tPosHpX = monInfo.tPosHpX;
-	m_tMonInfo.tPosHpY = monInfo.tPosHpY;
+	m_tMonInfo.tWidth = monInfo.tWidth;
+	m_tMonInfo.tHeight = monInfo.tHeight;
+	m_tMonInfo.tcurrGauge = monInfo.tcurrGauge;
 	m_tMonInfo.tIsType = monInfo.tIsType;
+	m_tMonInfo.tDamageSub = monInfo.tDamageSub;
+	m_tMonInfo.tcurrGauge = monInfo.tcurrGauge;
 	
 	m_monsterMove->setDefPlayFrame(false, true);
 	m_monsterMove->setFPS(10);
@@ -136,9 +139,8 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 
 	m_progressBar = new progressBar;
-	m_progressBar->init(m_tMonInfo.tPosHpX, m_tMonInfo.tPosHpY,m_progressBar->setX(),m_progressBar->setY());
-
-
+	m_progressBar->init(m_tMonInfo.tPosX + m_tMonInfo.tPosX/2 , m_tMonInfo.tPosY + m_tMonInfo.tPosY + 100,
+		m_tMonInfo.tWidth, m_tMonInfo.tHeight);
 
 
 	return S_OK;

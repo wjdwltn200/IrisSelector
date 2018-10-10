@@ -5,9 +5,10 @@ HRESULT progressBar::init(float x, float y, float width, float height)
 {
 	m_fX = x;
 	m_fY = y;
-	m_fWidth = width;
+	m_tMonInfo.tHp = width;
+	m_fWidth = m_tMonInfo.tHp;
 	m_fHeight = height;
-
+	
 	m_rc = RectMake(m_fX, m_fY, m_fWidth, m_fHeight);
 
 	m_imgTop = IMAGEMANAGER->addImage("barTop", 
@@ -35,8 +36,56 @@ void progressBar::render(HDC hdc)
 
 void progressBar::setGauge(float currGauge, float maxGauge)
 {
+	m_tMonInfo.tHpMax = maxGauge;
 	m_fCurrGauge = currGauge;
-	m_fWidth = (m_fCurrGauge / maxGauge) * m_imgTop->getWidth();
+	m_tMonInfo.tcurrGauge = m_fCurrGauge;
+	m_fWidth = (m_fCurrGauge / m_tMonInfo.tHpMax) * m_imgTop->getWidth();
+}
+
+void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo)
+{
+	m_fGaugeSub = minGaugeSub;
+	m_fMaxGaugeSub = maxGaugeSub;
+	if (m_fCurrGauge >= m_fGaugeSub)
+	{
+		switch (minGaugeInfo)
+		{
+		case MONSTER_SUB::MONSTER_ATT_UP:
+			m_tMonInfo.tDamageSub += 10.0f;
+			break;
+		case MONSTER_SUB::_MONSTER_DEF_UP:
+			m_tMonInfo.tcurrGauge -= 5.0f;
+			break;
+		case MONSTER_SUB::MONSTER_SPEED_UP:
+			m_tMonInfo.tMoveSpeed += 5.0f;
+			break;
+		case MONSTER_SUB::MONSTER_POWER_UP:
+			m_tMonInfo.tDamageSub += 10.0f;
+			m_tMonInfo.tcurrGauge -= 5.0f;
+			break;
+		}
+	}
+	else if (m_fCurrGauge >= m_fMaxGaugeSub)
+	{
+		switch (maxGaugeInfo)
+		{
+		case MONSTER_SUB::MONSTER_HP_HEALING:
+			m_tMonInfo.tHp += 5.0f;
+			break;
+		case MONSTER_SUB::MONSTER_RESURRECTION:
+			if (m_tMonInfo.tIsAlive == false)
+			{
+				m_tMonInfo.tIsAlive = true;
+			}
+			break;
+		case MONSTER_SUB::MONSTER_BOOM:
+			if (m_tMonInfo.tIsAlive == false)
+			{
+
+			}
+			break;
+		}
+	}
 }
 
 progressBar::progressBar()
