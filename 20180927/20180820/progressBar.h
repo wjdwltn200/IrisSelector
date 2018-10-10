@@ -1,4 +1,5 @@
 #pragma once
+class tagMonInfo;
 class progressBar
 {
 private:
@@ -8,9 +9,12 @@ private:
 	float	m_fHeight;
 
 	float	m_fCurrGauge;
+	float	m_fGaugeSub;
+	float	m_fMaxGaugeSub;
 
 	image*	m_imgTop;
 	image*	m_imgBottom;
+	tagMonInfo m_tMonInfo;
 
 public:
 	HRESULT init(float x, float y, float width, float height);
@@ -22,6 +26,8 @@ public:
 
 	inline void setX(float x) { m_fX = x; }
 	inline void setY(float y) { m_fY = y; }
+
+	void monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo);
 
 	inline void setWidth(float widht) { m_fWidth = widht; }
 	inline void setHeight(float height) { m_fHeight = height; }
