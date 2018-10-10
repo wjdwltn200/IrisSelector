@@ -128,7 +128,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 	m_tMonInfo.tWidth = monInfo.tWidth;
 	m_tMonInfo.tHeight = monInfo.tHeight;
-	m_tMonInfo.tcurrGauge = monInfo.tcurrGauge;
+	m_tMonInfo.tcurrGauge = m_tMonInfo.tHp = monInfo.tcurrGauge = monInfo.tHp;
 	m_tMonInfo.tIsType = monInfo.tIsType;
 	m_tMonInfo.tDamageSub = monInfo.tDamageSub;
 	
@@ -138,7 +138,6 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 
 	m_progressBar = new progressBar;
-	m_tMonInfo.tcurrGauge = 100.0f;
 
 
 
@@ -180,9 +179,15 @@ void monster::fireAtk()
 
 }
 
-void monster::Damge()
+void monster::Damge(float dam)
 {
-	m_tMonInfo.tcurrGauge -= m_tBulletInfo.tDmage;
+	m_tMonInfo.tcurrGauge -= dam;
+	m_tMonInfo.tHp -= dam;
+
+	if (m_tMonInfo.tHp < 0.0f) // »ç¸ÁÃ³¸®
+	{
+		m_tMonInfo.tIsAlive = false;
+	}
 }
 
 void monster::update()

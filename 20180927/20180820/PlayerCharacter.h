@@ -2,7 +2,7 @@
 class animation;
 class bulletManger;
 
-#define BULLET_FIRST_DELAY 60
+#define BULLET_FIRST_DELAY 10
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
 

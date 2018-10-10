@@ -55,8 +55,6 @@ HRESULT titleScene::init()
 	m_pBulletMagMons = new bulletManger;
 	m_pBulletMagMons->init(100, m_pEffMagr);
 
-
-
 	m_pMonsterMag = new monsterManger;
 	m_pMonsterMag->init(50);
 	//m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
@@ -67,19 +65,19 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/Item_set.bmp", 682, 614, 20, 18, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ItemShadow", "image/resources/item_image/Item_shadow.bmp", 32, 9, 1, 1, true, RGB(255, 0, 255));
 
-	for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
-	{
-		tagItemInfo ItemInfo;
-		ItemInfo.tImageCurrX = i;
-		ItemInfo.tImageCurrY = i;
-		ItemInfo.tScale = 1.0f;
-		ItemInfo.tTimer = 1000;
-		ItemInfo.tRadius = 1.5f;
-		ItemInfo.tSkillType = i;
-		ItemInfo.posX = 100;
-		ItemInfo.posY = 50 * (i + 1);
-		m_pItemMag->itemDrop("ItemObject", ItemInfo);
-	}
+	//for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
+	//{
+	//	tagItemInfo ItemInfo;
+	//	ItemInfo.tImageCurrX = i;
+	//	ItemInfo.tImageCurrY = i;
+	//	ItemInfo.tScale = 1.0f;
+	//	ItemInfo.tTimer = 1000;
+	//	ItemInfo.tRadius = 1.5f;
+	//	ItemInfo.tSkillType = i;
+	//	ItemInfo.posX = 100;
+	//	ItemInfo.posY = 50 * (i + 1);
+	//	m_pItemMag->itemDrop("ItemObject", ItemInfo);
+	//}
 
 	
 
@@ -119,6 +117,7 @@ void titleScene::update()
 		tagMonInfo Moninfo;
 		Moninfo.tFireDelay = 120;
 		Moninfo.tMoveSpeed = 0.5f;
+		Moninfo.tHp = 20.0f;
 		m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 	}
 
@@ -209,13 +208,8 @@ void titleScene::ColRc()
 				(*MonsIter)->getMonInfo().tPosY))
 				)
 			{
-			
-				(*MonsIter)->Damge();
+				(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
 				(*PlayerBulletIter)->setIsAlive(false);
-
-				//(*MonsIter)->setAlive(false);
-				//(*PlayerBulletIter)->setIsAlive(false);
-				
 			}
 		}
 	}
@@ -224,6 +218,7 @@ void titleScene::ColRc()
 	std::vector<item*>::iterator ItemIter;
 	for (ItemIter = vItem.begin(); ItemIter != vItem.end(); ItemIter++)
 	{
+
 		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getItemInfo().posX, (*ItemIter)->getItemInfo().posY)))
 		{
 			m_pEffMagr->play("Item_Get1", m_player->getX() - (320 / 4) / 2, m_player->getY());

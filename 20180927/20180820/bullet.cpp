@@ -95,7 +95,6 @@ void bullet::update()
 	if (!m_isAlive) return;
 	movement();
 
-	m_eff->update();
 	m_pAni->frameUpdate();
 }
 
@@ -129,9 +128,6 @@ void bullet::render(HDC hdc)
 	sprintf_s(szText, "m_bulletInfo.tMoveSpeed : %f",
 		m_bulletInfo.tMoveSpeed);
 	TextOut(hdc, 10, 160, szText, strlen(szText));
-
-	m_eff->render(hdc);
-
 }
 
 void bullet::movement()

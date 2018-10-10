@@ -69,17 +69,17 @@ HRESULT PlayerCharacter::init()
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 	m_tBulletInfo.tIsAlive = true;
-	m_tBulletInfo.tBulletSetNum = 1;
+	m_tBulletInfo.tBulletSetNum = 3;
 	m_tBulletInfo.tScale = 1.0f;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 500.0f;
-	m_tBulletInfo.tBulletBoom = false;
+	m_tBulletInfo.tRange = 200.0f;
+	m_tBulletInfo.tBulletBoom = true;
 
 	m_tBulletInfo.tDmage = 10.0f;
 	m_tBulletInfo.tKnokBack = 5.0f;
-	m_tBulletInfo.tMoveSpeed = 5.0f;
+	m_tBulletInfo.tMoveSpeed = 20.0f;
 	m_tBulletInfo.tScatter = m_fCrossHairScale * 10.0f;
 
 	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
@@ -95,7 +95,7 @@ HRESULT PlayerCharacter::init()
 	memset(&m_tBulletInfoSub, 0, sizeof(m_tBulletInfoSub));
 
 	m_tBulletInfoSub.tIsAlive = true;
-	m_tBulletInfoSub.tBulletSetNum = 1;
+	m_tBulletInfoSub.tBulletSetNum = 3;
 	m_tBulletInfoSub.tScale = 1.0f;
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfoSub.tRadius = 0.5f;

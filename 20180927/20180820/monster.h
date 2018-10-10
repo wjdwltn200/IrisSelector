@@ -28,7 +28,7 @@ public:
 	void update();
 	void Move();
 	void fireAtk();
-	void Damge();
+	void Damge(float dam);
 	void render(HDC hdc);
 
 	tagMonInfo getMonInfo() { return m_tMonInfo; }
