@@ -213,28 +213,8 @@ void titleScene::ColRc()
 				)
 			{
 				(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
-				(*PlayerBulletIter)->HitEff();
+				(*PlayerBulletIter)->setIsAlive(false);
 			}
-		}
-	}
-
-	std::vector<bullet*> vMonsterBullet = m_pBulletMagMons->getVecBullet();
-	std::vector<bullet*>::iterator MonsterBulletIter;
-	for (MonsterBulletIter = vMonsterBullet.begin(); MonsterBulletIter != vMonsterBullet.end(); MonsterBulletIter++) // 플레이어 총알 백터
-	{
-		if (!(*MonsterBulletIter)->getIsAlive()) continue;
-
-		if ((*MonsterBulletIter)->getIsAlive() &&
-			(*MonsterBulletIter)->getTagBulletInfo().tRadius + m_player->getRadius()>
-			(MY_UTIL::getDistance(
-			(*MonsterBulletIter)->getTagBulletInfo().tPosX,
-			(*MonsterBulletIter)->getTagBulletInfo().tPosY,
-			m_player->getX(),
-			m_player->getY()))
-			)
-		{
-			m_player->PlayerDamage((*MonsterBulletIter)->getTagBulletInfo().tDmage);
-			(*MonsterBulletIter)->HitEff();
 		}
 	}
 
