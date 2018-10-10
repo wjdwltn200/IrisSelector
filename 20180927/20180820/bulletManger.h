@@ -2,6 +2,7 @@
 #include <vector>
 #include "bullet.h"
 
+class effectManager;
 class animation;
 
 class bulletManger
@@ -15,16 +16,16 @@ private:
 
 	tagBulletInfo m_tBulletInfo;
 	animation * m_pAni;
+	effectManager * m_pEffMag;
 
 public:
-	HRESULT init(int vecMaxSize);
+	HRESULT init(int vecMaxSize, effectManager * pBulletMag);
 	void release();
 	void update();
 	void render(HDC hdc);
 
 	void fire(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub);
 	void NextFire(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub);
-	void NextFireShoot();
 
 	inline std::vector<bullet*> getVecBullet()
 	{

@@ -34,6 +34,7 @@ private:
 
 	effectManager * m_pEffMagr;
 
+
 	int m_buttonSetX;
 	int m_buttonSetY;
 

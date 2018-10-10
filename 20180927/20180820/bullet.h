@@ -2,12 +2,15 @@
 class image;
 class animation;
 class bulletManger;
+class effectManager;
 
 class bullet
 {
 private:
 	image * m_pImg;
 	animation * m_pAni;
+	effectManager* m_eff;
+	const char * m_effName;
 
 	RECT	m_rc;
 	int		m_ScaleCount;
@@ -27,7 +30,7 @@ private:
 
 
 public:
-	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub, animation * pAni, bulletManger* bulletMagPoint = NULL);
+	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub, animation * pAni, effectManager * pEff, bulletManger* bulletMagPoint = NULL);
 	void release();
 	void update();
 	void render(HDC hdc);

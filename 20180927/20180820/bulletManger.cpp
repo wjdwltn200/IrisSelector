@@ -1,20 +1,22 @@
 #include "stdafx.h"
 #include "bulletManger.h"
 #include "animation.h"
+#include "effectManager.h"
 
 
-HRESULT bulletManger::init(int vecMaxSize)
+HRESULT bulletManger::init(int vecMaxSize, effectManager * pBulletMag)
 {
 	for (int i = 0; i < vecMaxSize; i++)
 	{
 		memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 		m_pAni = new animation;
-
 		m_tBulletInfo.tIsAlive = false;
 
+		m_pEffMag = pBulletMag;
+
 		bullet * pBullet = new bullet;
-		pBullet->init("임시", 0, 0, 0, &m_tBulletInfo, &m_tBulletInfo, m_pAni, this);
+		pBullet->init("임시", 0, 0, 0, &m_tBulletInfo, &m_tBulletInfo, m_pAni, m_pEffMag, this);
 		m_vecBullet.push_back((pBullet));
 		m_vecNextFire.push_back((pBullet));
 	}
@@ -61,13 +63,13 @@ void bulletManger::fire(const char * imageName, float posX, float posY, float an
 	{
 		if (!(*m_iter)->getIsAlive()) // 죽어있으면 재활용
 		{
-			(*m_iter)->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, this);
+			(*m_iter)->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, m_pEffMag, this);
 			return;
 		}
 	}
 
 	bullet * pBullet = new bullet;
-	pBullet->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, this);
+	pBullet->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, m_pEffMag,this);
 	m_vecBullet.push_back((pBullet));
 	return;
 }
@@ -78,13 +80,13 @@ void bulletManger::NextFire(const char * imageName, float posX, float posY, floa
 	{
 		if (!(*m_NextIter)->getIsAlive()) // 죽어있으면 재활용
 		{
-			(*m_NextIter)->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, this);
+			(*m_NextIter)->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, m_pEffMag, this);
 			return;
 		}
 	}
 
 	bullet * pBullet = new bullet;
-	pBullet->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, this);
+	pBullet->init(imageName, posX, posY, angle, bulletInfo, bulletInfoSub, m_pAni, m_pEffMag, this);
 	m_vecNextFire.push_back((pBullet));
 	return;
 }
