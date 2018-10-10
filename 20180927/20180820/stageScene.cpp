@@ -2,6 +2,7 @@
 #include "stageScene.h"
 #include "button.h"
 #include "image.h"
+#include "PlayerCharacter.h"
 
 char szFileName1[512];
 
@@ -29,7 +30,7 @@ HRESULT stageScene::init()
 	m_pTileSet[1] = IMAGEMANAGER->findImage("tiles2");
 	m_pTileSet[2] = IMAGEMANAGER->findImage("tiles3");
 	m_pTileSet[3] = IMAGEMANAGER->findImage("tiles4");
-
+	m_bIsMiniMapOn = false;
 
 
 	m_pImage_BG1 = IMAGEMANAGER->findImage("black");
@@ -40,6 +41,10 @@ HRESULT stageScene::init()
 
 	m_pButton2 = new button;
 	m_pButton2->init("800x", WINSIZEX / 2, 180, PointMake(0, 1), PointMake(0, 0), Func_button2); // 사용자 지정게임
+
+	m_pPlayer = new PlayerCharacter;
+	m_pPlayer->init();
+	
 
 	return S_OK;
 }
@@ -65,7 +70,7 @@ void stageScene::update()
 	if (buttonNum == 2)
 	{
 		LoadEvent();
-		buttonNum = 3;
+		buttonNum++;
 	}
 	if (buttonNum == 3)
 	{
@@ -96,23 +101,22 @@ void stageScene::update()
 	if (buttonNum == 4)
 	{
 		// 단축키
-		if (KEYMANAGER->isOnceKeyDown('M') && m_bIsMiniMapOn == false)
+		if (KEYMANAGER->isOnceKeyDown('M'))
 		{
-			m_bIsMiniMapOn = true;
-		}
-		else if (KEYMANAGER->isOnceKeyDown('M') && m_bIsMiniMapOn == true)
-		{
-			m_bIsMiniMapOn = false;
+			if (m_bIsMiniMapOn == false)
+				m_bIsMiniMapOn = true;
+			else if (m_bIsMiniMapOn == true)
+				m_bIsMiniMapOn = false;
 		}
 		/////////////////////////////
 
-
+		m_pPlayer->update();
 		CAMERA->update();
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
-				//m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - CAMERA->getCameraX(), y * TILE_SIZEY - CAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - CAMERA->getCameraX(), y * TILE_SIZEY - CAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
 			}
 		}
 
@@ -137,6 +141,9 @@ void stageScene::render(HDC hdc)
 	}
 	if (buttonNum == 4)
 	{
+
+
+
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
@@ -150,6 +157,18 @@ void stageScene::render(HDC hdc)
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+
+					if (m_bIsMiniMapOn)
+					{
+						m_pTileSet[0]->RatioRender(hdc,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
+							10,
+							TILE_SIZEX,
+							TILE_SIZEY);
+					}
 					break;
 				case 2:
 					m_pTileSet[1]->frameRender(hdc,
@@ -157,6 +176,18 @@ void stageScene::render(HDC hdc)
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+
+					if (m_bIsMiniMapOn)
+					{
+						m_pTileSet[1]->RatioRender(hdc,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
+							10,
+							TILE_SIZEX,
+							TILE_SIZEY);
+					}
 					break;
 				case 3:
 					m_pTileSet[2]->frameRender(hdc,
@@ -164,6 +195,18 @@ void stageScene::render(HDC hdc)
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+
+					if (m_bIsMiniMapOn)
+					{
+						m_pTileSet[2]->RatioRender(hdc,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
+							10,
+							TILE_SIZEX,
+							TILE_SIZEY);
+					}
 					break;
 				case 4:
 					m_pTileSet[3]->frameRender(hdc,
@@ -171,6 +214,18 @@ void stageScene::render(HDC hdc)
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+
+					if (m_bIsMiniMapOn)
+					{
+						m_pTileSet[3]->RatioRender(hdc,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
+							10,
+							TILE_SIZEX,
+							TILE_SIZEY);
+					}
 					break;
 				}
 
@@ -180,6 +235,16 @@ void stageScene::render(HDC hdc)
 
 			}
 		}
+
+
+
+
+
+
+
+		m_pPlayer->render(hdc);
+
+
 	}
 }
 

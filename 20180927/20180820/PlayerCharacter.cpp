@@ -10,6 +10,11 @@ HRESULT PlayerCharacter::init()
 	img_player = IMAGEMANAGER->addImage("player", "image/resources/player_image/BG_Player_idle_0.bmp", 256, 54, 8, 1, true, RGB(255, 0, 255), m_fX, m_fY);
 	img_left_Run = IMAGEMANAGER->addImage("player_Left_Run", "image/resources/player_image/BG_Player_L_Run.bmp", 342, 54, 6, 1, true, RGB(255, 0, 255), m_fX, m_fY);
 	img_right_Run = IMAGEMANAGER->addImage("player_Right_Run", "image/resources/player_image/BG_Player_R_Run.bmp", 342, 54, 6, 1, true, RGB(255, 0, 255), m_fX, m_fY);
+	img_CrossHair = IMAGEMANAGER->addImage("CrossHair", "image/resources/bullet_image/crossHair.bmp", 207, 69, 3, 1, true, RGB(255, 0, 255), m_fX, m_fY);
+	ani_CrossHair = new animation;
+	ani_CrossHair->init(img_CrossHair->getWidth(), img_CrossHair->getFrameHeight(), 69, 69);
+	ani_CrossHair->setDefPlayFrame(true, false);
+	ani_CrossHair->setFPS(30);
 
 	ani_right_stay = new animation;
 	ani_right_stay->init(IMAGEMANAGER->findImage("player")->getWidth(), IMAGEMANAGER->findImage("player")->getHeight(), 32, 54);
@@ -46,35 +51,38 @@ HRESULT PlayerCharacter::init()
 	m_bulletDelayCount = 0;
 	m_bulletDelayCountMax = BULLET_FIRST_DELAY;
 
+	m_fCrossHairScale = CROSSHAIR_MIN_SCALE;
+	m_fCrossHairScaleMax = CROSSHAIR_MAX_SCALE;
+
 	// 정지수 끝
 
 	// Player 기본 셋팅 (메인)
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 	m_tBulletInfo.tIsAlive = true;
-	m_tBulletInfo.tBulletSetNum = 3;
+	m_tBulletInfo.tBulletSetNum = 1;
 	m_tBulletInfo.tScale = 1.0f;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 100.0f;
-	m_tBulletInfo.tBulletBoom = true;
+	m_tBulletInfo.tRange = 300.0f;
+	m_tBulletInfo.tBulletBoom = false;
 
 	m_tBulletInfo.tDmage = 10.0f;
 	m_tBulletInfo.tKnokBack = 5.0f;
 	m_tBulletInfo.tMoveSpeed = 20.0f;
+	m_tBulletInfo.tScatter = 10.0f;
 
 	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
 	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
-	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL;
+	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
 	
 	m_tBulletInfoPoint = &m_tBulletInfo;
 
 	// 서브 탄환 (이중 폭발)
-
 	memset(&m_tBulletInfoSub, 0, sizeof(m_tBulletInfoSub));
 
 	m_tBulletInfoSub.tIsAlive = true;
@@ -83,19 +91,20 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfoSub.tRadius = 0.5f;
 	m_tBulletInfoSub.tExpRadius = 0.5f;
-	m_tBulletInfoSub.tRange = 200.0f;
+	m_tBulletInfoSub.tRange = 300.0f;
 	m_tBulletInfoSub.tBulletBoom = false;
 
 	m_tBulletInfoSub.tDmage = 10.0f;
 	m_tBulletInfoSub.tKnokBack = 5.0f;
 	m_tBulletInfoSub.tMoveSpeed = 10.0f;
+	m_tBulletInfoSub.tScatter = 0.0f;
 
-	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
+	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::ANGLE_RANDOM;
+	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::CUFF_SHOOT;
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_P;
-	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL;
+	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
 
@@ -109,11 +118,28 @@ void PlayerCharacter::release()
 
 void PlayerCharacter::update()
 {
-	// 총알 발사
-	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+	if (m_fCrossHairScale > CROSSHAIR_MIN_SCALE)
 	{
+		if (m_fCrossHairScale < CROSSHAIR_MIN_SCALE)
+			m_fCrossHairScale = CROSSHAIR_MIN_SCALE;
+
+		m_fCrossHairScale -= 0.1f;
+	}
+
+	// 총알 발사
+	if (0)
+	{
+
 		if (m_bulletDelayCount == NULL)
 		{
+			if (m_fCrossHairScale < m_fCrossHairScaleMax)
+			{
+				m_fCrossHairScale += 0.1f;
+				if (m_fCrossHairScale > m_fCrossHairScaleMax)
+					m_fCrossHairScale = m_fCrossHairScaleMax;
+			}
+			ani_CrossHair->start();
+
 			if (m_tBulletInfo.tShootType == BULLET_SHOOT_TYPE::ONE_SHOOT)
 			{
 				if (m_tBulletInfo.tBulletSetNum == 1)
@@ -148,6 +174,8 @@ void PlayerCharacter::update()
 	if (m_bulletDelayCount > 0)
 	{
 		m_bulletDelayCount--;
+		// 크로스 헤어 Act
+
 	}
 
 	if (KEYMANAGER->isOnceKeyUp('A') && !KEYMANAGER->isOnceKeyUp('D'))
@@ -222,6 +250,7 @@ void PlayerCharacter::update()
 
 	m_rc = RectMakeCenter(m_fX, m_fY, img_player->getFrameWidth(), img_player->getFrameHeight());
 
+	ani_CrossHair->frameUpdate();
 	ani_right_stay->frameUpdate();
 	ani_left_stay->frameUpdate();
 	ani_left_Run->frameUpdate();
@@ -261,6 +290,8 @@ void PlayerCharacter::render(HDC hdc)
 
 	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 
+	img_CrossHair->aniRender(hdc, g_ptMouse.x - (img_CrossHair->getFrameWidth() / 2) * m_fCrossHairScale, g_ptMouse.y - (img_CrossHair->getFrameHeight() / 2) * m_fCrossHairScale, ani_CrossHair, m_fCrossHairScale);
+
 
 	char szText[256];
 
@@ -296,6 +327,14 @@ void PlayerCharacter::render(HDC hdc)
 	sprintf_s(szText, "m_bulletSetMax : %d",
 		m_tBulletInfo.tBulletSetNum);
 	TextOut(hdc, m_fX + 100, m_fY + 120, szText, strlen(szText));
+
+	sprintf_s(szText, "m_fCrossHairScale : %f",
+		m_fCrossHairScale);
+	TextOut(hdc, m_fX + 100, m_fY + 140, szText, strlen(szText));
+
+	sprintf_s(szText, "m_fCrossHairScaleMax : %f",
+		m_fCrossHairScaleMax);
+	TextOut(hdc, m_fX + 100, m_fY + 160, szText, strlen(szText));
 }
 
 void PlayerCharacter::getItem(int itemInfo)

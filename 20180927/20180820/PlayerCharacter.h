@@ -3,6 +3,8 @@ class animation;
 class bulletManger;
 
 #define BULLET_FIRST_DELAY 10
+#define CROSSHAIR_MAX_SCALE 5.0f
+#define CROSSHAIR_MIN_SCALE 0.5f
 
 
 class PlayerCharacter
@@ -12,11 +14,13 @@ private:
 	image * img_player;
 	image * img_left_Run;
 	image * img_right_Run;
+	image * img_CrossHair;
 
 	animation * ani_right_stay;
 	animation * ani_left_stay;
 	animation * ani_left_Run;
 	animation * ani_right_Run;
+	animation * ani_CrossHair;
 
 	int m_count;
 	int ani_stay_Curr[4];
@@ -30,20 +34,19 @@ private:
 
 	float m_fRadius;
 	float m_fSpeed;
+	float m_fCrossHairScale;
+	float m_fCrossHairScaleMax;
+	int m_CrossHairScaleDelayCount;
 
 	int m_bulletDelayCount;
 	int	m_bulletDelayCountMax;
 
+
 	// 정지수 끝
-
-	//enum PLAYER_RUN { LEFT_RUN, RIGHT_RUN, DEFAULT };
-
+	
 	RECT m_rc;
 	float m_fX = WINSIZEX / 2;
 	float m_fY = WINSIZEY / 2;
-
-
-
 	
 	float m_currHpX;
 	float m_currHpY;
@@ -67,6 +70,8 @@ public:
 
 	void getItem(int itemInfo);
 	float getRadius() { return m_fRadius; }
+
+	RECT getRect() { return m_rc; }
 
 	float getX() { return m_fX; }
 	float getY() { return m_fY; }

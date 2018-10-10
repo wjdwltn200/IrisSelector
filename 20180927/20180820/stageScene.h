@@ -3,14 +3,15 @@
 
 class button;
 class image;
+class PlayerCharacter;
 
 class stageScene : public scene
 {
 private:
+	PlayerCharacter * m_pPlayer;
+
 
 	tagTile		  m_pTiles[MAX_TILECOUNTX * MAX_TILECOUNTY];
-
-
 
 	button*		  m_pButton1;
 	button*       m_pButton2;
