@@ -6,13 +6,14 @@ HRESULT progressBar::init(float x, float y, float width, float height)
 	m_fX = x;
 	m_fY = y;
 	m_fWidth = width;
+	m_fHeight = height;
 
-	m_rc = RectMake(m_fX, m_fY, m_fWidth, height);
+	m_rc = RectMake(m_fX, m_fY, m_fWidth, m_fHeight);
 
 	m_imgTop = IMAGEMANAGER->addImage("barTop", 
-		"image/hpBarTop.bmp", m_fWidth, height, true, RGB(255, 0, 255));
+		"image/resources/UI_image/Progress_Bar/hpBarTop.bmp", m_fWidth, m_fHeight, true, RGB(255, 0, 255));
 	m_imgBottom = IMAGEMANAGER->addImage("barBottom",
-		"image/hpBarBottom.bmp", m_fWidth, height, true, RGB(255, 0, 255));
+		"image/resources/UI_image/Progress_Bar/hpBarBottom.bmp", m_fWidth, m_fHeight, true, RGB(255, 0, 255));
 
 	return S_OK;
 }
@@ -34,7 +35,8 @@ void progressBar::render(HDC hdc)
 
 void progressBar::setGauge(float currGauge, float maxGauge)
 {
-	m_fWidth = (currGauge / maxGauge) * m_imgTop->getWidth();
+	m_fCurrGauge = currGauge;
+	m_fWidth = (m_fCurrGauge / maxGauge) * m_imgTop->getWidth();
 }
 
 progressBar::progressBar()

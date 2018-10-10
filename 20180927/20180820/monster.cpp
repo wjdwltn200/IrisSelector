@@ -4,6 +4,7 @@
 #include "PlayerCharacter.h"
 #include "bulletManger.h"
 #include "PlayerCharacter.h"
+#include "progressBar.h"
 
 
 HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint)
@@ -124,10 +125,19 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.tScaleMax = monInfo.tScaleMax;
 	m_tMonInfo.tUnKnokBack = monInfo.tUnKnokBack;
 	m_tMonInfo.tMoveSpeed = monInfo.tMoveSpeed;
+
+	m_tMonInfo.tPosHpX = monInfo.tPosHpX;
+	m_tMonInfo.tPosHpY = monInfo.tPosHpY;
+	m_tMonInfo.tIsType = monInfo.tIsType;
 	
 	m_monsterMove->setDefPlayFrame(false, true);
 	m_monsterMove->setFPS(10);
 	m_monsterMove->start();
+
+
+	m_progressBar = new progressBar;
+	m_progressBar->init(m_tMonInfo.tPosHpX, m_tMonInfo.tPosHpY,m_progressBar->setX(),m_progressBar->setY());
+
 
 
 

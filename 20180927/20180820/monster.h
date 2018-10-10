@@ -3,6 +3,7 @@ class animation;
 class PlayerCharacter;
 class bulletManger;
 class PlayerCharacter;
+class progressBar;
 
 class monster
 {
@@ -10,6 +11,7 @@ private:
 	image * m_monsterType;
 	animation * m_monsterMove;
 	PlayerCharacter * m_player;
+	progressBar * m_progressBar;
 
 	tagBulletInfo m_tBulletInfo;
 	tagBulletInfo * m_tBulletInfoPoint;
@@ -27,6 +29,7 @@ public:
 	void Move();
 	void fireAtk();
 	void render(HDC hdc);
+
 
 	tagMonInfo getMonInfo() { return m_tMonInfo; }
 	void setAlive(bool Alive) { m_tMonInfo.tIsAlive = Alive; };
