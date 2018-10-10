@@ -110,7 +110,7 @@ void PlayerCharacter::release()
 void PlayerCharacter::update()
 {
 	// ÃÑ¾Ë ¹ß»ç
-	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+	if (0)
 	{
 		if (m_bulletDelayCount == NULL)
 		{

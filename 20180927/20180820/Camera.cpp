@@ -15,6 +15,16 @@ void Camera::MiniMapRatioInit()
 {
 	m_nMiniMap_LocationX = LOC_MINIMAPX;
 	m_nMiniMap_LocationY = LOC_MINIMAPY;
+
+	//m_rcCamera.left = 0;
+	//m_rcCamera.right = WINSIZEX;
+	//m_rcCamera.top = 0;
+	//m_rcCamera.bottom = WINSIZEY;
+
+	//m_rcMiniCamera.top = 0;
+	//m_rcMiniCamera.bottom = WINSIZEY;
+
+
 	m_ptCameraMiniX = LOC_MINIMAPX;
 	m_ptCameraMiniY = LOC_MINIMAPY;
 }
@@ -55,17 +65,17 @@ void Camera::update()
 
 
 	if (m_ptMoveCameraX < 0) m_ptMoveCameraX = 0;
-	if (m_ptMoveCameraX > g_saveData.gTileMaxCountX) m_ptMoveCameraX = g_saveData.gTileMaxCountX;
+	if (m_ptMoveCameraX > (g_saveData.gTileMaxCountX * 40)) (g_saveData.gTileMaxCountX * 40);
 	if (m_ptMoveCameraY < 0) m_ptMoveCameraY = 0;
-	if (m_ptMoveCameraY > g_saveData.gTileMaxCountY) m_ptMoveCameraY = g_saveData.gTileMaxCountY;
+	if (m_ptMoveCameraY > (g_saveData.gTileMaxCountY * 40)) (g_saveData.gTileMaxCountY * 40);
 
 	m_ptCameraX = m_ptMoveCameraX - WINSIZEX / 2;
 	if (m_ptCameraX < 0) m_ptCameraX = 0;
-	if (m_ptCameraX > g_saveData.gTileMaxCountX - WINSIZEX) m_ptCameraX = g_saveData.gTileMaxCountX - WINSIZEX;
+	if (m_ptCameraX > (g_saveData.gTileMaxCountX * 40) - WINSIZEX) m_ptCameraX = (g_saveData.gTileMaxCountX * 40) - WINSIZEX;
 
 	m_ptCameraY = m_ptMoveCameraY - WINSIZEY / 2;
 	if (m_ptCameraY < 0) m_ptCameraY = 0;
-	if (m_ptCameraY > g_saveData.gTileMaxCountY - WINSIZEY) m_ptCameraY = g_saveData.gTileMaxCountY - WINSIZEY;
+	if (m_ptCameraY > (g_saveData.gTileMaxCountY * 40) - WINSIZEY) m_ptCameraY = (g_saveData.gTileMaxCountY * 40) - WINSIZEY;
 
 	// ¹Ì´Ï¸Ê
 	if (m_ptCameraMiniX < 0) m_ptCameraMiniX = 0;
