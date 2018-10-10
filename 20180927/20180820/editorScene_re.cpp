@@ -49,6 +49,8 @@ static void Func_MapCheck(void)
 
 void editorScene_re::SetSize()
 {
+	m_nMouseWheelState = 0;
+
 	m_pImg_SizeBox = IMAGEMANAGER->addImage("size_box", "image/wook/size_box.bmp", 640, 640,true, RGB(255,0,255));
 	IMAGEMANAGER->addImage("black", "image/wook/black.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 
@@ -194,6 +196,12 @@ void editorScene_re::MouseEvent()
 
 void editorScene_re::CameraUpdate()
 {
+	if (m_Camera.m_nX < 0) m_Camera.m_nX = 0;
+	if (m_Camera.m_nX > (g_saveData.gTileMaxCountX * 40)) (g_saveData.gTileMaxCountX * 40 - m_Camera.m_nWidth);
+	if (m_Camera.m_nY < 0) m_Camera.m_nY = 0;
+	if (m_Camera.m_nY > (g_saveData.gTileMaxCountY * 40)) (g_saveData.gTileMaxCountY * 40 - m_Camera.m_nHeight);
+
+
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && m_Camera.m_rc.left > CAMERA_destX)
 	{
 		m_Camera.m_nX -= CAMERA_SPEED;
@@ -253,12 +261,13 @@ void editorScene_re::CameraUpdate()
 		}
 	}
 
+
 	m_Camera.m_rc.left = m_Camera.m_nX;
 	m_Camera.m_rc.right = m_Camera.m_rc.left + m_Camera.m_nWidth;
 	m_Camera.m_rc.top = m_Camera.m_nY;
 	m_Camera.m_rc.bottom = m_Camera.m_rc.top + m_Camera.m_nHeight;
 
-
+	
 
 	
 }
@@ -300,6 +309,25 @@ void editorScene_re::LoadEvent()
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
 		TXTDATA->getSingleton()->mapLoad(szFileName, m_pTiles, &m_nLoadMapSIze);
 	}
+
+}
+
+void editorScene_re::WheelEvent(int num, WPARAM wParam)
+{
+	/*m_nMouseWheelState += num;
+	if (m_nMouseWheelState > 2)
+		m_nMouseWheelState = 2;
+	else if (m_nMouseWheelState < -2)
+		m_nMouseWheelState = -2;*/
+
+
+
+		m_nMouseWheelState += num;
+		if (m_nMouseWheelState > 2)
+			m_nMouseWheelState = 2;
+		if (m_nMouseWheelState < -2)
+			m_nMouseWheelState = -2;
+	
 
 }
 
@@ -567,6 +595,18 @@ void editorScene_re::render(HDC hdc)
 			}
 			
 		}
+
+
+		char szText[256];
+
+		// TRANSPARENT : 투명, OPAQUE : 불투명
+		SetBkMode(hdc, TRANSPARENT);
+
+		SetTextColor(hdc, RGB(255, 0, 255));
+
+		sprintf_s(szText, "wheel : %d" ,
+			(int)m_nMouseWheelState );
+		TextOut(hdc, 400, 100, szText, strlen(szText));
 
 	}
 }

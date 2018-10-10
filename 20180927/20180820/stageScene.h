@@ -30,9 +30,12 @@ public:
 	HRESULT init();
 	void release();
 	void update();
+
 	void render(HDC hdc);
 	void LoadEvent();
 	void FixedLoadEvent();
+
+	bool getTileIsMove(int x) { return m_pTiles[x].isMove; }
 
 	friend void Func_button1(void);
 	friend void Func_button2(void);

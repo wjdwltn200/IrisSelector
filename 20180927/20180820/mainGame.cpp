@@ -83,6 +83,16 @@ LRESULT mainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 {
 	switch (iMessage)
 	{
+	case WM_MOUSEHWHEEL:
+		if ((SHORT)HIWORD(wParam) > 0)
+		{ // 0 보다 크면 위로 올라감
+			m_pEditorScene_RE->WheelEvent(1, wParam);
+		}
+		else
+		{ // 0 보다 작으면 밑으로 내려감
+			m_pEditorScene_RE->WheelEvent(-1, wParam);
+		}
+		break;
 	case WM_MOUSEMOVE:
 		g_ptMouse.x = LOWORD(lParam);
 		g_ptMouse.y = HIWORD(lParam);

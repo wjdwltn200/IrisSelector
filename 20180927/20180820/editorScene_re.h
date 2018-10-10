@@ -1,5 +1,6 @@
 #pragma once
 #include "scene.h"
+#include "singletonBase.h"
 
 class button;
 
@@ -7,8 +8,8 @@ class button;
 #define SAMPLE_COUNTX 5
 #define SAMPLE_COUNTY 9
 
-#define CAMERA_destX 277
-#define CAMERA_destY 110
+#define CAMERA_destX 260
+#define CAMERA_destY 105
 #define CAMARA_WIDTH 518 
 #define CAMERA_HEIGHT 684
 #define CAMERA_SPEED 5
@@ -16,6 +17,9 @@ class button;
 #define MINIMAP_destY 110
 #define MINIMAP_WIDTH 180
 #define MINIMAP_HEIGHT 180
+
+#define MAX_TILECOUNTX 60
+#define MAX_TILECOUNTY 60
 
 enum EDITOR_STATE
 {
@@ -108,6 +112,8 @@ private:
 	bool m_bWindowPrint;
 	//////////////////////////////////
 
+	int m_nMouseWheelState;
+
 	// 맵에디터에서 필요한 변수 //
 	HWND	m_hBtnSave;
 	HWND	m_hBtnLoad;
@@ -136,14 +142,21 @@ public:
 	friend void SpaceFunc_right(void);
 	////////////////////////
 
+	//init//
 	void SetSize();
 	void init_Setting();
 
+	// update//
 	void ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam);
 	void MouseEvent();
 	void CameraUpdate();
 	void SaveEvent();
 	void LoadEvent();
+	void WheelEvent(int num, WPARAM wParam);
+
+	int getCameraHeight() { return m_Camera.m_nHeight; }
+	int getCameraWidth() { return m_Camera.m_nWidth; }
+
 	HRESULT init();
 	void release();
 	void update();

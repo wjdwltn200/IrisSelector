@@ -166,6 +166,7 @@
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="loadingScene.h" />
     <ClInclude Include="mainGame.h" />
+    <ClInclude Include="MapCamera.h" />
     <ClInclude Include="monster.h" />
     <ClInclude Include="monsterManger.h" />
     <ClInclude Include="PlayerCharacter.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="loadingScene.cpp" />
     <ClCompile Include="mainGame.cpp" />
+    <ClCompile Include="MapCamera.cpp" />
     <ClCompile Include="monster.cpp" />
     <ClCompile Include="monsterManger.cpp" />
     <ClCompile Include="PlayerCharacter.cpp" />

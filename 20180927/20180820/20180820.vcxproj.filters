@@ -177,6 +177,9 @@
     <ClInclude Include="Camera.h">
       <Filter>MainGame</Filter>
     </ClInclude>
+    <ClInclude Include="MapCamera.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -285,6 +288,9 @@
       <Filter>2DGameFramework\manager</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="MapCamera.cpp">
       <Filter>MainGame</Filter>
     </ClCompile>
   </ItemGroup>
