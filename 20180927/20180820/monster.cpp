@@ -131,7 +131,6 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.tcurrGauge = monInfo.tcurrGauge;
 	m_tMonInfo.tIsType = monInfo.tIsType;
 	m_tMonInfo.tDamageSub = monInfo.tDamageSub;
-	m_tMonInfo.tcurrGauge = monInfo.tcurrGauge;
 	
 	m_monsterMove->setDefPlayFrame(false, true);
 	m_monsterMove->setFPS(10);
@@ -139,8 +138,8 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 
 	m_progressBar = new progressBar;
-	m_progressBar->init(m_tMonInfo.tPosX + m_tMonInfo.tPosX/2 , m_tMonInfo.tPosY + m_tMonInfo.tPosY + 100,
-		m_tMonInfo.tWidth, m_tMonInfo.tHeight);
+	m_tMonInfo.tcurrGauge = 100.0f;
+
 
 
 	return S_OK;
@@ -158,6 +157,9 @@ void monster::Move()
 	m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
 	m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
 	m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
+	m_progressBar->init(m_tMonInfo.tPosX - 50, m_tMonInfo.tPosY + 50,
+		m_tMonInfo.tcurrGauge, 10.0f);
+
 }
 
 void monster::fireAtk()
@@ -178,8 +180,14 @@ void monster::fireAtk()
 
 }
 
-void monster::update()
+void monster::Damge()
 {
+	m_tMonInfo.tcurrGauge -= m_tBulletInfo.tDmage;
+}
+
+void monster::update()
+{	
+
 	if (!m_tMonInfo.tIsAlive) return;
 
 	m_tMonInfo.tFireAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
@@ -198,6 +206,8 @@ void monster::render(HDC hdc)
 		m_tMonInfo.tPosX - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
 		m_tMonInfo.tPosY - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale,
 		m_monsterMove, m_tMonInfo.tScale, true, 255);
+	m_progressBar->render(hdc);
+	
 }
 
 monster::monster()

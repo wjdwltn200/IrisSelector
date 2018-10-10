@@ -61,12 +61,12 @@ HRESULT PlayerCharacter::init()
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 	m_tBulletInfo.tIsAlive = true;
-	m_tBulletInfo.tBulletSetNum = 2;
+	m_tBulletInfo.tBulletSetNum = 1;
 	m_tBulletInfo.tScale = 1.0f;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 100.0f;
+	m_tBulletInfo.tRange = 500.0f;
 	m_tBulletInfo.tBulletBoom = false;
 
 	m_tBulletInfo.tDmage = 10.0f;
@@ -92,10 +92,10 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfoSub.tRadius = 0.5f;
 	m_tBulletInfoSub.tExpRadius = 0.5f;
-	m_tBulletInfoSub.tRange = 300.0f;
-	m_tBulletInfoSub.tBulletBoom = false;
+	m_tBulletInfoSub.tRange = 150.0f;
+	m_tBulletInfoSub.tBulletBoom = true;
 
-	m_tBulletInfoSub.tDmage = 10.0f;
+	m_tBulletInfoSub.tDmage = 5.0f;
 	m_tBulletInfoSub.tKnokBack = 5.0f;
 	m_tBulletInfoSub.tMoveSpeed = 10.0f;
 	m_tBulletInfoSub.tScatter = 0.0f;
@@ -105,7 +105,7 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_P;
-	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL;
+	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
 
@@ -177,6 +177,8 @@ void PlayerCharacter::update()
 
 	if (m_fCrossHairScale > m_fCrossHairScaleMin)
 		m_fCrossHairScale -= 0.1f;
+
+
 
 	if (KEYMANAGER->isOnceKeyUp('A') && !KEYMANAGER->isOnceKeyUp('D'))
 	{

@@ -28,8 +28,8 @@ public:
 	void update();
 	void Move();
 	void fireAtk();
+	void Damge();
 	void render(HDC hdc);
-
 
 	tagMonInfo getMonInfo() { return m_tMonInfo; }
 	void setAlive(bool Alive) { m_tMonInfo.tIsAlive = Alive; };

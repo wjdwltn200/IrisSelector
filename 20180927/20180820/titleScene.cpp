@@ -200,8 +200,13 @@ void titleScene::ColRc()
 				(*MonsIter)->getMonInfo().tPosY))
 				)
 			{
-				(*MonsIter)->setAlive(false);
+			
+				(*MonsIter)->Damge();
 				(*PlayerBulletIter)->setIsAlive(false);
+
+				//(*MonsIter)->setAlive(false);
+				//(*PlayerBulletIter)->setIsAlive(false);
+				
 			}
 		}
 	}
