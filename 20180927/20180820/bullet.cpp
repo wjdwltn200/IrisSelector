@@ -37,7 +37,7 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 
 	// ¸â¹ö ÃÊ±âÈ­
 	m_bulletInfo.tIsAlive = m_isAlive = bulletInfo->tIsAlive;
-	m_bulletInfo.tAngle =  m_fAngle = bulletInfo->tAngle = angle;
+	m_bulletInfo.tAngle =  m_fAngle = bulletInfo->tAngle = angle -= (PI / 360.0f * RANDOM->getFromFloatTo(-(bulletInfo->tScatter),(bulletInfo->tScatter)));
 	m_bulletInfo.tScale = bulletInfo->tScale;
 	m_bulletInfo.tScaleMax = bulletInfo->tScaleMax;
 	m_bulletInfo.tRadius = bulletInfo->tRadius;
