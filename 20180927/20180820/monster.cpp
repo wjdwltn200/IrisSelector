@@ -189,6 +189,17 @@ void monster::Damge(float dam)
 	}
 }
 
+void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life)
+{
+	m_tMonInfo.tTrance = isTrance;
+	m_tMonInfo.tIslife = life;
+	m_tMonInfo.tminGaugeSub = minGague;
+	m_tMonInfo.tmaxGaugeSub = maxGauge;
+	m_tMonInfo.tminGaugeInfo = minSubInfo;
+	m_tMonInfo.tmaxGaugeInfo = maxSubInfo;
+	m_progressBar->monHpSub(minGague, maxGauge, minSubInfo, maxSubInfo, isTrance, life);
+}
+
 void monster::update()
 {	
 

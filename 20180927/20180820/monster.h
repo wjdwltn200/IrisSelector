@@ -29,6 +29,7 @@ public:
 	void Move();
 	void fireAtk();
 	void Damge(float dam);
+	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
 	void render(HDC hdc);
 
 	tagMonInfo getMonInfo() { return m_tMonInfo; }

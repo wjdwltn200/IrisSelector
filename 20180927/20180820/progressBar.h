@@ -6,9 +6,9 @@ private:
 	float	m_fX, m_fY;
 	float	m_fWidth;
 	float	m_fHeight;
-
 	bool	m_isBoom;
 
+	int		m_lifeCount;
 	image*	m_imgTop;
 	image*	m_imgBottom;
 	tagMonInfo m_tMonInfo;
@@ -25,7 +25,7 @@ public:
 	inline void setX(float x) { m_fX = x; }
 	inline void setY(float y) { m_fY = y; }
 
-	void monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo);
+	void monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo, bool isTrance, int life);
 
 
 	progressBar();

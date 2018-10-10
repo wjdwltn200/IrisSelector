@@ -210,6 +210,9 @@ void titleScene::ColRc()
 			{
 				(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
 				(*PlayerBulletIter)->setIsAlive(false);
+				(*MonsIter)->TypeSub((*MonsIter)->getMonInfo().tminGaugeSub,(*MonsIter)->getMonInfo().tminGaugeInfo,
+					(*MonsIter)->getMonInfo().tmaxGaugeSub,(*MonsIter)->getMonInfo().tmaxGaugeInfo,(*MonsIter)->getMonInfo().tTrance,
+					(*MonsIter)->getMonInfo().tIslife);
 			}
 		}
 	}
