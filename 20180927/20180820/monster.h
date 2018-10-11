@@ -8,6 +8,8 @@ class progressBar;
 class monster
 {
 private:
+	int m_moveTypeNum;
+	int m_lifeCount;
 	image * m_monsterType;
 	animation * m_monsterMove;
 	PlayerCharacter * m_player;

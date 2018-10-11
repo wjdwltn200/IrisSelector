@@ -121,7 +121,7 @@ void titleScene::update()
 		tagMonInfo Moninfo;
 		Moninfo.tFireDelay = 120;
 		Moninfo.tMoveSpeed = 0.5f;
-		Moninfo.tHp = 20.0f;
+		Moninfo.tHp = 100.0f;
 		m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 	}
 
@@ -215,6 +215,7 @@ void titleScene::ColRc()
 				(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
 				(*PlayerBulletIter)->setIsAlive(false);
 			}
+				(*MonsIter)->TypeSub(50.0f, 0.0f, MONSTER_SPEED_UP, MONSTER_RESURRECTION, true, 4);
 		}
 	}
 

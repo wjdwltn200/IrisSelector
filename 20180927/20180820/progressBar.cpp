@@ -42,68 +42,6 @@ void progressBar::setGauge(float currGauge, float maxGauge)
 	m_fWidth = (m_tMonInfo.tHp / m_tMonInfo.tHpMax) * m_imgTop->getWidth();
 }
 
-void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo, bool isTrance, int life)
-{
-	m_tMonInfo.tIslife = life;
-	m_tMonInfo.tTrance = isTrance;
-	m_tMonInfo.tminGaugeSub = minGaugeSub;
-	m_tMonInfo.tmaxGaugeSub = maxGaugeSub;
-	m_tMonInfo.tminGaugeInfo = minGaugeInfo;
-	m_tMonInfo.tmaxGaugeInfo = maxGaugeInfo;
-	if (m_tMonInfo.tHp >= m_tMonInfo.tminGaugeSub)
-	{
-		switch (minGaugeInfo)
-		{
-		case MONSTER_SUB::MONSTER_ATT_UP:
-			m_tMonInfo.tDamageSub += 10.0f;
-			break;
-		case MONSTER_SUB::_MONSTER_DEF_UP:
-			m_tMonInfo.tHp -= 5.0f;
-			break;
-		case MONSTER_SUB::MONSTER_SPEED_UP:
-			m_tMonInfo.tMoveSpeed += 5.0f;
-			break;
-		case MONSTER_SUB::MONSTER_POWER_UP:
-			m_tMonInfo.tDamageSub += 10.0f;
-			m_tMonInfo.tHp -= 5.0f;
-			break;
-		}
-	}
-	else if (m_tMonInfo.tHp >= m_tMonInfo.tmaxGaugeSub)
-	{
-		switch (maxGaugeInfo)
-		{
-		case MONSTER_SUB::MONSTER_HP_HEALING:
-			m_tMonInfo.tHp += 5.0f;
-			break;
-		case MONSTER_SUB::MONSTER_RESURRECTION:
-			if (m_tMonInfo.tTrance == true)
-			{
-				if (m_tMonInfo.tIsAlive == false && m_lifeCount == 0)
-				{
-					m_lifeCount++;
-					m_tMonInfo.tIsAlive = true;
-					m_tMonInfo.tHp = 100.0f;
-				}
-				else
-				m_tMonInfo.tIsAlive = false;
-			}
-			else if (m_tMonInfo.tIsAlive == false && m_lifeCount <= m_tMonInfo.tIslife)
-			{
-				m_lifeCount++;
-				m_tMonInfo.tIsAlive = true;
-				m_tMonInfo.tHp = 100.0f;
-			}
-			break;
-		case MONSTER_SUB::MONSTER_BOOM:
-			if (m_tMonInfo.tIsAlive == false)
-			{
-				m_isBoom = true;
-			}
-			break;
-		}
-	}
-}
 
 progressBar::progressBar()
 {

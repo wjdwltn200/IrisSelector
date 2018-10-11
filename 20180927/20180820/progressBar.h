@@ -25,8 +25,6 @@ public:
 	inline void setX(float x) { m_fX = x; }
 	inline void setY(float y) { m_fY = y; }
 
-	void monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo, bool isTrance, int life);
-
 
 	progressBar();
 	~progressBar();

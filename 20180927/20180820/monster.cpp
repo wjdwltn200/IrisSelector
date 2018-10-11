@@ -129,7 +129,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.tWidth = monInfo.tWidth;
 	m_tMonInfo.tHeight = monInfo.tHeight;
 	m_tMonInfo.tHp = monInfo.tHp;
-	m_tMonInfo.tIsType = monInfo.tIsType;
+	m_tMonInfo.tIsBoom = monInfo.tIsBoom;
 	m_tMonInfo.tDamageSub = monInfo.tDamageSub;
 	
 	m_monsterMove->setDefPlayFrame(false, true);
@@ -148,7 +148,7 @@ void monster::release()
 {
 }
 
-void monster::Move()
+void monster::Move(int m_moveTypeNum)
 {
 	if (!m_tMonInfo.tIsAlive) return;
 
@@ -197,7 +197,59 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 	m_tMonInfo.tmaxGaugeSub = maxGauge;
 	m_tMonInfo.tminGaugeInfo = minSubInfo;
 	m_tMonInfo.tmaxGaugeInfo = maxSubInfo;
-	m_progressBar->monHpSub(minGague, maxGauge, minSubInfo, maxSubInfo, isTrance, life);
+	if (m_tMonInfo.tHp <= m_tMonInfo.tminGaugeSub)
+	{
+		switch (minSubInfo)
+		{
+		case MONSTER_SUB::MONSTER_ATT_UP:
+			m_tMonInfo.tDamageSub = 10.0f;
+			break;
+		case MONSTER_SUB::_MONSTER_DEF_UP:
+			m_tMonInfo.tHp -= 5.0f;
+			break;
+		case MONSTER_SUB::MONSTER_SPEED_UP:
+			m_tMonInfo.tMoveSpeed = 10.0f;
+			break;
+		case MONSTER_SUB::MONSTER_POWER_UP:
+			m_tMonInfo.tDamageSub += 10.0f;
+			m_tMonInfo.tHp -= 5.0f;
+			break;
+		}
+	}
+	else if (m_tMonInfo.tHp <= m_tMonInfo.tmaxGaugeSub)
+	{
+		switch (maxSubInfo)
+		{
+		case MONSTER_SUB::MONSTER_HP_HEALING:
+			m_tMonInfo.tHp += 5.0f;
+			break;
+		case MONSTER_SUB::MONSTER_RESURRECTION:
+			if (m_tMonInfo.tTrance == true)
+			{
+				if (m_tMonInfo.tIsAlive == false && m_lifeCount == 0)
+				{
+					m_lifeCount++;
+					m_tMonInfo.tIsAlive = true;
+					m_tMonInfo.tHp = 100.0f;
+				}
+				else
+					m_tMonInfo.tIsAlive = false;
+			}
+			else if (m_tMonInfo.tIsAlive == false && m_lifeCount <= m_tMonInfo.tIslife)
+			{
+				m_lifeCount++;
+				m_tMonInfo.tIsAlive = true;
+				m_tMonInfo.tHp = 100.0f;
+			}
+			break;
+		case MONSTER_SUB::MONSTER_BOOM:
+			if (m_tMonInfo.tIsAlive == false)
+			{
+				m_tMonInfo.tIsBoom = true;
+			}
+			break;
+		}
+	}
 }
 
 void monster::update()
@@ -206,7 +258,6 @@ void monster::update()
 	if (!m_tMonInfo.tIsAlive) return;
 
 	m_tMonInfo.tFireAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
-
 	Move();
 	fireAtk();
 	m_monsterMove->frameUpdate();
