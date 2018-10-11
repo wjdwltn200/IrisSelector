@@ -14,7 +14,7 @@ public:
 	void update();
 	void render(HDC hdc);
 
-	void itemDrop(const char * imageName, tagItemInfo bulletInfo);
+	void itemDrop(const char * imageName, tagItemInfo bulletInfo, effectManager * pEffMag);
 
 	inline std::vector<item*> getVecItem()
 	{

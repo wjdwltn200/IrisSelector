@@ -1,6 +1,7 @@
 #pragma once
 class image;
 class animation;
+class effectManager;
 
 #define ITEM_IDLE_Y_SIZE 5.0f
 
@@ -11,6 +12,7 @@ private:
 	image * m_pImgShadow;
 
 	animation * m_pAni;
+	effectManager * m_pEffMag;
 
 	RECT	m_rc;
 	//float	m_fAngle;
@@ -27,7 +29,7 @@ private:
 	tagItemInfo m_tItemInfo;
 
 public:
-	HRESULT init(const char * imageName, tagItemInfo itemInfo);
+	HRESULT init(const char * imageName, tagItemInfo itemInfo, effectManager * pEffItem);
 	void release();
 	void update();
 	void render(HDC hdc);

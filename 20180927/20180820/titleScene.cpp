@@ -69,19 +69,19 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/Item_set.bmp", 682, 614, 20, 18, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ItemShadow", "image/resources/item_image/Item_shadow.bmp", 32, 9, 1, 1, true, RGB(255, 0, 255));
 
-	for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
-	{
+	//for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
+	//{
 		tagItemInfo ItemInfo;
-		ItemInfo.tImageCurrX = i;
-		ItemInfo.tImageCurrY = i;
+		ItemInfo.tImageCurrX = 3;
+		ItemInfo.tImageCurrY = 17;
 		ItemInfo.tScale = 1.0f;
 		ItemInfo.tTimer = 1000;
 		ItemInfo.tRadius = 1.5f;
-		ItemInfo.tSkillType = i;
-		ItemInfo.posX = 100;
-		ItemInfo.posY = 50 * (i + 1);
-		m_pItemMag->itemDrop("ItemObject", ItemInfo);
-	}
+		ItemInfo.tSkillType = 1;
+		ItemInfo.posX = 300;
+		ItemInfo.posY = 300;
+		m_pItemMag->itemDrop("ItemObject", ItemInfo, m_pEffMagr);
+	//}
 
 	
 

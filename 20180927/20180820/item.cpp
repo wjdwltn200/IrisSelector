@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "item.h"
 #include "animation.h"
+#include "effectManager.h"
 
-HRESULT item::init(const char * imageName, tagItemInfo itemInfo)
+HRESULT item::init(const char * imageName, tagItemInfo itemInfo, effectManager * pEffItem)
 {
 	// 최초 초기화
 	memset(&m_rc, NULL, sizeof(m_rc));
@@ -16,13 +17,16 @@ HRESULT item::init(const char * imageName, tagItemInfo itemInfo)
 	m_tItemInfo.tRadius = (m_pImg->getFrameWidth() / 2) * itemInfo.tScale;
 
 	m_tItemInfo.tTimer = itemInfo.tTimer;
+	m_tItemInfo.tTimerMax = m_tItemInfo.tTimer;
 	m_tItemInfo.tImageCurrX = itemInfo.tImageCurrX;
 	m_tItemInfo.tImageCurrY = itemInfo.tImageCurrY;
 	m_tItemInfo.tSkillType = itemInfo.tSkillType;
 
 	m_tItemInfo.posX = itemInfo.posX;
 	m_tItemInfo.posY = m_fItemIdleY = itemInfo.posY;
+	m_tItemInfo.tItemTimerAlpha = 0;
 	m_fItemIdleCurrY = m_tItemInfo.posY;
+	
 	//m_fMoveAngle = 0.0f;
 	//m_fAngleRadius = 0.0f;
 	m_isItemIdle = true;
@@ -31,6 +35,7 @@ HRESULT item::init(const char * imageName, tagItemInfo itemInfo)
 	RectMakeCenter(m_tItemInfo.posX, m_tItemInfo.posY, m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
 
 	m_isAlive = true;
+	m_pEffMag = pEffItem;
 
 	return S_OK;
 }
@@ -75,6 +80,9 @@ void item::update()
 	if (m_tItemInfo.tTimer <= 0)
 	{
 		m_isAlive = false;
+		m_pEffMag->play("Item_Get1",
+			m_tItemInfo.posX - ((320 / 4) / 2),
+			m_tItemInfo.posY - (31 / 2) + 10.0f);
 	}
 	m_tItemInfo.tTimer--;
 
@@ -100,13 +108,27 @@ void item::render(HDC hdc)
 		m_tItemInfo.tScale,
 		m_ItemAlphaNum);
 
+	// 아이템 반짝임
+	if (m_tItemInfo.tTimer < (m_tItemInfo.tTimerMax / 4))
+	{
+		m_tItemInfo.tItemTimerAlpha += 20;
+	}
+	else if (m_tItemInfo.tTimer < (m_tItemInfo.tTimerMax / 3))
+	{
+		m_tItemInfo.tItemTimerAlpha += 15;
+	}
+	else if (m_tItemInfo.tTimer < (m_tItemInfo.tTimerMax / 2))
+	{
+		m_tItemInfo.tItemTimerAlpha += 5;
+	}
+
 	m_pImg->frameAlphaRender(hdc,
 		m_tItemInfo.posX - (m_pImg->getFrameWidth() / 2 * m_tItemInfo.tScale),
 		m_fItemIdleY - (m_pImg->getFrameHeight() / 2 * m_tItemInfo.tScale),
 		m_tItemInfo.tImageCurrX,
 		m_tItemInfo.tImageCurrY,
 		m_tItemInfo.tScale,
-		0);
+		m_tItemInfo.tItemTimerAlpha);
 
 	char szText[256];
 

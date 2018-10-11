@@ -40,20 +40,20 @@ void itemManager::render(HDC hdc)
 	}
 }
 
-void itemManager::itemDrop(const char * imageName, tagItemInfo itemInfo)
+void itemManager::itemDrop(const char * imageName, tagItemInfo itemInfo, effectManager * pEffMag)
 {
 	for (m_iter = m_vecItem.begin(); m_iter != m_vecItem.end(); m_iter++)
 	{
 		if (!(*m_iter)->getIsAlive()) // 죽어있으면 재활용
 		{
-			(*m_iter)->init(imageName, itemInfo);
+			(*m_iter)->init(imageName, itemInfo, pEffMag);
 
 			return;
 		}
 	}
 
 	item * pItem = new item;
-	pItem->init(imageName, itemInfo);
+	pItem->init(imageName, itemInfo, pEffMag);
 
 	m_vecItem.push_back((pItem));
 	return;

@@ -296,6 +296,20 @@ void bullet::SecondBulletFire()
 				}
 			}
 		}
+		else if (m_bulletInfoSub->tShootType == BULLET_SHOOT_TYPE::LINE_SHOOT)
+		{
+			if (m_bulletInfoSub->tBulletSetNum == 1)
+			{
+				m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle, m_bulletInfoSub, m_bulletInfoSub);
+			}
+			else // 총알 개수 만큼 방향을 분리
+			{
+				for (int i = 0; i < m_bulletInfoSub->tBulletSetNum; i++)
+				{
+					m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle, m_bulletInfoSub, m_bulletInfoSub);
+				}
+			}
+		}
 
 	}
 }
