@@ -1,6 +1,7 @@
 #pragma once
 #include "singletonBase.h"
 #include "editorScene_re.h"
+#include "editor.h"
 
 
 #define CAMERA_WIDTH 518 
@@ -34,7 +35,8 @@ private:
 	int m_nMiniMap_LocationX; // 미니맵 생성되는 위치
 	int m_nMiniMap_LocationY;
 
-	editorScene_re m_pEdtior;
+	//editorScene_re m_pEdtior;
+	editor m_pEdtior;
 
 	//POINT m_ptCamera;
 	//POINT m_ptMiniCamera;

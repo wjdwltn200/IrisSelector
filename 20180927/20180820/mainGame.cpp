@@ -4,6 +4,7 @@
 #include "titleScene.h"
 #include "stageScene.h"
 #include "loadingScene.h"
+#include "editor.h"
 
 
 void mainGame::setBackBuffer()
@@ -32,7 +33,8 @@ HRESULT mainGame::init()
 	m_pEditorScene_RE = new editorScene_re;
 	SCENEMANAGER->addScene("editor_re", m_pEditorScene_RE);
 
-
+	m_pEditor = new editor;
+	SCENEMANAGER->addScene("edtior", m_pEditor);
 
 	m_pTitleScene = new titleScene;
 	SCENEMANAGER->addScene("title", m_pTitleScene);
@@ -43,7 +45,7 @@ HRESULT mainGame::init()
 	m_pLoadingScene = new loadingScene;
 	SCENEMANAGER->addLoadingScene("loading", m_pLoadingScene);
 	
-	SCENEMANAGER->changeScene("title");
+	SCENEMANAGER->changeScene("edtior");
 	// 민욱이는 과연 누구인가? 알랄라 내첫사랑 지수 ㅇㅇ
 	// 이순현 테스트
 	// 정지수 로그인 테스트

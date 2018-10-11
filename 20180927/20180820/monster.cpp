@@ -148,18 +148,18 @@ void monster::release()
 {
 }
 
-void monster::Move(int m_moveTypeNum)
-{
-	if (!m_tMonInfo.tIsAlive) return;
-
-	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
-	m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
-	m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
-	m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
-	m_progressBar->init(m_tMonInfo.tPosX - 50, m_tMonInfo.tPosY + 50,
-		m_tMonInfo.tHp, 10.0f);
-
-}
+//void monster::Move(int m_moveTypeNum)
+//{
+//	if (!m_tMonInfo.tIsAlive) return;
+//
+//	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
+//	m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
+//	m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
+//	m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
+//	m_progressBar->init(m_tMonInfo.tPosX - 50, m_tMonInfo.tPosY + 50,
+//		m_tMonInfo.tHp, 10.0f);
+//
+//}
 
 void monster::fireAtk()
 {
@@ -258,7 +258,7 @@ void monster::update()
 	if (!m_tMonInfo.tIsAlive) return;
 
 	m_tMonInfo.tFireAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
-	Move();
+	//Move();
 	fireAtk();
 	m_monsterMove->frameUpdate();
 }

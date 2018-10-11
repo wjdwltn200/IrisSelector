@@ -28,7 +28,7 @@ public:
 	HRESULT init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint);
 	void release();
 	void update();
-	void Move();
+	//void Move();
 	void fireAtk();
 	void Damge(float dam);
 	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
