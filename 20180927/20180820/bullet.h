@@ -14,15 +14,14 @@ private:
 
 	RECT	m_rc;
 	int		m_ScaleCount;
-
-	//float	m_fX, m_fY;
+	
 	float	m_fAngle;
 	float	m_fMoveAngle;
 	float	m_fAngleRadius;
 	int		tMoveTypeCount;
-
+	
 	bool	m_isAlive;
-
+	
 	bulletManger * m_pBulletMag;
 	tagBulletInfo m_bulletInfo;
 	tagBulletInfo * m_bulletInfoSub;
