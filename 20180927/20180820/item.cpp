@@ -3,14 +3,25 @@
 #include "animation.h"
 #include "effectManager.h"
 
-HRESULT item::init(const char * imageName, tagItemInfo itemInfo, effectManager * pEffItem)
+HRESULT item::init(const char * imageName, tagItemInfo itemInfo, effectManager * pEffItem, int currX, int currY)
 {
 	// 최초 초기화
 	memset(&m_rc, NULL, sizeof(m_rc));
 
+	//m_image = m_vecStageLoad[0 + (m_stageNum * DATANUM)].c_str();
+	//m_moveRange = atoi(m_vecStageLoad[1 + (m_stageNum * DATANUM)].c_str());
+	//m_bulletSpeed = atoi(m_vecStageLoad[2 + (m_stageNum * DATANUM)].c_str());
+	//m_fSetX = atoi(m_vecStageLoad[3 + (m_stageNum * DATANUM)].c_str());
+	//m_fSetX_in = atoi(m_vecStageLoad[4 + (m_stageNum * DATANUM)].c_str());
+	//m_fSetY = atoi(m_vecStageLoad[5 + (m_stageNum * DATANUM)].c_str());
+	//m_fSetY_in = atoi(m_vecStageLoad[6 + (m_stageNum * DATANUM)].c_str());
+	//m_EnemyNum = atoi(m_vecStageLoad[7 + (m_stageNum * DATANUM)].c_str());
+	//g_saveData.g_maxScoreNum = m_EnemyNum;
+
 	// 이미지 초기화
 	m_pImg = IMAGEMANAGER->findImage(imageName);
 	m_pImgShadow = IMAGEMANAGER->findImage("ItemShadow");
+	m_pItemPopupUi = IMAGEMANAGER->findImage("Player_ItemPopupUI");
 
 	// 멤버 초기화
 	m_tItemInfo.tScale = itemInfo.tScale;
@@ -18,21 +29,22 @@ HRESULT item::init(const char * imageName, tagItemInfo itemInfo, effectManager *
 
 	m_tItemInfo.tTimer = itemInfo.tTimer;
 	m_tItemInfo.tTimerMax = m_tItemInfo.tTimer;
-	m_tItemInfo.tImageCurrX = itemInfo.tImageCurrX;
-	m_tItemInfo.tImageCurrY = itemInfo.tImageCurrY;
+	m_tItemInfo.tImageCurrX = currX;
+	m_tItemInfo.tImageCurrY = currY;
 	m_tItemInfo.tSkillType = itemInfo.tSkillType;
 
 	m_tItemInfo.posX = itemInfo.posX;
 	m_tItemInfo.posY = m_fItemIdleY = itemInfo.posY;
 	m_tItemInfo.tItemTimerAlpha = 0;
+	m_tItemInfo.tIsGet = itemInfo.tIsGet;
 	m_fItemIdleCurrY = m_tItemInfo.posY;
-	
+
 	//m_fMoveAngle = 0.0f;
 	//m_fAngleRadius = 0.0f;
 	m_isItemIdle = true;
 	m_ItemAlphaNum = 0;
 		// RECT 초기화 (이미지 프레임 크기)
-	RectMakeCenter(m_tItemInfo.posX, m_tItemInfo.posY, m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
+	m_rc = RectMakeCenter(m_tItemInfo.posX, m_tItemInfo.posY, m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
 
 	m_isAlive = true;
 	m_pEffMag = pEffItem;
@@ -91,6 +103,8 @@ void item::update()
 		m_tItemInfo.posY,
 		(m_pImg->getFrameWidth() * m_tItemInfo.tScale),
 		(m_pImg->getFrameHeight() * m_tItemInfo.tScale));
+
+
 }
 
 void item::render(HDC hdc)
@@ -157,6 +171,17 @@ void item::render(HDC hdc)
 		m_tItemInfo.tRadius);
 	TextOut(hdc, 200, 180, szText, strlen(szText));
 
+	// 아이템 UI 출력
+	ItemPopup(hdc);
+}
+
+void item::ItemPopup(HDC hdc)
+{
+	if (g_ptMouse.x > m_rc.left && g_ptMouse.x < m_rc.right &&
+		g_ptMouse.y > m_rc.top && g_ptMouse.y < m_rc.bottom)
+	{
+		m_pItemPopupUi->render(hdc, m_tItemInfo.posX - (m_pItemPopupUi->getFrameWidth() / 2), m_tItemInfo.posY - (m_pItemPopupUi->getFrameHeight() + 20.0f));
+	}
 }
 
 item::item()

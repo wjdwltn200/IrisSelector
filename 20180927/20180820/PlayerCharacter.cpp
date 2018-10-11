@@ -6,6 +6,8 @@
 
 HRESULT PlayerCharacter::init()
 {
+	img_ItemUiBg = IMAGEMANAGER->findImage("Player_ItemUI");
+
 	for (int i = 0; i < 10; i++)
 	{
 		img_HpPoint[i] = IMAGEMANAGER->findImage("Player_HP_Point");
@@ -14,6 +16,7 @@ HRESULT PlayerCharacter::init()
 	m_currHp = BAES_HP;
 	m_currHpMax = m_currHp;
 	m_isAlive = true;
+	m_isItemUi = false;
 
 	int ani_stay_Curr[] = { 0,1,2,3,4,5,6,7 };
 	img_player = IMAGEMANAGER->addImage("player", "image/resources/player_image/BG_Player_idle_0.bmp", 256, 54, 8, 1, true, RGB(255, 0, 255), m_fX, m_fY);
@@ -249,6 +252,18 @@ void PlayerCharacter::update()
 		m_fY += m_fSpeed;
 	}
 
+	if (KEYMANAGER->isOnceKeyDown(VK_TAB))
+	{
+		if (m_isItemUi)
+		{
+			m_isItemUi = false;
+		}
+		else if (!m_isItemUi)
+		{
+			m_isItemUi = true;
+		}
+	}
+
 	m_rc = RectMakeCenter(m_fX, m_fY, img_player->getFrameWidth(), img_player->getFrameHeight());
 
 	MoveActKeyInput();
@@ -330,8 +345,10 @@ void PlayerCharacter::render(HDC hdc)
 
 	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 
-	img_CrossHair->aniRender(hdc, g_ptMouse.x - (img_CrossHair->getFrameWidth() / 2) * m_fCrossHairScale, g_ptMouse.y - (img_CrossHair->getFrameHeight() / 2) * m_fCrossHairScale, ani_CrossHair, m_fCrossHairScale);
+	if (m_isItemUi)
+		img_ItemUiBg->render(hdc, (WINSIZEX / 2) - (img_ItemUiBg->getFrameWidth() / 2), (WINSIZEX / 2) - (img_ItemUiBg->getFrameHeight() / 2));
 
+	img_CrossHair->aniRender(hdc, g_ptMouse.x - (img_CrossHair->getFrameWidth() / 2) * m_fCrossHairScale, g_ptMouse.y - (img_CrossHair->getFrameHeight() / 2) * m_fCrossHairScale, ani_CrossHair, m_fCrossHairScale);
 
 	char szText[256];
 
@@ -418,7 +435,7 @@ void PlayerCharacter::getItem(int itemInfo)
 	case ITEM_SKILL_TYPE::PLAYER_MOVE_SPEED_UP:
 		m_fSpeed += 1.0f;
 		break;
-
+		
 	case ITEM_SKILL_TYPE::BULLET_COLOR_B:
 		m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_B;
 		break;

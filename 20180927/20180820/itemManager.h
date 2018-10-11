@@ -8,6 +8,10 @@ private:
 	std::vector<item*>			m_vecItem;
 	std::vector<item*>::iterator	m_iter;
 
+	std::vector<std::string> m_vecItemList;
+
+	int m_currX, m_currY;
+
 public:
 	HRESULT init(int vecMaxSize);
 	void release();

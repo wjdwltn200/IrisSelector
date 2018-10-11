@@ -6,6 +6,10 @@ HRESULT itemManager::init(int vecMaxSize)
 {
 	m_vecItem.reserve(vecMaxSize);
 
+	m_vecItemList = TXTDATA->txtLoad("ItemList.txt");
+	m_currX = atoi(m_vecItemList[0].c_str());
+	m_currY = atoi(m_vecItemList[0].c_str());
+
 	return S_OK;
 }
 
@@ -46,14 +50,14 @@ void itemManager::itemDrop(const char * imageName, tagItemInfo itemInfo, effectM
 	{
 		if (!(*m_iter)->getIsAlive()) // 죽어있으면 재활용
 		{
-			(*m_iter)->init(imageName, itemInfo, pEffMag);
+			(*m_iter)->init(imageName, itemInfo, pEffMag, m_currX, m_currY);
 
 			return;
 		}
 	}
 
 	item * pItem = new item;
-	pItem->init(imageName, itemInfo, pEffMag);
+	pItem->init(imageName, itemInfo, pEffMag, m_currX, m_currY);
 
 	m_vecItem.push_back((pItem));
 	return;
