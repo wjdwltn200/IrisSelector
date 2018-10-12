@@ -38,58 +38,10 @@ void progressBar::render(HDC hdc)
 void progressBar::setGauge(float currGauge, float maxGauge)
 {
 	m_tMonInfo.tHpMax = maxGauge;
-	m_fCurrGauge = currGauge;
-	m_tMonInfo.tcurrGauge = m_fCurrGauge;
-	m_fWidth = (m_fCurrGauge / m_tMonInfo.tHpMax) * m_imgTop->getWidth();
+	m_tMonInfo.tHp = currGauge;
+	m_fWidth = (m_tMonInfo.tHp / m_tMonInfo.tHpMax) * m_imgTop->getWidth();
 }
 
-void progressBar::monHpSub(float minGaugeSub, float maxGaugeSub, int minGaugeInfo, int maxGaugeInfo)
-{
-	m_tMonInfo.tminGaugeSub = minGaugeSub;
-	m_tMonInfo.tmaxGaugeSub = maxGaugeSub;
-	m_tMonInfo.tminGaugeInfo = minGaugeInfo;
-	m_tMonInfo.tmaxGaugeInfo = maxGaugeInfo;
-	if (m_fCurrGauge >= m_tMonInfo.tminGaugeSub)
-	{
-		switch (minGaugeInfo)
-		{
-		case MONSTER_SUB::MONSTER_ATT_UP:
-			m_tMonInfo.tDamageSub += 10.0f;
-			break;
-		case MONSTER_SUB::_MONSTER_DEF_UP:
-			m_tMonInfo.tcurrGauge -= 5.0f;
-			break;
-		case MONSTER_SUB::MONSTER_SPEED_UP:
-			m_tMonInfo.tMoveSpeed += 5.0f;
-			break;
-		case MONSTER_SUB::MONSTER_POWER_UP:
-			m_tMonInfo.tDamageSub += 10.0f;
-			m_tMonInfo.tcurrGauge -= 5.0f;
-			break;
-		}
-	}
-	else if (m_fCurrGauge >= m_tMonInfo.tmaxGaugeSub)
-	{
-		switch (maxGaugeInfo)
-		{
-		case MONSTER_SUB::MONSTER_HP_HEALING:
-			m_tMonInfo.tHp += 5.0f;
-			break;
-		case MONSTER_SUB::MONSTER_RESURRECTION:
-			if (m_tMonInfo.tIsAlive == false)
-			{
-				m_tMonInfo.tIsAlive = true;
-			}
-			break;
-		case MONSTER_SUB::MONSTER_BOOM:
-			if (m_tMonInfo.tIsAlive == false)
-			{
-				m_isBoom = true;
-			}
-			break;
-		}
-	}
-}
 
 progressBar::progressBar()
 {

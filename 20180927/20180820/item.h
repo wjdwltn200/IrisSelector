@@ -1,6 +1,7 @@
 #pragma once
 class image;
 class animation;
+class effectManager;
 
 #define ITEM_IDLE_Y_SIZE 5.0f
 
@@ -9,8 +10,10 @@ class item
 private:
 	image * m_pImg;
 	image * m_pImgShadow;
+	image * m_pItemPopupUi;
 
 	animation * m_pAni;
+	effectManager * m_pEffMag;
 
 	RECT	m_rc;
 	//float	m_fAngle;
@@ -23,11 +26,13 @@ private:
 	bool m_isItemIdle;
 	int m_ItemAlphaNum;
 
+	bool m_isGet;
+
 	bool	m_isAlive;
 	tagItemInfo m_tItemInfo;
 
 public:
-	HRESULT init(const char * imageName, tagItemInfo itemInfo);
+	HRESULT init(const char * imageName, tagItemInfo itemInfo, effectManager * pEffItem, int currX, int currY);
 	void release();
 	void update();
 	void render(HDC hdc);
@@ -39,6 +44,9 @@ public:
 
 	bool getIsAlive() { return m_isAlive; }
 	void setIsAlive(bool alive) { m_isAlive = alive; }
+
+	void ItemPopup(HDC hdc);
+
 	item();
 	~item();
 };

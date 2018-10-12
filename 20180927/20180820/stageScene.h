@@ -31,7 +31,7 @@ public:
 	void release();
 	void update();
 
-	void render(HDC hdc);
+	//void render(HDC hdc);
 	void LoadEvent();
 	void FixedLoadEvent();
 

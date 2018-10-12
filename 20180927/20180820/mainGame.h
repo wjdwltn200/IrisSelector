@@ -3,7 +3,7 @@ class editorScene_re;
 class loadingScene;
 class stageScene;
 class titleScene;
-
+class editor;
 
 
 class mainGame
@@ -20,6 +20,7 @@ private:
 
 	editorScene_re * m_pEditorScene_RE;
 
+	editor * m_pEditor;
 
 	loadingScene * m_pLoadingScene;
 	stageScene * m_pStageScene;

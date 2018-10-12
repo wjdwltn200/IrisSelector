@@ -56,14 +56,14 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 	m_tBulletInfo.tIsAlive = true;
 	m_tBulletInfo.tBulletSetNum = 1;
-	m_tBulletInfo.tScale = 1.0f;
+	m_tBulletInfo.tScale = 2.0f;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
 	m_tBulletInfo.tRange = 200.0f;
 	m_tBulletInfo.tBulletBoom = true;
 
-	m_tBulletInfo.tDmage = 10.0f + m_tMonInfo.tDamageSub;
+	m_tBulletInfo.tDmage = 1.0f + m_tMonInfo.tDamageSub;
 	m_tBulletInfo.tKnokBack = 5.0f;
 	m_tBulletInfo.tMoveSpeed = 5.0f;
 
@@ -71,7 +71,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::MONSTER;
 	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
-	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
+	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
 	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
 
 	// ¼­ºê ÅºÈ¯ (ÀÌÁß Æø¹ß)
@@ -87,7 +87,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfoSub.tRange = 200.0f;
 	m_tBulletInfoSub.tBulletBoom = false;
 
-	m_tBulletInfoSub.tDmage = 10.0f + m_tMonInfo.tDamageSub;
+	m_tBulletInfoSub.tDmage = 1.0f + m_tMonInfo.tDamageSub;
 	m_tBulletInfoSub.tKnokBack = 5.0f;
 	m_tBulletInfoSub.tMoveSpeed = 5.0f;
 
@@ -95,7 +95,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::MONSTER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
-	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_B;
+	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
 	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
@@ -128,8 +128,8 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 	m_tMonInfo.tWidth = monInfo.tWidth;
 	m_tMonInfo.tHeight = monInfo.tHeight;
-	m_tMonInfo.tcurrGauge = m_tMonInfo.tHp = monInfo.tcurrGauge = monInfo.tHp;
-	m_tMonInfo.tIsType = monInfo.tIsType;
+	m_tMonInfo.tHp = monInfo.tHp;
+	m_tMonInfo.tIsBoom = monInfo.tIsBoom;
 	m_tMonInfo.tDamageSub = monInfo.tDamageSub;
 	
 	m_monsterMove->setDefPlayFrame(false, true);
@@ -148,18 +148,18 @@ void monster::release()
 {
 }
 
-void monster::Move()
-{
-	if (!m_tMonInfo.tIsAlive) return;
-
-	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
-	m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
-	m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
-	m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
-	m_progressBar->init(m_tMonInfo.tPosX - 50, m_tMonInfo.tPosY + 50,
-		m_tMonInfo.tcurrGauge, 10.0f);
-
-}
+//void monster::Move(int m_moveTypeNum)
+//{
+//	if (!m_tMonInfo.tIsAlive) return;
+//
+//	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
+//	m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
+//	m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
+//	m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
+//	m_progressBar->init(m_tMonInfo.tPosX - 50, m_tMonInfo.tPosY + 50,
+//		m_tMonInfo.tHp, 10.0f);
+//
+//}
 
 void monster::fireAtk()
 {
@@ -181,12 +181,74 @@ void monster::fireAtk()
 
 void monster::Damge(float dam)
 {
-	m_tMonInfo.tcurrGauge -= dam;
 	m_tMonInfo.tHp -= dam;
 
 	if (m_tMonInfo.tHp < 0.0f) // »ç¸ÁÃ³¸®
 	{
 		m_tMonInfo.tIsAlive = false;
+	}
+}
+
+void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life)
+{
+	m_tMonInfo.tTrance = isTrance;
+	m_tMonInfo.tIslife = life;
+	m_tMonInfo.tminGaugeSub = minGague;
+	m_tMonInfo.tmaxGaugeSub = maxGauge;
+	m_tMonInfo.tminGaugeInfo = minSubInfo;
+	m_tMonInfo.tmaxGaugeInfo = maxSubInfo;
+	if (m_tMonInfo.tHp <= m_tMonInfo.tminGaugeSub)
+	{
+		switch (minSubInfo)
+		{
+		case MONSTER_SUB::MONSTER_ATT_UP:
+			m_tMonInfo.tDamageSub = 10.0f;
+			break;
+		case MONSTER_SUB::_MONSTER_DEF_UP:
+			m_tMonInfo.tHp -= 5.0f;
+			break;
+		case MONSTER_SUB::MONSTER_SPEED_UP:
+			m_tMonInfo.tMoveSpeed = 10.0f;
+			break;
+		case MONSTER_SUB::MONSTER_POWER_UP:
+			m_tMonInfo.tDamageSub += 10.0f;
+			m_tMonInfo.tHp -= 5.0f;
+			break;
+		}
+	}
+	else if (m_tMonInfo.tHp <= m_tMonInfo.tmaxGaugeSub)
+	{
+		switch (maxSubInfo)
+		{
+		case MONSTER_SUB::MONSTER_HP_HEALING:
+			m_tMonInfo.tHp += 5.0f;
+			break;
+		case MONSTER_SUB::MONSTER_RESURRECTION:
+			if (m_tMonInfo.tTrance == true)
+			{
+				if (m_tMonInfo.tIsAlive == false && m_lifeCount == 0)
+				{
+					m_lifeCount++;
+					m_tMonInfo.tIsAlive = true;
+					m_tMonInfo.tHp = 100.0f;
+				}
+				else
+					m_tMonInfo.tIsAlive = false;
+			}
+			else if (m_tMonInfo.tIsAlive == false && m_lifeCount <= m_tMonInfo.tIslife)
+			{
+				m_lifeCount++;
+				m_tMonInfo.tIsAlive = true;
+				m_tMonInfo.tHp = 100.0f;
+			}
+			break;
+		case MONSTER_SUB::MONSTER_BOOM:
+			if (m_tMonInfo.tIsAlive == false)
+			{
+				m_tMonInfo.tIsBoom = true;
+			}
+			break;
+		}
 	}
 }
 
@@ -196,8 +258,7 @@ void monster::update()
 	if (!m_tMonInfo.tIsAlive) return;
 
 	m_tMonInfo.tFireAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
-
-	Move();
+	//Move();
 	fireAtk();
 	m_monsterMove->frameUpdate();
 }

@@ -1,7 +1,8 @@
 #pragma once
 #include "singletonBase.h"
+#include "editorScene_re.h"
+#include "editor.h"
 
-class editorScene_re;
 
 #define CAMERA_WIDTH 518 
 #define CAMERA_HEIGHT 684
@@ -34,7 +35,8 @@ private:
 	int m_nMiniMap_LocationX; // ¹Ì´Ï¸Ê »ý¼ºµÇ´Â À§Ä¡
 	int m_nMiniMap_LocationY;
 
-	editorScene_re m_pEdtior;
+	//editorScene_re m_pEdtior;
+	editor m_pEdtior;
 
 	//POINT m_ptCamera;
 	//POINT m_ptMiniCamera;
@@ -43,15 +45,15 @@ private:
 	RECT m_rcMiniCamera;*/
 
 public:
-	SYNTHESIZE(float, m_ptMoveCameraX, focusCameraX); // °Ñ¸é
-	SYNTHESIZE(float, m_ptCameraX, CameraX);
-	SYNTHESIZE(float, m_ptMoveCameraY, focusCameraY);
-	SYNTHESIZE(float, m_ptCameraY, CameraY);
+	SYNTHESIZE(float, m_ptMoveCameraX, focusCameraX) // °Ñ¸é
+	SYNTHESIZE(float, m_ptCameraX, CameraX)
+	SYNTHESIZE(float, m_ptMoveCameraY, focusCameraY)
+	SYNTHESIZE(float, m_ptCameraY, CameraY)
 
-	SYNTHESIZE(float, m_ptMiniCameraX, focusMiniCameraX);
-	SYNTHESIZE(float, m_ptCameraMiniX, CameraMiniX);
-	SYNTHESIZE(float, m_ptMiniCameraY, focusMiniCameraY);
-	SYNTHESIZE(float, m_ptCameraMiniY, CameraMiniY);
+	SYNTHESIZE(float, m_ptMiniCameraX, focusMiniCameraX)
+	SYNTHESIZE(float, m_ptCameraMiniX, CameraMiniX)
+	SYNTHESIZE(float, m_ptMiniCameraY, focusMiniCameraY)
+	SYNTHESIZE(float, m_ptCameraMiniY, CameraMiniY)
 
 	//SYNTHESIZE(POINT, m_ptCamera, CameraPoint); // °Ñ¸é
 	//SYNTHESIZE(POINT, m_ptMiniCamera, MiniCameraPoint); // °Ñ¸é

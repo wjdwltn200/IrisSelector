@@ -14,20 +14,17 @@ private:
 
 	RECT	m_rc;
 	int		m_ScaleCount;
-
-	//float	m_fX, m_fY;
+	
 	float	m_fAngle;
 	float	m_fMoveAngle;
 	float	m_fAngleRadius;
 	int		tMoveTypeCount;
-
+	
 	bool	m_isAlive;
-
+	
 	bulletManger * m_pBulletMag;
 	tagBulletInfo m_bulletInfo;
 	tagBulletInfo * m_bulletInfoSub;
-
-
 
 public:
 	HRESULT init(const char * imageName, float posX, float posY, float angle, tagBulletInfo * bulletInfo, tagBulletInfo* bulletInfoSub, animation * pAni, effectManager * pEff, bulletManger* bulletMagPoint = NULL);
@@ -43,6 +40,9 @@ public:
 
 	int getBulletMaster() { return m_bulletInfo.tMasterType; }
 	bool getIsBulletBoom() { return m_bulletInfo.tBulletBoom; }
+
+	void HitEff();
+	void SecondBulletFire();
 
 	tagBulletInfo getTagBulletInfo() { return m_bulletInfo; }
 

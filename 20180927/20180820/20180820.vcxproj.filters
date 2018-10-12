@@ -52,6 +52,9 @@
     <Filter Include="2DGameFramework\ui">
       <UniqueIdentifier>{beba1027-b6f3-45c0-a9b8-574089432df2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\editor">
+      <UniqueIdentifier>{b56f2e9d-8dff-4285-bd6c-a2c2d5fe51d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -178,7 +181,10 @@
       <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="MapCamera.h">
-      <Filter>MainGame</Filter>
+      <Filter>MainGame\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="editor.h">
+      <Filter>MainGame\editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -291,7 +297,10 @@
       <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="MapCamera.cpp">
-      <Filter>MainGame</Filter>
+      <Filter>MainGame\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editor.cpp">
+      <Filter>MainGame\editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

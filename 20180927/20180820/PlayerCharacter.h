@@ -1,8 +1,9 @@
 #pragma once
 class animation;
 class bulletManger;
+class item;
 
-#define BULLET_FIRST_DELAY 10
+#define BULLET_FIRST_DELAY 60
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
 
@@ -10,13 +11,17 @@ class bulletManger;
 
 class PlayerCharacter
 {
-
 private:
+	std::vector<item*>			m_vecItem;
+	std::vector<item*>::iterator	m_iter;
+
 	image * img_player;
 	image * img_left_Run;
 	image * img_right_Run;
 	image * img_CrossHair;
 	image * img_HpPoint[10];
+
+	image * img_ItemUiBg;
 
 	animation * ani_right_stay;
 	animation * ani_left_stay;
@@ -27,6 +32,7 @@ private:
 	int m_count;
 	int ani_stay_Curr[4];
 
+	bool m_isItemUi;
 	bool m_Direction;
 	bool m_isRunState;
 	bool m_isRunStart;
@@ -52,6 +58,7 @@ private:
 	
 	int m_currHp;
 	int m_currHpMax;
+	bool m_isAlive;
 	
 	tagBulletInfo m_tBulletInfo;
 	tagBulletInfo * m_tBulletInfoPoint;
@@ -76,6 +83,8 @@ public:
 
 	float getX() { return m_fX; }
 	float getY() { return m_fY; }
+
+	void PlayerDamage(int dam);
 
 	void MoveActKeyInput();
 	

@@ -34,14 +34,22 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("Bullet_B", "image/resources/bullet_image/Bullet_B.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_P", "image/resources/bullet_image/Bullet_P.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_G", "image/resources/bullet_image/Bullet_G.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Bullet_R", "image/resources/bullet_image/Bullet_R.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 
+	
+	IMAGEMANAGER->addImage("Player_ItemUI", "image/resources/UI_image/player_Ui/Player_Item_Ui.bmp", 691, 668, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_ItemPopupUI", "image/resources/UI_image/player_Ui/Player_Item_PopupUI.bmp", 307, 126, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_HP_Point", "image/resources/UI_image/player_Ui/Player_Hp_Point.bmp", 27 * 5, 7 * 5, 3, 1, true, RGB(255, 0, 255));
 
+
 	m_pEffMagr = new effectManager;
-	m_pEffMagr->addEffect("Bullet_Y_End", "image/resources/bullet_image/Bullet_Y_End.bmp", 238, 30, 34, 30, 15, 100);
+	m_pEffMagr->addEffect("Bullet_End_0", "image/resources/bullet_image/Bullet_End_0.bmp", 238, 30, 34, 30, 15, 50);
+	m_pEffMagr->addEffect("Bullet_End_1", "image/resources/bullet_image/Bullet_End_1.bmp", 238, 34, 34, 34, 15, 50);
+	m_pEffMagr->addEffect("Bullet_End_2", "image/resources/bullet_image/Bullet_End_2.bmp", 224, 32, 32, 30, 15, 50);
+	m_pEffMagr->addEffect("Bullet_End_3", "image/resources/bullet_image/Bullet_End_3.bmp", 210, 30, 24, 30, 15, 50);
+
 	m_pEffMagr->addEffect("Item_Get1", "image/resources/item_image/Item_Get.bmp", 320, 31, (320 / 4), 31, 15, 5);
 	m_pEffMagr->addEffect("Item_Get2", "image/resources/item_image/Item_Get2.bmp", 230, 70, (230 / 5), 70, 15, 5);
-
 
 	ShowCursor(FALSE);
 
@@ -67,16 +75,16 @@ HRESULT titleScene::init()
 
 	//for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
 	//{
-	//	tagItemInfo ItemInfo;
-	//	ItemInfo.tImageCurrX = i;
-	//	ItemInfo.tImageCurrY = i;
-	//	ItemInfo.tScale = 1.0f;
-	//	ItemInfo.tTimer = 1000;
-	//	ItemInfo.tRadius = 1.5f;
-	//	ItemInfo.tSkillType = i;
-	//	ItemInfo.posX = 100;
-	//	ItemInfo.posY = 50 * (i + 1);
-	//	m_pItemMag->itemDrop("ItemObject", ItemInfo);
+		tagItemInfo ItemInfo;
+		ItemInfo.tImageCurrX = 3;
+		ItemInfo.tImageCurrY = 17;
+		ItemInfo.tScale = 1.0f;
+		ItemInfo.tTimer = 1000;
+		ItemInfo.tRadius = 1.5f;
+		ItemInfo.tSkillType = 1;
+		ItemInfo.posX = 300;
+		ItemInfo.posY = 300;
+		m_pItemMag->itemDrop("ItemObject", ItemInfo, m_pEffMagr);
 	//}
 
 	
@@ -117,7 +125,7 @@ void titleScene::update()
 		tagMonInfo Moninfo;
 		Moninfo.tFireDelay = 120;
 		Moninfo.tMoveSpeed = 0.5f;
-		Moninfo.tHp = 20.0f;
+		Moninfo.tHp = 100.0f;
 		m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 	}
 
@@ -141,8 +149,8 @@ void titleScene::update()
 	m_pMonsterMag->update();
 	m_player->update();
 	m_pItemMag->update();
-	m_player->update();
 	m_pBulletMag->update();
+	m_player->update();
 	m_pBulletMagMons->update();
 	m_pEffMagr->update();
 }
@@ -199,7 +207,7 @@ void titleScene::ColRc()
 		{
 			if (!(*MonsIter)->getMonInfo().tIsAlive) continue;
 
-			if ((*PlayerBulletIter)->getIsAlive() && (*PlayerBulletIter)->getBulletMaster() == BULLET_MASTER_TYPE::PLAYER &&/*플레이어 총알*/
+			if ((*PlayerBulletIter)->getIsAlive() &&
 				(*PlayerBulletIter)->getTagBulletInfo().tRadius + (*MonsIter)->getMonInfo().tRadius >
 				(MY_UTIL::getDistance(
 				(*PlayerBulletIter)->getTagBulletInfo().tPosX,
@@ -211,6 +219,7 @@ void titleScene::ColRc()
 				(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
 				(*PlayerBulletIter)->setIsAlive(false);
 			}
+				(*MonsIter)->TypeSub(50.0f, 0.0f, MONSTER_SPEED_UP, MONSTER_RESURRECTION, true, 4);
 		}
 	}
 

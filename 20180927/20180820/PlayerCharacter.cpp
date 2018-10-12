@@ -6,6 +6,8 @@
 
 HRESULT PlayerCharacter::init()
 {
+	img_ItemUiBg = IMAGEMANAGER->findImage("Player_ItemUI");
+
 	for (int i = 0; i < 10; i++)
 	{
 		img_HpPoint[i] = IMAGEMANAGER->findImage("Player_HP_Point");
@@ -13,7 +15,8 @@ HRESULT PlayerCharacter::init()
 
 	m_currHp = BAES_HP;
 	m_currHpMax = m_currHp;
-
+	m_isAlive = true;
+	m_isItemUi = false;
 
 	int ani_stay_Curr[] = { 0,1,2,3,4,5,6,7 };
 	img_player = IMAGEMANAGER->addImage("player", "image/resources/player_image/BG_Player_idle_0.bmp", 256, 54, 8, 1, true, RGB(255, 0, 255), m_fX, m_fY);
@@ -83,11 +86,11 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfo.tScatter = m_fCrossHairScale * 10.0f;
 
 	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
+	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::CUFF_SHOOT;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
-	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::CENTER_CENTRIFUGAL;
 	
 	m_tBulletInfoPoint = &m_tBulletInfo;
 
@@ -95,12 +98,12 @@ HRESULT PlayerCharacter::init()
 	memset(&m_tBulletInfoSub, 0, sizeof(m_tBulletInfoSub));
 
 	m_tBulletInfoSub.tIsAlive = true;
-	m_tBulletInfoSub.tBulletSetNum = 3;
+	m_tBulletInfoSub.tBulletSetNum = 1;
 	m_tBulletInfoSub.tScale = 1.0f;
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfoSub.tRadius = 0.5f;
 	m_tBulletInfoSub.tExpRadius = 0.5f;
-	m_tBulletInfoSub.tRange = 150.0f;
+	m_tBulletInfoSub.tRange = 300.0f;
 	m_tBulletInfoSub.tBulletBoom = true;
 
 	m_tBulletInfoSub.tDmage = 5.0f;
@@ -108,8 +111,8 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfoSub.tMoveSpeed = 10.0f;
 	m_tBulletInfoSub.tScatter = 0.0f;
 
-	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::CUFF_SHOOT;
+	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::MOUSE_POINT;
+	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::LINE_SHOOT;
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::PLAYER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_P;
@@ -249,6 +252,18 @@ void PlayerCharacter::update()
 		m_fY += m_fSpeed;
 	}
 
+	if (KEYMANAGER->isOnceKeyDown(VK_TAB))
+	{
+		if (m_isItemUi)
+		{
+			m_isItemUi = false;
+		}
+		else if (!m_isItemUi)
+		{
+			m_isItemUi = true;
+		}
+	}
+
 	m_rc = RectMakeCenter(m_fX, m_fY, img_player->getFrameWidth(), img_player->getFrameHeight());
 
 	MoveActKeyInput();
@@ -330,8 +345,10 @@ void PlayerCharacter::render(HDC hdc)
 
 	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 
-	img_CrossHair->aniRender(hdc, g_ptMouse.x - (img_CrossHair->getFrameWidth() / 2) * m_fCrossHairScale, g_ptMouse.y - (img_CrossHair->getFrameHeight() / 2) * m_fCrossHairScale, ani_CrossHair, m_fCrossHairScale);
+	if (m_isItemUi)
+		img_ItemUiBg->render(hdc, (WINSIZEX / 2) - (img_ItemUiBg->getFrameWidth() / 2), (WINSIZEX / 2) - (img_ItemUiBg->getFrameHeight() / 2));
 
+	img_CrossHair->aniRender(hdc, g_ptMouse.x - (img_CrossHair->getFrameWidth() / 2) * m_fCrossHairScale, g_ptMouse.y - (img_CrossHair->getFrameHeight() / 2) * m_fCrossHairScale, ani_CrossHair, m_fCrossHairScale);
 
 	char szText[256];
 
@@ -418,7 +435,7 @@ void PlayerCharacter::getItem(int itemInfo)
 	case ITEM_SKILL_TYPE::PLAYER_MOVE_SPEED_UP:
 		m_fSpeed += 1.0f;
 		break;
-
+		
 	case ITEM_SKILL_TYPE::BULLET_COLOR_B:
 		m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_B;
 		break;
@@ -431,6 +448,15 @@ void PlayerCharacter::getItem(int itemInfo)
 	case ITEM_SKILL_TYPE::BULLET_COLOR_Y:
 		m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
 		break;
+	}
+}
+
+void PlayerCharacter::PlayerDamage(int dam)
+{
+	m_currHp -= dam;
+	if (m_currHp < 0)
+	{
+		m_isAlive = false;
 	}
 }
 

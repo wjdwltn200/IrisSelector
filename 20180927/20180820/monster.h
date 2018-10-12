@@ -8,6 +8,8 @@ class progressBar;
 class monster
 {
 private:
+	int m_moveTypeNum;
+	int m_lifeCount;
 	image * m_monsterType;
 	animation * m_monsterMove;
 	PlayerCharacter * m_player;
@@ -26,9 +28,10 @@ public:
 	HRESULT init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint);
 	void release();
 	void update();
-	void Move();
+	//void Move();
 	void fireAtk();
 	void Damge(float dam);
+	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
 	void render(HDC hdc);
 
 	tagMonInfo getMonInfo() { return m_tMonInfo; }

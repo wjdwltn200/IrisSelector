@@ -15,12 +15,26 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 	// 이미지 초기화
 	m_eff = pEff;
 
+	switch (RANDOM->getInt(4))
+	{
+	case 1:
+		m_effName = "Bullet_End_0";
+		break;
+	case 2:
+		m_effName = "Bullet_End_1";
+		break;
+	case 3:
+		m_effName = "Bullet_End_2";
+		break;
+	case 4:
+		m_effName = "Bullet_End_3";
+		break;
+	}
 	m_bulletInfo.tImageType = bulletInfo->tImageType;
 	switch (m_bulletInfo.tImageType)
 	{
 	case BULLET_IMAGE_TYPE::COLOR_Y:
 		m_pImg = IMAGEMANAGER->findImage("Bullet_Y");
-		m_effName = "Bullet_Y_End";
 		break;
 	case BULLET_IMAGE_TYPE::COLOR_B:
 		m_pImg = IMAGEMANAGER->findImage("Bullet_B");
@@ -30,6 +44,9 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 		break;
 	case BULLET_IMAGE_TYPE::COLOR_G:
 		m_pImg = IMAGEMANAGER->findImage("Bullet_G");
+		break;
+	case BULLET_IMAGE_TYPE::COLOR_R:
+		m_pImg = IMAGEMANAGER->findImage("Bullet_R");
 		break;
 	}
 	m_pAni = pAni;
@@ -160,72 +177,9 @@ void bullet::movement()
 	// 거리만큼 이동하면 죽임
 	if (m_bulletInfo.tRange < 0.0f)
 	{
-		m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2)* m_bulletInfo.tScale, m_bulletInfo.tPosY - (30 / 2) * m_bulletInfo.tScale);
+		//m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2), m_bulletInfo.tPosY - (30 / 2));
 		m_isAlive = false;
-
-		if (m_bulletInfo.tBulletBoom)
-		{
-			m_bulletInfoSub->tBulletBoom = false;
-			float tempAngle;
-			switch (m_bulletInfoSub->tBoomType)
-			{
-			case BULLET_BOOM_TYPE::ANGLE_LINE:
-				m_bulletInfoSub->tAngle = tempAngle = m_fAngle;
-				break;
-			case BULLET_BOOM_TYPE::MOUSE_POINT:
-				m_bulletInfoSub->tAngle = tempAngle = MY_UTIL::getMouseAngle(m_bulletInfo.tPosX, m_bulletInfo.tPosY);
-				break;
-			case BULLET_BOOM_TYPE::ANGLE_BOUNCE:
-				m_bulletInfoSub->tAngle = tempAngle = -m_fAngle;
-				break;
-			case BULLET_BOOM_TYPE::ANGLE_RANDOM:
-				m_bulletInfoSub->tAngle = tempAngle = RANDOM->getFloat(360.0f);
-				break;
-			case BULLET_BOOM_TYPE::ANGLE_REVERSE:
-				m_bulletInfoSub->tAngle = tempAngle = m_fAngle + (180.0f);// + ((m_bulletInfoSub->tBulletSetNum - 1) * (PI / 180.0f * (30.0f)));
-				break;
-			}
-
-			if (m_bulletInfoSub->tShootType == BULLET_SHOOT_TYPE::ONE_SHOOT)
-			{
-				if (m_bulletInfoSub->tBulletSetNum == 1)
-				{
-					//m_bulletInfoSub->tRange = m_bulletInfoSub->tRange;
-					//m_pBulletMag->NextFire(m_bulletInfoSub);
-					m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle, m_bulletInfoSub, m_bulletInfoSub);
-				}
-				else // 총알 개수 만큼 방향을 분리
-				{
-					for (int i = 0; i < m_bulletInfoSub->tBulletSetNum; i++)
-					{
-						//m_pBulletMag->NextFire(&m_bulletInfo);
-						m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle - (i * (PI / 180.0f * (30.0f))) - ((PI / 180.0f) * tempAngle - ((m_bulletInfoSub->tBulletSetNum - 1) * (PI / 180.0f * (30.0f)))) / 2, m_bulletInfoSub, m_bulletInfoSub);
-					}
-				}
-			}
-			else if (m_bulletInfoSub->tShootType == BULLET_SHOOT_TYPE::CUFF_SHOOT)
-			{
-				if (m_bulletInfoSub->tBulletSetNum == 1)
-				{
-					//m_bulletInfoSub->tPosX = m_bulletInfo.tPosX;
-					//m_bulletInfoSub->tPosY = m_bulletInfo.tPosY;
-					//m_pBulletMag->NextFire(*m_bulletInfoSub);
-					m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle, m_bulletInfoSub, m_bulletInfoSub);
-				}
-				else // 총알 개수 만큼 방향을 분리
-				{
-					for (int i = 0; i < m_bulletInfoSub->tBulletSetNum; i++)
-					{
-						//m_bulletInfoSub->tPosX = m_bulletInfo.tPosX;
-						//m_bulletInfoSub->tPosY = m_bulletInfo.tPosY;
-						//m_bulletInfoSub->tAngle += (i * (PI / 180.0f * (360.0f / m_bulletInfoSub->tBulletSetNum)));
-						//m_pBulletMag->NextFire(m_bulletInfoSub);
-						m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle + (i * (PI / 180.0f * (360.0f / m_bulletInfoSub->tBulletSetNum))), m_bulletInfoSub, m_bulletInfoSub);
-					}
-				}
-			}
-			
-		}
+		SecondBulletFire();
 	}
 }
 
@@ -280,6 +234,83 @@ void bullet::moveTypeAct(int moveType)
 		m_bulletInfo.tPosY += -sinf(m_fAngle) * m_bulletInfo.tMoveSpeed;
 		m_bulletInfo.tRange -= m_bulletInfo.tMoveSpeed;
 		break;
+	}
+}
+
+void bullet::HitEff()
+{
+	m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2)* m_bulletInfo.tScale, m_bulletInfo.tPosY - (30 / 2) * m_bulletInfo.tScale);
+	m_isAlive = false;
+}
+
+void bullet::SecondBulletFire()
+{
+	if (m_bulletInfo.tBulletBoom)
+	{
+		m_bulletInfoSub->tBulletBoom = false;
+		float tempAngle;
+		switch (m_bulletInfoSub->tBoomType)
+		{
+		case BULLET_BOOM_TYPE::ANGLE_LINE:
+			m_bulletInfoSub->tAngle = tempAngle = m_fAngle;
+			break;
+		case BULLET_BOOM_TYPE::MOUSE_POINT:
+			m_bulletInfoSub->tAngle = tempAngle = MY_UTIL::getMouseAngle(m_bulletInfo.tPosX, m_bulletInfo.tPosY);
+			break;
+		case BULLET_BOOM_TYPE::ANGLE_BOUNCE:
+			m_bulletInfoSub->tAngle = tempAngle = -m_fAngle;
+			break;
+		case BULLET_BOOM_TYPE::ANGLE_RANDOM:
+			m_bulletInfoSub->tAngle = tempAngle = RANDOM->getFloat(360.0f);
+			break;
+		case BULLET_BOOM_TYPE::ANGLE_REVERSE:
+			m_bulletInfoSub->tAngle = tempAngle = m_fAngle + (180.0f);// + ((m_bulletInfoSub->tBulletSetNum - 1) * (PI / 180.0f * (30.0f)));
+			break;
+		}
+
+		if (m_bulletInfoSub->tShootType == BULLET_SHOOT_TYPE::ONE_SHOOT)
+		{
+			if (m_bulletInfoSub->tBulletSetNum == 1)
+			{
+				m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle, m_bulletInfoSub, m_bulletInfoSub);
+			}
+			else // 총알 개수 만큼 방향을 분리
+			{
+				for (int i = 0; i < m_bulletInfoSub->tBulletSetNum; i++)
+				{
+					m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle - (i * (PI / 180.0f * (30.0f))) - ((PI / 180.0f) * tempAngle - ((m_bulletInfoSub->tBulletSetNum - 1) * (PI / 180.0f * (30.0f)))) / 2, m_bulletInfoSub, m_bulletInfoSub);
+				}
+			}
+		}
+		else if (m_bulletInfoSub->tShootType == BULLET_SHOOT_TYPE::CUFF_SHOOT)
+		{
+			if (m_bulletInfoSub->tBulletSetNum == 1)
+			{
+				m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle, m_bulletInfoSub, m_bulletInfoSub);
+			}
+			else // 총알 개수 만큼 방향을 분리
+			{
+				for (int i = 0; i < m_bulletInfoSub->tBulletSetNum; i++)
+				{
+					m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle + (i * (PI / 180.0f * (360.0f / m_bulletInfoSub->tBulletSetNum))), m_bulletInfoSub, m_bulletInfoSub);
+				}
+			}
+		}
+		else if (m_bulletInfoSub->tShootType == BULLET_SHOOT_TYPE::LINE_SHOOT)
+		{
+			if (m_bulletInfoSub->tBulletSetNum == 1)
+			{
+				m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle, m_bulletInfoSub, m_bulletInfoSub);
+			}
+			else // 총알 개수 만큼 방향을 분리
+			{
+				for (int i = 0; i < m_bulletInfoSub->tBulletSetNum; i++)
+				{
+					m_pBulletMag->NextFire("임시", m_bulletInfo.tPosX, m_bulletInfo.tPosY, tempAngle, m_bulletInfoSub, m_bulletInfoSub);
+				}
+			}
+		}
+
 	}
 }
 
