@@ -10,12 +10,12 @@
 #define TILE_MAXCOUNTX 60
 #define TILE_MAXCOUNTY 60
 
-enum MOUSE_STATE
+enum tagMOUSE_STATE
 {
-	MOUSE_IDLE,
-	MOUSE_UP,
-	MOUSE_DOWN,
-	MOUSE_NUM
+	aMOUSE_IDLE,
+	aMOUSE_UP,
+	aMOUSE_DOWN,
+	aMOUSE_NUM
 };
 
 enum tagSELECTED_TILE {
@@ -37,7 +37,7 @@ private:
 	RECT m_rcSelectedTile;
 	tagSELECTED_TILE st_selTile;
 	tagSELECTED_SIZE st_selSize;
-	MOUSE_STATE st_mouse;
+	tagMOUSE_STATE st_mouse;
 
 	image* m_pTileSet[4]; // ÃÑ 4°³
 	image* m_pBox;

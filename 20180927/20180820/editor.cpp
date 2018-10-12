@@ -4,7 +4,7 @@
 
 HRESULT editor::init()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 void editor::release()
