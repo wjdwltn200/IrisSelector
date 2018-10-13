@@ -81,7 +81,7 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfo.tBulletBoom = true;
 
 	m_tBulletInfo.tDmage = 10.0f;
-	m_tBulletInfo.tKnokBack = 5.0f;
+	m_tBulletInfo.tKnokBack =  10.0f;
 	m_tBulletInfo.tMoveSpeed = 20.0f;
 	m_tBulletInfo.tScatter = m_fCrossHairScale * 10.0f;
 
@@ -107,7 +107,7 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfoSub.tBulletBoom = true;
 
 	m_tBulletInfoSub.tDmage = 5.0f;
-	m_tBulletInfoSub.tKnokBack = 5.0f;
+	m_tBulletInfoSub.tKnokBack = 10.0f;
 	m_tBulletInfoSub.tMoveSpeed = 10.0f;
 	m_tBulletInfoSub.tScatter = 0.0f;
 

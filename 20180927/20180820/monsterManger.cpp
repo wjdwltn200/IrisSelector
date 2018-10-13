@@ -37,6 +37,7 @@ void monsterManger::Regeneration(const char*strKey, tagMonInfo moninfo, bulletMa
 			return;
 		}
 	}
+	//progressBar * pProgressBar = new progressBar;
 	monster * pMonster = new monster;
 	pMonster->init(strKey, moninfo, bulletInfo, playerInfo);
 	m_vecMonster.push_back((pMonster));

@@ -70,6 +70,10 @@ HRESULT titleScene::init()
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
 
+	//m_pProgressBar = new progressBar;
+	
+	
+
 	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/Item_set.bmp", 682, 614, 20, 18, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ItemShadow", "image/resources/item_image/Item_shadow.bmp", 32, 9, 1, 1, true, RGB(255, 0, 255));
 
@@ -125,8 +129,10 @@ void titleScene::update()
 		tagMonInfo Moninfo;
 		Moninfo.tFireDelay = 120;
 		Moninfo.tMoveSpeed = 0.5f;
+		Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
+		Moninfo.tUnKnokBack = 0.0f;
 		Moninfo.tHp = 100.0f;
-		m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
+		m_pMonsterMag->Regeneration("BG_Cetus", Moninfo, m_pBulletMagMons, m_player);
 	}
 
 	if (!m_tButtonInfo.m_isMovement)
@@ -206,21 +212,26 @@ void titleScene::ColRc()
 		for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 몬스터 백터
 		{
 			if (!(*MonsIter)->getMonInfo().tIsAlive) continue;
-
-			if ((*PlayerBulletIter)->getIsAlive() &&
-				(*PlayerBulletIter)->getTagBulletInfo().tRadius + (*MonsIter)->getMonInfo().tRadius >
-				(MY_UTIL::getDistance(
-				(*PlayerBulletIter)->getTagBulletInfo().tPosX,
-				(*PlayerBulletIter)->getTagBulletInfo().tPosY,
-				(*MonsIter)->getMonInfo().tPosX,
-				(*MonsIter)->getMonInfo().tPosY))
-				)
 			{
-				(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
-				(*PlayerBulletIter)->setIsAlive(false);
+				if ((*PlayerBulletIter)->getIsAlive() &&
+					(*PlayerBulletIter)->getTagBulletInfo().tRadius + (*MonsIter)->getMonInfo().tRadius >
+					(MY_UTIL::getDistance(
+					(*PlayerBulletIter)->getTagBulletInfo().tPosX,
+						(*PlayerBulletIter)->getTagBulletInfo().tPosY,
+						(*MonsIter)->getMonInfo().tPosX,
+						(*MonsIter)->getMonInfo().tPosY))
+					)
+				{
+					(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
+					(*MonsIter)->knokback((*PlayerBulletIter)->getTagBulletInfo().tKnokBack, (*MonsIter)->getMonInfo().tUnKnokBack);
+					(*PlayerBulletIter)->setIsAlive(false);
+				}
 			}
-				(*MonsIter)->TypeSub(50.0f, 0.0f, MONSTER_SPEED_UP, MONSTER_RESURRECTION, true, 4);
 		}
+	}
+	for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++)
+	{
+		(*MonsIter)->TypeSub(50.0f, 10.0f, MONSTER_DEF_UP, MONSTER_HP_HEALING, true, 4);
 	}
 
 	std::vector<item*> vItem = m_pItemMag->getVecItem();

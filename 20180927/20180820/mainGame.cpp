@@ -45,7 +45,7 @@ HRESULT mainGame::init()
 	m_pLoadingScene = new loadingScene;
 	SCENEMANAGER->addLoadingScene("loading", m_pLoadingScene);
 	
-	SCENEMANAGER->changeScene("edtior");
+	SCENEMANAGER->changeScene("title");
 	// 민욱이는 과연 누구인가? 알랄라 내첫사랑 지수 ㅇㅇ
 	// 이순현 테스트
 	// 정지수 로그인 테스트

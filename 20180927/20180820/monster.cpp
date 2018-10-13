@@ -64,7 +64,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfo.tBulletBoom = true;
 
 	m_tBulletInfo.tDmage = 1.0f + m_tMonInfo.tDamageSub;
-	m_tBulletInfo.tKnokBack = 5.0f;
+	m_tBulletInfo.tKnokBack = 0.0f;
 	m_tBulletInfo.tMoveSpeed = 5.0f;
 
 	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
@@ -100,7 +100,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
 
-	m_player = new PlayerCharacter;
+//	m_player = new PlayerCharacter;
 
 	m_monsterType = IMAGEMANAGER->findImage(strKey);
 	m_monsterMove = new animation;
@@ -113,7 +113,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, 100, 100);
 	m_tMonInfo.tIsAlive = monInfo.tIsAlive;
 	m_tMonInfo.tHp = monInfo.tHp;
-	m_tMonInfo.tHpMax= monInfo.tHpMax;
+	m_tMonInfo.tHpMax= monInfo.tHpMax = 100.0f;
 	m_tMonInfo.tPosX = monInfo.tPosX;
 	m_tMonInfo.tPosY = monInfo.tPosY;
 	m_tMonInfo.tFireCount = monInfo.tFireCount;
@@ -126,21 +126,27 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.tUnKnokBack = monInfo.tUnKnokBack;
 	m_tMonInfo.tMoveSpeed = monInfo.tMoveSpeed;
 
+	m_tMonInfo.tHealingCount = monInfo.tHealingCount = 1;
 	m_tMonInfo.tWidth = monInfo.tWidth;
 	m_tMonInfo.tHeight = monInfo.tHeight;
 	m_tMonInfo.tHp = monInfo.tHp;
 	m_tMonInfo.tIsBoom = monInfo.tIsBoom;
 	m_tMonInfo.tDamageSub = monInfo.tDamageSub;
+	m_tMonInfo.tDef = monInfo.tDef = 0.0f;
+	m_tMonInfo.tHealing = monInfo.tHealing;
+	m_tMonInfo.tMoveType = monInfo.tMoveType;
 	
 	m_monsterMove->setDefPlayFrame(false, true);
 	m_monsterMove->setFPS(10);
 	m_monsterMove->start();
 
+	m_HealingCount = 0;
+	m_count = 0;
+	m_isHealing = false;
+	m_isMove = false;
+	m_SubDamgeAdd = 5.0f;
 
-	m_progressBar = new progressBar;
-
-
-
+	
 	return S_OK;
 }
 
@@ -148,18 +154,72 @@ void monster::release()
 {
 }
 
-//void monster::Move(int m_moveTypeNum)
-//{
-//	if (!m_tMonInfo.tIsAlive) return;
-//
-//	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
-//	m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
-//	m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
-//	m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * m_tMonInfo.tMoveSpeed;
-//	m_progressBar->init(m_tMonInfo.tPosX - 50, m_tMonInfo.tPosY + 50,
-//		m_tMonInfo.tHp, 10.0f);
-//
-//}
+void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
+{
+	if (!m_tMonInfo.tIsAlive) return;
+			m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
+			m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
+	switch (m_moveTypeNum)
+	{
+	case MONSTER_MOVE::MONSTER_CRAWL :
+		if (m_tMonInfo.m_rc.left + 150 < m_PlayerCharPoint->getRect().left
+			|| m_tMonInfo.m_rc.right - 150 > m_PlayerCharPoint->getRect().right
+			|| m_tMonInfo.m_rc.bottom + 150 < m_PlayerCharPoint->getRect().bottom
+			|| m_tMonInfo.m_rc.top - 150 > m_PlayerCharPoint->getRect().top)
+		{
+			if (m_isMove)
+			{
+				m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 2);
+				m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 2);
+				m_monsterMove->setFPS(10);
+			}
+			m_count++;
+			if (m_count >= 20)
+			{
+				m_count = 0;
+				m_isMove = RANDOM->getInt(2);
+				m_monsterMove->setFPS(0);
+				//m_monsterMove->getFramePos();
+			}
+		}
+		break;
+	case MONSTER_MOVE::MONSTER_FLY :
+			if (m_tMonInfo.m_rc.left + 150 < m_PlayerCharPoint->getRect().left
+				|| m_tMonInfo.m_rc.right - 150 > m_PlayerCharPoint->getRect().right
+				|| m_tMonInfo.m_rc.bottom + 150 < m_PlayerCharPoint->getRect().bottom
+				|| m_tMonInfo.m_rc.top - 150 > m_PlayerCharPoint->getRect().top)
+			{
+				if (m_Follow)
+				{
+					m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed + RANDOM->getFromFloatTo(0, 5));
+					m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed + RANDOM->getFromFloatTo(0, 5));
+				}
+			}
+			else 
+			{
+				m_Follow = false;
+			}
+			if (!(m_tMonInfo.m_rc.left + 300 < m_PlayerCharPoint->getRect().left
+				|| m_tMonInfo.m_rc.right - 300 > m_PlayerCharPoint->getRect().right
+				|| m_tMonInfo.m_rc.bottom + 300 < m_PlayerCharPoint->getRect().bottom
+				|| m_tMonInfo.m_rc.top - 300 > m_PlayerCharPoint->getRect().top) && !m_Follow)
+			{
+				m_tMonInfo.tPosX -= cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed + RANDOM->getFromFloatTo(0, 5));
+				m_tMonInfo.tPosY -= -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed + RANDOM->getFromFloatTo(0, 5));
+			}
+			else
+			{
+				m_Follow = true;
+			}
+		break;
+	case MONSTER_MOVE::MONSTER_RUN :
+
+		break;
+	case MONSTER_MOVE::MONSTER_WALK :
+
+		break;
+	}
+}
 
 void monster::fireAtk()
 {
@@ -179,13 +239,38 @@ void monster::fireAtk()
 
 }
 
+void monster::knokback(float playerkuokback, float monsterHitRecovery)
+{
+	playerkuokback -= monsterHitRecovery;
+		if (playerkuokback > 0.0f)
+		{
+			m_Follow = false;
+			m_tMonInfo.tPosX -= cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed) + playerkuokback;
+			m_tMonInfo.tPosY -= -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed) + playerkuokback;
+			m_Follow = true;
+		}
+
+}
+
 void monster::Damge(float dam)
 {
+	// 데미지가 받을때 방어력 적용
+
+	dam -= m_tMonInfo.tDef;
+	if (m_isHealing)
+	{
+		m_SubDamgeAdd += dam;
+	}
+	else
+	{
+		m_SubDamgeAdd = 0.0f;
+	}
 	m_tMonInfo.tHp -= dam;
 
 	if (m_tMonInfo.tHp < 0.0f) // 사망처리
 	{
 		m_tMonInfo.tIsAlive = false;
+		m_tMonInfo.tDef = 5.0f;
 	}
 }
 
@@ -197,6 +282,27 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 	m_tMonInfo.tmaxGaugeSub = maxGauge;
 	m_tMonInfo.tminGaugeInfo = minSubInfo;
 	m_tMonInfo.tmaxGaugeInfo = maxSubInfo;
+	if (m_isHealing && m_HealingCount <= m_tMonInfo.tHealingCount)
+	{
+		if (m_tMonInfo.tHp <= m_tMonInfo.tHpMax)
+		{
+		m_count++;
+			if (m_count >= 10)
+			{
+				m_count = 0;
+				m_tMonInfo.tHealing = 5.0f;
+				if (!(m_tMonInfo.tHp > m_tMonInfo.tHpMax - m_SubDamgeAdd))
+				{
+					m_tMonInfo.tHp += m_tMonInfo.tHealing;
+				}
+				else
+				{
+				m_isHealing = false;
+				m_HealingCount++;
+				}
+			}
+		}
+	}
 	if (m_tMonInfo.tHp <= m_tMonInfo.tminGaugeSub)
 	{
 		switch (minSubInfo)
@@ -204,8 +310,8 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 		case MONSTER_SUB::MONSTER_ATT_UP:
 			m_tMonInfo.tDamageSub = 10.0f;
 			break;
-		case MONSTER_SUB::_MONSTER_DEF_UP:
-			m_tMonInfo.tHp -= 5.0f;
+		case MONSTER_SUB::MONSTER_DEF_UP:
+			m_tMonInfo.tDef = 4.0f;
 			break;
 		case MONSTER_SUB::MONSTER_SPEED_UP:
 			m_tMonInfo.tMoveSpeed = 10.0f;
@@ -216,12 +322,12 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 			break;
 		}
 	}
-	else if (m_tMonInfo.tHp <= m_tMonInfo.tmaxGaugeSub)
+	if (m_tMonInfo.tHp <= m_tMonInfo.tmaxGaugeSub)
 	{
 		switch (maxSubInfo)
 		{
 		case MONSTER_SUB::MONSTER_HP_HEALING:
-			m_tMonInfo.tHp += 5.0f;
+			m_isHealing = true;
 			break;
 		case MONSTER_SUB::MONSTER_RESURRECTION:
 			if (m_tMonInfo.tTrance == true)
@@ -258,21 +364,21 @@ void monster::update()
 	if (!m_tMonInfo.tIsAlive) return;
 
 	m_tMonInfo.tFireAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX, m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
-	//Move();
+	Move(m_tMonInfo.tMoveType);
 	fireAtk();
 	m_monsterMove->frameUpdate();
 }
 
 void monster::render(HDC hdc)
 {
-	Ellipse(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
-	//EllipseMakeCenter(hdc, m_tMonInfo.tPosX, m_tMonInfo.tPosY, 10, 10);
+	//Ellipse(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
+	EllipseMakeCenter(hdc, m_tMonInfo.tPosX, m_tMonInfo.tPosY, 10, 10);
 
 	m_monsterType->aniRender(hdc,
 		m_tMonInfo.tPosX - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
 		m_tMonInfo.tPosY - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale,
 		m_monsterMove, m_tMonInfo.tScale, true, 255);
-	m_progressBar->render(hdc);
+	//m_progressBar->render(hdc);
 	
 }
 

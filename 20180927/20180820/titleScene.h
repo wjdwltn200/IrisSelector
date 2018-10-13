@@ -33,7 +33,7 @@ private:
 	itemManager * m_pItemMag;
 	monsterManger * m_pMonsterMag;
 	effectManager * m_pEffMagr;
-
+	progressBar* m_pProgressBar;
 
 	int m_buttonSetX;
 	int m_buttonSetY;

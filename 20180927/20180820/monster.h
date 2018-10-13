@@ -10,6 +10,12 @@ class monster
 private:
 	int m_moveTypeNum;
 	int m_lifeCount;
+	int m_HealingCount;
+	int m_count;
+	bool m_isHealing;
+	bool m_Follow;
+	float m_SubDamgeAdd;
+	bool m_isMove;
 	image * m_monsterType;
 	animation * m_monsterMove;
 	PlayerCharacter * m_player;
@@ -26,10 +32,12 @@ private:
 	tagMonInfo m_tMonInfo;
 public:
 	HRESULT init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint);
+
 	void release();
 	void update();
-	//void Move();
+	void Move(int m_moveTypeNum);
 	void fireAtk();
+	void knokback(float playerkuokback, float monsterHitRecovery);
 	void Damge(float dam);
 	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
 	void render(HDC hdc);

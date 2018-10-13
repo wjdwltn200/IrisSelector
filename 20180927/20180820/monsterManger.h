@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "monster.h"
+#include "progressBar.h"
 class monsterManger
 {
 private:
