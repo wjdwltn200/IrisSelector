@@ -10,6 +10,8 @@
 
 HRESULT titleScene::init()
 {
+	AddFontResourceA("BMHANNAAir_ttf.ttf");
+
 	IMAGEMANAGER->addImage("BG_Beholder", "image/resources/monster_image/BG_Beholder_Run.bmp", 1860, 78, 12, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("BG_Blue_Guardian", "image/resources/monster_image/BG_Blue_Guardian_Run.bmp", 930, 57, 6, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("BG_Blue_Mindflayer", "image/resources/monster_image/BG_Blue_Mindflayer_Run.bmp", 930, 54, 6, 1, true, RGB(255, 0, 255));
@@ -37,7 +39,7 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("Bullet_R", "image/resources/bullet_image/Bullet_R.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 
 	
-	IMAGEMANAGER->addImage("Player_ItemUI", "image/resources/UI_image/player_Ui/Player_Item_Ui.bmp", 691, 668, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_ItemUI", "image/resources/UI_image/player_Ui/Player_Item_Ui.bmp", 449, 434, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_ItemPopupUI", "image/resources/UI_image/player_Ui/Player_Item_PopupUI.bmp", 307, 126, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_HP_Point", "image/resources/UI_image/player_Ui/Player_Hp_Point.bmp", 27 * 5, 7 * 5, 3, 1, true, RGB(255, 0, 255));
 
@@ -76,15 +78,19 @@ HRESULT titleScene::init()
 	//for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
 	//{
 		tagItemInfo ItemInfo;
-		ItemInfo.tImageCurrX = 3;
-		ItemInfo.tImageCurrY = 17;
 		ItemInfo.tScale = 1.0f;
 		ItemInfo.tTimer = 1000;
 		ItemInfo.tRadius = 1.5f;
 		ItemInfo.tSkillType = 1;
 		ItemInfo.posX = 300;
-		ItemInfo.posY = 300;
-		m_pItemMag->itemDrop("ItemObject", ItemInfo, m_pEffMagr);
+		ItemInfo.posY = 100;
+		m_pItemMag->itemDrop("ItemObject", 2, ItemInfo, m_pEffMagr);
+		ItemInfo.posY = 200;
+
+		m_pItemMag->itemDrop("ItemObject", 1, ItemInfo, m_pEffMagr);
+
+
+
 	//}
 
 	
@@ -112,6 +118,7 @@ void titleScene::release()
 	m_pBulletMagMons->release();
 	m_pEffMagr->release();
 	m_pItemMag->release();
+
 }
 
 void titleScene::update()
@@ -223,6 +230,7 @@ void titleScene::ColRc()
 		}
 	}
 
+	// æ∆¿Ã≈€ »πµÊ
 	std::vector<item*> vItem = m_pItemMag->getVecItem();
 	std::vector<item*>::iterator ItemIter;
 	for (ItemIter = vItem.begin(); ItemIter != vItem.end(); ItemIter++)
@@ -234,7 +242,7 @@ void titleScene::ColRc()
 			m_pEffMagr->play("Item_Get2", m_player->getX() - (230 / 5) / 2, m_player->getY() - (70) / 2);
 
 			(*ItemIter)->setIsAlive(false);
-			m_player->getItem((*ItemIter)->getItemSkill());
+			m_player->getItem((*ItemIter)->getItemInfo());
 		}
 	}
 

@@ -17,6 +17,8 @@ HRESULT mainGame::init()
 {
 	hdc = GetDC(g_hWnd);
 
+
+
 	//HANDLE hTimer = (HANDLE)SetTimer(g_hWnd, 1, 10, NULL);
 	KEYMANAGER->init();
 	IMAGEMANAGER->init();
@@ -45,7 +47,7 @@ HRESULT mainGame::init()
 	m_pLoadingScene = new loadingScene;
 	SCENEMANAGER->addLoadingScene("loading", m_pLoadingScene);
 	
-	SCENEMANAGER->changeScene("edtior");
+	SCENEMANAGER->changeScene("title");
 	// 민욱이는 과연 누구인가? 알랄라 내첫사랑 지수 ㅇㅇ
 	// 이순현 테스트
 	// 정지수 로그인 테스트
@@ -114,6 +116,8 @@ LRESULT mainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	case WM_COMMAND:
 		m_pEditorScene_RE->ButtonEvent(hWnd, iMessage, wParam);
 	}
+
+
 	return DefWindowProc(hWnd, iMessage, wParam, lParam);
 }
 
@@ -134,6 +138,10 @@ void mainGame::render()
 {
 	HDC backDC = m_pBackBuffer->getMemDC();
 
+
+
+
+
 	// titleScene
 	//m_pTitleScene->render(backDC);
 
@@ -143,6 +151,7 @@ void mainGame::render()
 	SCENEMANAGER->render(backDC);
 
 	m_pBackBuffer->render(hdc, 0, 0);
+
 }
 
 mainGame::mainGame()

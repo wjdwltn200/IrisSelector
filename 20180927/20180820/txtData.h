@@ -7,9 +7,6 @@
 class txtData : public singletonBase<txtData>
 {
 public:
-	//std::vector<string> txtLoad
-
-public:
 	HRESULT init();
 	void release();
 

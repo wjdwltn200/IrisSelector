@@ -6,8 +6,13 @@ class item;
 #define BULLET_FIRST_DELAY 60
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
-
 #define BAES_HP 10
+
+#define ITEM_BAG_X 70.0f
+#define ITEM_BAG_Size_X 100.0f
+#define ITEM_BAG_Y 120.0f
+#define ITEM_BAG_Size_Y 70.0f
+
 
 class PlayerCharacter
 {
@@ -29,6 +34,8 @@ private:
 	animation * ani_right_Run;
 	animation * ani_CrossHair;
 
+	item * m_pItemInfo;
+
 	int m_count;
 	int ani_stay_Curr[4];
 
@@ -37,6 +44,9 @@ private:
 	bool m_isRunState;
 	bool m_isRunStart;
 	int m_RunCount = 0;
+
+	int m_itemNum;
+	int m_itemNumY;
 
 	// 정지수 시작
 
@@ -76,7 +86,7 @@ public:
 
 	void setBulletMagPointer(bulletManger** bulletP) { m_pBulletMag = bulletP; }
 
-	void getItem(int itemInfo);
+	void getItem(tagItemInfo itemInfo);
 	float getRadius() { return m_fRadius; }
 
 	RECT getRect() { return m_rc; }
@@ -85,9 +95,9 @@ public:
 	float getY() { return m_fY; }
 
 	void PlayerDamage(int dam);
-
 	void MoveActKeyInput();
-	
+	void itemUi(HDC hdc);
+	void PlayerInfoUi(HDC hdc);
 
 	PlayerCharacter();
 	~PlayerCharacter();

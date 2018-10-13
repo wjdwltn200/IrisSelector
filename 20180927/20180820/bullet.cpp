@@ -33,6 +33,9 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 	m_bulletInfo.tImageType = bulletInfo->tImageType;
 	switch (m_bulletInfo.tImageType)
 	{
+	case BULLET_IMAGE_TYPE::BULLET_IMAGE_NUM:
+		m_pImg = IMAGEMANAGER->findImage("Bullet_Y");
+		break;
 	case BULLET_IMAGE_TYPE::COLOR_Y:
 		m_pImg = IMAGEMANAGER->findImage("Bullet_Y");
 		break;

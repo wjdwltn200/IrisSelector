@@ -2,16 +2,21 @@
 #include "animation.h"
 #include "PlayerCharacter.h"
 #include "bulletManger.h"
-
+#include "item.h"
 
 HRESULT PlayerCharacter::init()
 {
 	img_ItemUiBg = IMAGEMANAGER->findImage("Player_ItemUI");
+	img_ItemUiBg->setX(WINSIZEX / 2 - img_ItemUiBg->getFrameWidth() / 2);
+	img_ItemUiBg->setY(WINSIZEY / 2 - img_ItemUiBg->getFrameHeight() / 2);
 
 	for (int i = 0; i < 10; i++)
 	{
 		img_HpPoint[i] = IMAGEMANAGER->findImage("Player_HP_Point");
 	}
+
+	m_vecItem.reserve(30); // 가방 사이즈
+
 
 	m_currHp = BAES_HP;
 	m_currHpMax = m_currHp;
@@ -65,6 +70,9 @@ HRESULT PlayerCharacter::init()
 	m_fCrossHairScaleMin = CROSSHAIR_MIN_SCALE;
 	m_fCrossHairScale = m_fCrossHairScaleMin;
 	m_fCrossHairScaleMax = CROSSHAIR_MAX_SCALE;
+
+	m_itemNum = 0;
+	m_itemNumY = 0;
 
 	// 정지수 끝
 
@@ -345,58 +353,142 @@ void PlayerCharacter::render(HDC hdc)
 
 	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 
-	if (m_isItemUi)
+	if (m_isItemUi) // 가방 열기
+	{
 		img_ItemUiBg->render(hdc, (WINSIZEX / 2) - (img_ItemUiBg->getFrameWidth() / 2), (WINSIZEX / 2) - (img_ItemUiBg->getFrameHeight() / 2));
+		itemUi(hdc);
+		PlayerInfoUi(hdc);
+	}
 
 	img_CrossHair->aniRender(hdc, g_ptMouse.x - (img_CrossHair->getFrameWidth() / 2) * m_fCrossHairScale, g_ptMouse.y - (img_CrossHair->getFrameHeight() / 2) * m_fCrossHairScale, ani_CrossHair, m_fCrossHairScale);
 
-	char szText[256];
 
-	// TRANSPARENT : 투명, OPAQUE : 불투명
-	SetBkMode(hdc, TRANSPARENT);
-
-	SetTextColor(hdc, RGB(255, 0, 255));
-
-	sprintf_s(szText, "m_fX : %f / m_fY : %f",
-		m_fX, m_fY);
-	TextOut(hdc, m_fX + 100, m_fY, szText, strlen(szText));
-
-	sprintf_s(szText, "tMoveSpeed : %f",
-		m_tBulletInfo.tMoveSpeed);
-	TextOut(hdc, m_fX + 100, m_fY + 20, szText, strlen(szText));
-
-	sprintf_s(szText, "tDmage : %f",
-		m_tBulletInfo.tDmage);
-	TextOut(hdc, m_fX + 100, m_fY + 40, szText, strlen(szText));
-
-	sprintf_s(szText, "tRange : %f",
-		m_tBulletInfo.tRange);
-	TextOut(hdc, m_fX + 100, m_fY + 60, szText, strlen(szText));
-
-	sprintf_s(szText, "m_bulletDelayCountMax : %d",
-		m_bulletDelayCountMax);
-	TextOut(hdc, m_fX + 100, m_fY + 80, szText, strlen(szText));
-
-	sprintf_s(szText, "m_fSpeed : %f",
-		m_fSpeed);
-	TextOut(hdc, m_fX + 100, m_fY + 100, szText, strlen(szText));
-
-	sprintf_s(szText, "m_bulletSetMax : %d",
-		m_tBulletInfo.tBulletSetNum);
-	TextOut(hdc, m_fX + 100, m_fY + 120, szText, strlen(szText));
-
-	sprintf_s(szText, "m_fCrossHairScale : %f",
-		m_fCrossHairScale);
-	TextOut(hdc, m_fX + 100, m_fY + 140, szText, strlen(szText));
-
-	sprintf_s(szText, "m_fCrossHairScaleMax : %f",
-		m_fCrossHairScaleMax);
-	TextOut(hdc, m_fX + 100, m_fY + 160, szText, strlen(szText));
 }
 
-void PlayerCharacter::getItem(int itemInfo)
+void PlayerCharacter::getItem(tagItemInfo itemInfo)
 {
-	switch (itemInfo)
+	if (itemInfo.tBulletSetNum < 0.0f)
+	{
+		m_tBulletInfo.tBulletSetNum += itemInfo.tBulletSetNum;
+	}
+	else
+	{
+		m_tBulletInfo.tBulletSetNum += itemInfo.tBulletSetNum;
+	}
+
+	if (itemInfo.tRange < 0.0f)
+	{
+		m_tBulletInfo.tRange += itemInfo.tRange;
+	}
+	else
+	{
+		m_tBulletInfo.tRange += itemInfo.tRange;
+	}
+
+	if (itemInfo.tDmage < 0.0f)
+	{
+		m_tBulletInfo.tDmage += itemInfo.tDmage;
+	}
+	else
+	{
+		m_tBulletInfo.tDmage += itemInfo.tDmage;
+	}
+
+	if (itemInfo.tKnokBack < 0.0f)
+	{
+		m_tBulletInfo.tKnokBack += itemInfo.tKnokBack;
+	}
+	else
+	{
+		m_tBulletInfo.tKnokBack += itemInfo.tKnokBack;
+	}
+
+	if (itemInfo.tMoveSpeed < 0.0f)
+	{
+		m_tBulletInfo.tMoveSpeed += itemInfo.tMoveSpeed;
+	}
+	else
+	{
+		m_tBulletInfo.tMoveSpeed += itemInfo.tMoveSpeed;
+	}
+
+	if (itemInfo.tBulletBoom != 3)
+		m_tBulletInfo.tBulletBoom = itemInfo.tBulletBoom;
+
+	if (itemInfo.tBoomType != (BULLET_BOOM_TYPE::BULLET_BOOM_NUM))
+		m_tBulletInfo.tBoomType = itemInfo.tBoomType;
+	if (itemInfo.tShootType != (BULLET_SHOOT_TYPE::BULLET_SHOOT_NUM))
+		m_tBulletInfo.tShootType = itemInfo.tShootType;
+	if (itemInfo.tMasterType != (BULLET_MASTER_TYPE::BULLET_MASTER_NUM))
+		m_tBulletInfo.tMasterType = itemInfo.tMasterType;
+	if (itemInfo.tMoveActType != (BULLET_BOOM_TYPE::BULLET_BOOM_NUM))
+		m_tBulletInfo.tMoveActType = itemInfo.tMoveActType;
+	if (itemInfo.tMoveType != (BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM))
+		m_tBulletInfo.tMoveType = itemInfo.tMoveType;
+	if (itemInfo.tImageType != BULLET_IMAGE_TYPE::BULLET_IMAGE_NUM)
+		m_tBulletInfo.tImageType = itemInfo.tImageType;
+
+	if (itemInfo.tPlayerSpeed < 0.0f)
+	{
+		m_fSpeed += itemInfo.tPlayerSpeed;
+		if (m_fSpeed < 0.0f)
+		{
+			m_fSpeed = 0.3f;
+		}
+	}
+	else
+	{
+		m_fSpeed += itemInfo.tPlayerSpeed;
+	}
+
+	if (itemInfo.tBulletDelayCountMax < 0.0f)
+	{
+		m_bulletDelayCountMax += itemInfo.tBulletDelayCountMax;
+	}
+	else
+	{
+		m_bulletDelayCountMax += itemInfo.tBulletDelayCountMax;
+	}
+
+	if (itemInfo.tCrossHairScaleMax < 0.0f)
+	{
+		m_fCrossHairScaleMax += itemInfo.tCrossHairScaleMax;
+	}
+	else
+	{
+		m_fCrossHairScaleMax += itemInfo.tCrossHairScaleMax;
+	}
+
+	if (itemInfo.tPlayerHpMax < 0.0f)
+	{
+		m_currHpMax += itemInfo.tPlayerHpMax;
+		m_currHp += itemInfo.tPlayerHpMax;
+	}
+	else
+	{
+		m_currHpMax += itemInfo.tPlayerHpMax;
+		m_currHp += itemInfo.tPlayerHpMax;
+	}
+
+	m_pItemInfo = new item;
+	itemInfo.tIsGet = true;
+	
+	m_itemNum++; // 아이템 개수 추가
+	if (m_itemNum > 4)
+	{
+		m_itemNumY++;
+		m_itemNum = 1;
+	}
+
+	m_pItemInfo->init("ItemObject", itemInfo, NULL);
+	m_pItemInfo->setItemIdleCurrY(img_ItemUiBg->getY() + (ITEM_BAG_Y) + (m_itemNumY * ITEM_BAG_Size_Y));
+	m_pItemInfo->setItemIdleY(img_ItemUiBg->getY() + (ITEM_BAG_Y) + (m_itemNumY * ITEM_BAG_Size_Y));
+	m_pItemInfo->setX(img_ItemUiBg->getX() + (ITEM_BAG_X) + ((m_itemNum - 1) * ITEM_BAG_Size_X));
+	m_pItemInfo->setY(img_ItemUiBg->getY() + (ITEM_BAG_Y) + (m_itemNumY * ITEM_BAG_Size_Y));
+	m_pItemInfo->ItemGetSetting();
+	m_vecItem.push_back(m_pItemInfo);
+
+	/*switch (itemInfo)
 	{
 	case ITEM_SKILL_TYPE::BULLET_SPEED_UP:
 		m_tBulletInfo.tMoveSpeed += 1.0f;
@@ -448,7 +540,7 @@ void PlayerCharacter::getItem(int itemInfo)
 	case ITEM_SKILL_TYPE::BULLET_COLOR_Y:
 		m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
 		break;
-	}
+	}*/
 }
 
 void PlayerCharacter::PlayerDamage(int dam)
@@ -531,6 +623,63 @@ void PlayerCharacter::MoveActKeyInput()
 			m_isRunState = false;
 		}
 	}
+}
+
+void PlayerCharacter::itemUi(HDC hdc)
+{
+	for (m_iter = m_vecItem.begin(); m_iter != m_vecItem.end(); m_iter++)
+	{
+		if (!(*m_iter)->getIsAlive()) continue;
+
+		(*m_iter)->render(hdc);
+		(*m_iter)->update();
+	}
+}
+
+void PlayerCharacter::PlayerInfoUi(HDC hdc)
+{
+	char szText[256];
+
+	// TRANSPARENT : 투명, OPAQUE : 불투명
+	SetBkMode(hdc, TRANSPARENT);
+
+	SetTextColor(hdc, RGB(255, 0, 255));
+
+	sprintf_s(szText, "m_fX : %f / m_fY : %f",
+		m_fX, m_fY);
+	TextOut(hdc, m_fX + 100, m_fY, szText, strlen(szText));
+
+	sprintf_s(szText, "tMoveSpeed : %f",
+		m_tBulletInfo.tMoveSpeed);
+	TextOut(hdc, m_fX + 100, m_fY + 20, szText, strlen(szText));
+
+	sprintf_s(szText, "tDmage : %f",
+		m_tBulletInfo.tDmage);
+	TextOut(hdc, m_fX + 100, m_fY + 40, szText, strlen(szText));
+
+	sprintf_s(szText, "tRange : %f",
+		m_tBulletInfo.tRange);
+	TextOut(hdc, m_fX + 100, m_fY + 60, szText, strlen(szText));
+
+	sprintf_s(szText, "m_bulletDelayCountMax : %d",
+		m_bulletDelayCountMax);
+	TextOut(hdc, m_fX + 100, m_fY + 80, szText, strlen(szText));
+
+	sprintf_s(szText, "m_fSpeed : %f",
+		m_fSpeed);
+	TextOut(hdc, m_fX + 100, m_fY + 100, szText, strlen(szText));
+
+	sprintf_s(szText, "m_bulletSetMax : %d",
+		m_tBulletInfo.tBulletSetNum);
+	TextOut(hdc, m_fX + 100, m_fY + 120, szText, strlen(szText));
+
+	sprintf_s(szText, "m_fCrossHairScale : %f",
+		m_fCrossHairScale);
+	TextOut(hdc, m_fX + 100, m_fY + 140, szText, strlen(szText));
+
+	sprintf_s(szText, "m_fCrossHairScaleMax : %f",
+		m_fCrossHairScaleMax);
+	TextOut(hdc, m_fX + 100, m_fY + 160, szText, strlen(szText));
 }
 
 PlayerCharacter::PlayerCharacter()

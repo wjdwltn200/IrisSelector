@@ -43,28 +43,23 @@ void txtData::txtSave(const char * saveFileName, vector<string> vecStr)
 // string을 원소로 갖는 vector => 하나의 문자열
 char * txtData::vectorArrayCombine(vector<string> vecArray)
 {
-	//이순현
-	//정지수
-	//정민욱
 	char str[128];
 	ZeroMemory(str, sizeof(str));
 	//memset(str, 0, sizeof(str));
 
 	for (int i = 0; i < vecArray.size(); i++)
 	{
-		strncat_s(str, 128, vecArray[i].c_str(), 126);
+		strncat_s(str, 1024, vecArray[i].c_str(), 1022);
 		if (i + 1 < vecArray.size())
 			strcat_s(str, ",");
 	}
-
-	//이순현,정지수,정민욱
 
 	return str;
 }
 
 vector<string> txtData::txtLoad(const char * loadFileName)
 {
-	char str[128];
+	char str[1024];
 	DWORD read;
 
 	HANDLE hFile;
@@ -76,7 +71,7 @@ vector<string> txtData::txtLoad(const char * loadFileName)
 		FILE_ATTRIBUTE_NORMAL,
 		NULL);
 
-	ReadFile(hFile, str, 128, &read, NULL);
+	ReadFile(hFile, str, 1024, &read, NULL);
 
 	CloseHandle(hFile);
 
@@ -86,14 +81,12 @@ vector<string> txtData::txtLoad(const char * loadFileName)
 // 하나의 문자열 => string을 원소로 갖는 vector
 vector<string> txtData::charArraySeparation(char charArray[])
 {
-	//이순현,정지수,정민욱
 	vector<string> vecStr;
 	const char* separator = ",";
 	char* token;
 	char* temp;
 
 	token = strtok_s(charArray, separator, &temp);
-	// token = "이순현";
 	vecStr.push_back(token);
 
 	while ((token = strtok_s(NULL, separator, &temp)) != NULL)
