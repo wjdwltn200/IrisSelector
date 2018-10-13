@@ -10,9 +10,17 @@ class item;
 
 #define ITEM_BAG_X 70.0f
 #define ITEM_BAG_Size_X 100.0f
-#define ITEM_BAG_Y 120.0f
+#define ITEM_BAG_Y 250.0f
 #define ITEM_BAG_Size_Y 70.0f
 
+#define PLAYER_STATE_X 150.0f
+#define PLAYER_STATE_Y 15.0f
+
+#define BULLET_STATE_X 320.0f
+#define BULLET_STATE_Y 13.0f
+
+#define PLAYER_ICON_X 50.0f
+#define PLAYER_ICON_Y 110.0f
 
 class PlayerCharacter
 {
@@ -27,6 +35,7 @@ private:
 	image * img_HpPoint[10];
 
 	image * img_ItemUiBg;
+	image * img_InfoIcon;
 
 	animation * ani_right_stay;
 	animation * ani_left_stay;
@@ -38,6 +47,8 @@ private:
 
 	int m_count;
 	int ani_stay_Curr[4];
+
+	float m_fPlayerScale;
 
 	bool m_isItemUi;
 	bool m_Direction;
@@ -58,7 +69,6 @@ private:
 
 	int m_bulletDelayCount;
 	int	m_bulletDelayCountMax;
-
 
 	// 정지수 끝
 	

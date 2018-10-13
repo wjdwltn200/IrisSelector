@@ -27,6 +27,8 @@ HRESULT item::init(const char * imageName, tagItemInfo itemInfo, effectManager *
 	m_tItemInfo.posY = m_fItemIdleY = itemInfo.posY;
 	m_tItemInfo.tItemTimerAlpha = 0;
 
+	m_tItemInfo.tBulletType = itemInfo.tBulletType;
+
 	m_tItemInfo.tItemNumber = itemInfo.tItemNumber;
 	m_tItemInfo.tItemGrade = itemInfo.tItemGrade;
 	m_tItemInfo.tItemName = itemInfo.tItemName;
@@ -39,6 +41,7 @@ HRESULT item::init(const char * imageName, tagItemInfo itemInfo, effectManager *
 	m_tItemInfo.tBulletSetNum = itemInfo.tBulletSetNum;
 	m_tItemInfo.tRange = itemInfo.tRange;
 
+	m_tItemInfo.tBulletScale = itemInfo.tBulletScale;
 	m_tItemInfo.tDmage = itemInfo.tDmage;
 	m_tItemInfo.tKnokBack = itemInfo.tKnokBack;
 	m_tItemInfo.tMoveSpeed = itemInfo.tMoveSpeed;
@@ -55,6 +58,7 @@ HRESULT item::init(const char * imageName, tagItemInfo itemInfo, effectManager *
 	m_tItemInfo.tBulletDelayCountMax = itemInfo.tBulletDelayCountMax;
 	m_tItemInfo.tCrossHairScaleMax = itemInfo.tCrossHairScaleMax;
 	m_tItemInfo.tPlayerHpMax = itemInfo.tPlayerHpMax;
+	m_tItemInfo.tPlayerScale = itemInfo.tPlayerScale;
 
 	m_isItemIdle = true;
 	m_ItemAlphaNum = 0;
@@ -204,8 +208,6 @@ void item::ItemGetSetting()
 void item::ItemPopup(HDC hdc)
 {
 	AddFontResourceA("BMHANNAAir_ttf.ttf");
-
-
 
 	if (g_ptMouse.x > m_rc.left && g_ptMouse.x < m_rc.right &&
 		g_ptMouse.y > m_rc.top && g_ptMouse.y < m_rc.bottom)

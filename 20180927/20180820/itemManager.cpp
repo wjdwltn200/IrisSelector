@@ -11,7 +11,7 @@ HRESULT itemManager::init(int vecMaxSize)
 	m_itemMax = atoi(m_vecItemList[0].c_str());
 	for (int i = 0; i < m_itemMax; i++) // 아이템의 전체 개수 파악
 	{
-		int temp = (i * 23) + 1;
+		int temp = (i * 26) + 1;
 		m_tItemInfo[i].tItemNumber = atoi(m_vecItemList[temp++].c_str());
 		m_tItemInfo[i].tItemGrade = atoi(m_vecItemList[temp++].c_str());
 		m_tItemInfo[i].tImageCurrX = atoi(m_vecItemList[temp++].c_str());
@@ -19,12 +19,15 @@ HRESULT itemManager::init(int vecMaxSize)
 		m_tItemInfo[i].tItemName = m_vecItemList[temp++].c_str();
 		m_tItemInfo[i].tItemTxt = m_vecItemList[temp++].c_str();
 		m_tItemInfo[i].tItemOption = m_vecItemList[temp++].c_str();
+		m_tItemInfo[i].tBulletType = atoi(m_vecItemList[temp++].c_str());
+
 
 		m_tItemInfo[i].tBulletSetNum = atoi(m_vecItemList[temp++].c_str());
-		m_tItemInfo[i].tRange = atoi(m_vecItemList[temp++].c_str());
-		m_tItemInfo[i].tDmage = atoi(m_vecItemList[temp++].c_str());
-		m_tItemInfo[i].tKnokBack = atoi(m_vecItemList[temp++].c_str());
-		m_tItemInfo[i].tMoveSpeed = atoi(m_vecItemList[temp++].c_str());
+		m_tItemInfo[i].tRange = atof(m_vecItemList[temp++].c_str());
+		m_tItemInfo[i].tBulletScale = atof(m_vecItemList[temp++].c_str());
+		m_tItemInfo[i].tDmage = atof(m_vecItemList[temp++].c_str());
+		m_tItemInfo[i].tKnokBack = atof(m_vecItemList[temp++].c_str());
+		m_tItemInfo[i].tMoveSpeed = atof(m_vecItemList[temp++].c_str());
 		m_tItemInfo[i].tBulletBoom = atoi(m_vecItemList[temp++].c_str());
 
 		m_tItemInfo[i].tBoomType = atoi(m_vecItemList[temp++].c_str());
@@ -33,10 +36,12 @@ HRESULT itemManager::init(int vecMaxSize)
 		m_tItemInfo[i].tMoveActType = atoi(m_vecItemList[temp++].c_str());
 		m_tItemInfo[i].tMoveType = atoi(m_vecItemList[temp++].c_str());
 		m_tItemInfo[i].tImageType = atoi(m_vecItemList[temp++].c_str());
-		m_tItemInfo[i].tPlayerSpeed = atoi(m_vecItemList[temp++].c_str());
+		m_tItemInfo[i].tPlayerSpeed = atof(m_vecItemList[temp++].c_str());
 		m_tItemInfo[i].tBulletDelayCountMax = atoi(m_vecItemList[temp++].c_str());
-		m_tItemInfo[i].tCrossHairScaleMax = atoi(m_vecItemList[temp++].c_str());
+		m_tItemInfo[i].tCrossHairScaleMax = atof(m_vecItemList[temp++].c_str());
 		m_tItemInfo[i].tPlayerHpMax = atoi(m_vecItemList[temp++].c_str());
+		m_tItemInfo[i].tPlayerScale = atof(m_vecItemList[temp++].c_str());
+
 	}
 
 	return S_OK;
@@ -77,6 +82,7 @@ void itemManager::itemDrop(const char * imageName, int itemNum, tagItemInfo item
 {
 	// 아이템에 따른 정보 갱신(초기화)
 	itemNum--;
+	itemInfo.tBulletType = m_tItemInfo[itemNum].tBulletType;
 	itemInfo.tItemNumber = m_tItemInfo[itemNum].tItemNumber;
 	itemInfo.tItemGrade = m_tItemInfo[itemNum].tItemGrade;
 	itemInfo.tImageCurrX = m_tItemInfo[itemNum].tImageCurrX;
@@ -89,6 +95,7 @@ void itemManager::itemDrop(const char * imageName, int itemNum, tagItemInfo item
 	itemInfo.tBulletSetNum = m_tItemInfo[itemNum].tBulletSetNum;
 	itemInfo.tRange = m_tItemInfo[itemNum].tRange;
 
+	itemInfo.tBulletScale = m_tItemInfo[itemNum].tBulletScale;
 	itemInfo.tDmage = m_tItemInfo[itemNum].tDmage;
 	itemInfo.tKnokBack = m_tItemInfo[itemNum].tKnokBack;
 	itemInfo.tMoveSpeed = m_tItemInfo[itemNum].tMoveSpeed;
@@ -104,8 +111,7 @@ void itemManager::itemDrop(const char * imageName, int itemNum, tagItemInfo item
 	itemInfo.tBulletDelayCountMax = m_tItemInfo[itemNum].tBulletDelayCountMax;
 	itemInfo.tCrossHairScaleMax = m_tItemInfo[itemNum].tCrossHairScaleMax;
 	itemInfo.tPlayerHpMax = m_tItemInfo[itemNum].tPlayerHpMax;
-
-
+	itemInfo.tPlayerScale = m_tItemInfo[itemNum].tPlayerScale;
 
 	for (m_iter = m_vecItem.begin(); m_iter != m_vecItem.end(); m_iter++)
 	{
