@@ -174,7 +174,20 @@ void stageScene::update()
 	if (buttonNum == 4)
 	{
 		
-		ColRc();
+		//m_player->setInputKey(VK_LBUTTON);
+
+		m_player->isColRect(false);
+
+		for (int i = 0; i < MAX_TILECOUNTX * MAX_TILECOUNTY; i++)
+		{
+			RECT m_rc; 
+
+			if (m_pTiles[i].isMove) continue;
+
+			//if (!m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc, &m_player->getRect()))
+			//	m_player->isColRect(true);
+		}
+
 		m_pMonsterMag->update();
 		m_player->update();
 		m_pItemMag->update();
@@ -183,6 +196,7 @@ void stageScene::update()
 		m_pBulletMagMons->update();
 		m_pEffMagr->update();
 
+		ColRc();
 		CAMERA->update();
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -261,6 +275,15 @@ void stageScene::render(HDC hdc)
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+
+
+				/*if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
+				{
+					Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
+				}*/
+
 			}
 
 		}
@@ -322,9 +345,6 @@ void stageScene::render(HDC hdc)
 		CAMERA->getCameraX(), CAMERA->getCameraY());
 	TextOut(hdc, 400, 100, szText, strlen(szText));
 
-	/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-		m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-		m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
 }
 
 void stageScene::LoadEvent()
