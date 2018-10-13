@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "monster.h"
+#include "animation.h"
 #include "progressBar.h"
 class monsterManger
 {
@@ -8,7 +9,9 @@ private:
 	std::vector<monster*>				m_vecMonster;
 	std::vector<monster*>::iterator		m_iter;
 
-
+	//animation * m_monsterMove;
+	//tagMonInfo m_tMonInfo;
+	//image * m_monsterType;
 public:
 
 	HRESULT init(int vecMaxSize);

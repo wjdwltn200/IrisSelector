@@ -87,17 +87,7 @@ void titleScene::update()
 	if (KEYMANAGER->isOnceKeyDown(VK_F2))
 		SCENEMANAGER->changeScene("editor");
 
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
 
-		tagMonInfo Moninfo;
-		Moninfo.tFireDelay = 120;
-		Moninfo.tMoveSpeed = 0.5f;
-		Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
-		Moninfo.tUnKnokBack = 0.0f;
-		Moninfo.tHp = 100.0f;
-		m_pMonsterMag->Regeneration("BG_Cetus", Moninfo, m_pBulletMagMons, m_player);
-	}
 
 	if (!m_tButtonInfo.m_isMovement)
 	{

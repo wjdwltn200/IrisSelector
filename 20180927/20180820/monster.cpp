@@ -100,8 +100,6 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
 
-//	m_player = new PlayerCharacter;
-
 	m_monsterType = IMAGEMANAGER->findImage(strKey);
 	m_monsterMove = new animation;
 	m_monsterMove->init(m_monsterType->getWidth(), m_monsterType->getHeight(),
@@ -378,7 +376,6 @@ void monster::render(HDC hdc)
 		m_tMonInfo.tPosX - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
 		m_tMonInfo.tPosY - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale,
 		m_monsterMove, m_tMonInfo.tScale, true, 255);
-	//m_progressBar->render(hdc);
 	
 }
 

@@ -73,7 +73,6 @@ HRESULT stageScene::init()
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
 
-	//m_pProgressBar = new progressBar;
 	
 
 	tagItemInfo ItemInfo;
@@ -193,6 +192,17 @@ void stageScene::update()
 			}
 		}
 
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+
+		tagMonInfo Moninfo;
+		Moninfo.tFireDelay = 120;
+		Moninfo.tMoveSpeed = 0.5f;
+		Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
+		Moninfo.tUnKnokBack = 0.0f;
+		Moninfo.tHp = 100.0f;
+		m_pMonsterMag->Regeneration("BG_Cetus", Moninfo, m_pBulletMagMons, m_player);
 	}
 	
 		
