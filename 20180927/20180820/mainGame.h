@@ -1,5 +1,4 @@
 #pragma once
-class editorScene_re;
 class loadingScene;
 class stageScene;
 class titleScene;
@@ -9,6 +8,8 @@ class editor;
 class mainGame
 {
 private:
+
+
 	// DC
 	HDC hdc;
 
@@ -17,8 +18,6 @@ private:
 	void setBackBuffer();
 
 	char m_szText[128];
-
-	editorScene_re * m_pEditorScene_RE;
 
 	editor * m_pEditor;
 

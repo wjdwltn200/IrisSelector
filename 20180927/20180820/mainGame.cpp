@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "mainGame.h"
-#include "editorScene_re.h"
 #include "titleScene.h"
 #include "stageScene.h"
 #include "loadingScene.h"
@@ -32,8 +31,7 @@ HRESULT mainGame::init()
 	//m_pTileMapScene = new tileMap;
 	//SCENEMANAGER->addScene("tileMap", m_pTileMapScene);
 
-	m_pEditorScene_RE = new editorScene_re;
-	SCENEMANAGER->addScene("editor_re", m_pEditorScene_RE);
+
 
 	m_pEditor = new editor;
 	SCENEMANAGER->addScene("edtior", m_pEditor);
@@ -87,16 +85,16 @@ LRESULT mainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 {
 	switch (iMessage)
 	{
-	case WM_MOUSEHWHEEL:
-		if ((SHORT)HIWORD(wParam) > 0)
-		{ // 0 보다 크면 위로 올라감
-			m_pEditorScene_RE->WheelEvent(1, wParam);
-		}
-		else
-		{ // 0 보다 작으면 밑으로 내려감
-			m_pEditorScene_RE->WheelEvent(-1, wParam);
-		}
-		break;
+	//case WM_MOUSEHWHEEL:
+	//	if ((SHORT)HIWORD(wParam) > 0)
+	//	{ // 0 보다 크면 위로 올라감
+	//		m_pEditorScene_RE->WheelEvent(1, wParam);
+	//	}
+	//	else
+	//	{ // 0 보다 작으면 밑으로 내려감
+	//		m_pEditorScene_RE->WheelEvent(-1, wParam);
+	//	}
+	//	break;
 	case WM_MOUSEMOVE:
 		g_ptMouse.x = LOWORD(lParam);
 		g_ptMouse.y = HIWORD(lParam);
@@ -114,7 +112,8 @@ LRESULT mainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		return 0;
 
 	case WM_COMMAND:
-		m_pEditorScene_RE->ButtonEvent(hWnd, iMessage, wParam);
+		m_pEditor->ButtonEvent(hWnd, iMessage, wParam);
+		break;
 	}
 
 
