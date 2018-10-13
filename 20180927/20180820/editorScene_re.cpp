@@ -415,7 +415,7 @@ void editorScene_re::update()
 		{
 			for (int i = 0; i < SAMPLE_COUNTX; ++i)
 			{
-				m_pSampleTiles[j * SAMPLE_COUNTX + i].rc = RectMake((40 + m_pTileSet[0]->getWidth()) - (m_pTileSet[0]->getWidth()) + i * TILE_SIZEX,
+				m_pSampleTiles[j * SAMPLE_COUNTX + i].rc = RectMake(40 + i * TILE_SIZEX,
 					(WINSIZEY / 8) * 3 + 10 + j * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
 				m_pSampleTiles[j * SAMPLE_COUNTX + i].frameX = i; // 4까지
 				m_pSampleTiles[j * SAMPLE_COUNTX + i].frameY = j; // 8까지

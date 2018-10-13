@@ -162,9 +162,6 @@
     <ClInclude Include="PlayerCharacter.h">
       <Filter>MainGame</Filter>
     </ClInclude>
-    <ClInclude Include="editorScene_re.h">
-      <Filter>MainGame\scene</Filter>
-    </ClInclude>
     <ClInclude Include="monsterManger.h">
       <Filter>2DGameFramework\manager</Filter>
     </ClInclude>
@@ -185,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="editor.h">
       <Filter>MainGame\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="editorScene_re.h">
+      <Filter>MainGame\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -278,9 +278,6 @@
     <ClCompile Include="PlayerCharacter.cpp">
       <Filter>MainGame</Filter>
     </ClCompile>
-    <ClCompile Include="editorScene_re.cpp">
-      <Filter>MainGame\scene</Filter>
-    </ClCompile>
     <ClCompile Include="monsterManger.cpp">
       <Filter>2DGameFramework\manager</Filter>
     </ClCompile>
@@ -301,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="editor.cpp">
       <Filter>MainGame\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editorScene_re.cpp">
+      <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

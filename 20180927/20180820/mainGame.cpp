@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "mainGame.h"
-#include "editorScene_re.h"
 #include "titleScene.h"
 #include "stageScene.h"
 #include "loadingScene.h"
@@ -17,6 +16,8 @@ HRESULT mainGame::init()
 {
 	hdc = GetDC(g_hWnd);
 
+
+
 	//HANDLE hTimer = (HANDLE)SetTimer(g_hWnd, 1, 10, NULL);
 	KEYMANAGER->init();
 	IMAGEMANAGER->init();
@@ -30,11 +31,10 @@ HRESULT mainGame::init()
 	//m_pTileMapScene = new tileMap;
 	//SCENEMANAGER->addScene("tileMap", m_pTileMapScene);
 
-	m_pEditorScene_RE = new editorScene_re;
-	SCENEMANAGER->addScene("editor_re", m_pEditorScene_RE);
+
 
 	m_pEditor = new editor;
-	SCENEMANAGER->addScene("edtior", m_pEditor);
+	SCENEMANAGER->addScene("editor", m_pEditor);
 
 	m_pTitleScene = new titleScene;
 	SCENEMANAGER->addScene("title", m_pTitleScene);
@@ -85,16 +85,16 @@ LRESULT mainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 {
 	switch (iMessage)
 	{
-	case WM_MOUSEHWHEEL:
-		if ((SHORT)HIWORD(wParam) > 0)
-		{ // 0 보다 크면 위로 올라감
-			m_pEditorScene_RE->WheelEvent(1, wParam);
-		}
-		else
-		{ // 0 보다 작으면 밑으로 내려감
-			m_pEditorScene_RE->WheelEvent(-1, wParam);
-		}
-		break;
+	//case WM_MOUSEHWHEEL:
+	//	if ((SHORT)HIWORD(wParam) > 0)
+	//	{ // 0 보다 크면 위로 올라감
+	//		m_pEditorScene_RE->WheelEvent(1, wParam);
+	//	}
+	//	else
+	//	{ // 0 보다 작으면 밑으로 내려감
+	//		m_pEditorScene_RE->WheelEvent(-1, wParam);
+	//	}
+	//	break;
 	case WM_MOUSEMOVE:
 		g_ptMouse.x = LOWORD(lParam);
 		g_ptMouse.y = HIWORD(lParam);
@@ -112,8 +112,11 @@ LRESULT mainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		return 0;
 
 	case WM_COMMAND:
-		m_pEditorScene_RE->ButtonEvent(hWnd, iMessage, wParam);
+		m_pEditor->ButtonEvent(hWnd, iMessage, wParam);
+		break;
 	}
+
+
 	return DefWindowProc(hWnd, iMessage, wParam, lParam);
 }
 
@@ -134,6 +137,10 @@ void mainGame::render()
 {
 	HDC backDC = m_pBackBuffer->getMemDC();
 
+
+
+
+
 	// titleScene
 	//m_pTitleScene->render(backDC);
 
@@ -143,6 +150,7 @@ void mainGame::render()
 	SCENEMANAGER->render(backDC);
 
 	m_pBackBuffer->render(hdc, 0, 0);
+
 }
 
 mainGame::mainGame()

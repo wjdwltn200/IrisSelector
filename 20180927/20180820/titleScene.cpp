@@ -10,6 +10,8 @@
 
 HRESULT titleScene::init()
 {
+	AddFontResourceA("BMHANNAAir_ttf.ttf");
+
 	IMAGEMANAGER->addImage("BG_Beholder", "image/resources/monster_image/BG_Beholder_Run.bmp", 1860, 78, 12, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("BG_Blue_Guardian", "image/resources/monster_image/BG_Blue_Guardian_Run.bmp", 930, 57, 6, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("BG_Blue_Mindflayer", "image/resources/monster_image/BG_Blue_Mindflayer_Run.bmp", 930, 54, 6, 1, true, RGB(255, 0, 255));
@@ -37,16 +39,36 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("Bullet_R", "image/resources/bullet_image/Bullet_R.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 
 	
-	IMAGEMANAGER->addImage("Player_ItemUI", "image/resources/UI_image/player_Ui/Player_Item_Ui.bmp", 691, 668, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_ItemUI", "image/resources/UI_image/player_Ui/Player_Item_Ui.bmp", 449, 550, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_InfoIcon", "image/resources/UI_image/player_Ui/BG_Player_Icon.bmp", 37 * 2, 43 * 2, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_ItemPopupUI", "image/resources/UI_image/player_Ui/Player_Item_PopupUI.bmp", 307, 126, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_HP_Point", "image/resources/UI_image/player_Ui/Player_Hp_Point.bmp", 27 * 5, 7 * 5, 3, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_UI_BG", "image/resources/UI_image/player_Ui/Player_UI_BG.bmp", WINSIZEX, WINSIZEY);
+
+	////// ∏ ø°µ≈Õ º“Ω∫//////////////////////////////
+	IMAGEMANAGER->addImage("black", "image/wook/black.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("space_left", "image/wook/space_left.bmp", 36, 72, 1, 2, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("space_right", "image/wook/space_right.bmp", 36, 72, 1, 2, true, RGB(255, 255, 255));
+
+	IMAGEMANAGER->addImage("box", "image/wook/white.bmp", WINSIZEX, 250, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tileset1", "image/wook/tileset1.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("tileset2", "image/wook/tileset2.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("tileset3", "image/wook/tileset3.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("tileset4", "image/wook/tileset4.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("Cursor", "image/wook/Cursor.bmp", 30, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("800x", "image/wook/800x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("size_box", "image/wook/size_box.bmp", 640, 640, true, RGB(255, 0, 255));
+
+	/////////////////////////////////////////////
+
+
 
 
 	m_pEffMagr = new effectManager;
 	m_pEffMagr->addEffect("Bullet_End_0", "image/resources/bullet_image/Bullet_End_0.bmp", 238, 30, 34, 30, 15, 50);
 	m_pEffMagr->addEffect("Bullet_End_1", "image/resources/bullet_image/Bullet_End_1.bmp", 238, 34, 34, 34, 15, 50);
-	m_pEffMagr->addEffect("Bullet_End_2", "image/resources/bullet_image/Bullet_End_2.bmp", 224, 32, 32, 30, 15, 50);
-	m_pEffMagr->addEffect("Bullet_End_3", "image/resources/bullet_image/Bullet_End_3.bmp", 210, 30, 24, 30, 15, 50);
+	m_pEffMagr->addEffect("Bullet_End_2", "image/resources/bullet_image/Bullet_End_2.bmp", 224, 32, 32, 32, 15, 50);
+	m_pEffMagr->addEffect("Bullet_End_3", "image/resources/bullet_image/Bullet_End_3.bmp", 210, 24, 30, 24, 15, 50);
 
 	m_pEffMagr->addEffect("Item_Get1", "image/resources/item_image/Item_Get.bmp", 320, 31, (320 / 4), 31, 15, 5);
 	m_pEffMagr->addEffect("Item_Get2", "image/resources/item_image/Item_Get2.bmp", 230, 70, (230 / 5), 70, 15, 5);
@@ -80,15 +102,30 @@ HRESULT titleScene::init()
 	//for (int i = 0; i < ITEM_SKILL_TYPE::ITEM_SKILL_NUM; i++)
 	//{
 		tagItemInfo ItemInfo;
-		ItemInfo.tImageCurrX = 3;
-		ItemInfo.tImageCurrY = 17;
 		ItemInfo.tScale = 1.0f;
 		ItemInfo.tTimer = 1000;
 		ItemInfo.tRadius = 1.5f;
 		ItemInfo.tSkillType = 1;
 		ItemInfo.posX = 300;
-		ItemInfo.posY = 300;
-		m_pItemMag->itemDrop("ItemObject", ItemInfo, m_pEffMagr);
+		ItemInfo.posY = 100;
+		m_pItemMag->itemDrop("ItemObject", 2, ItemInfo, m_pEffMagr);
+		ItemInfo.posY += 100;
+
+		m_pItemMag->itemDrop("ItemObject", 1, ItemInfo, m_pEffMagr);
+
+		ItemInfo.posY += 100;
+
+		m_pItemMag->itemDrop("ItemObject", 3, ItemInfo, m_pEffMagr);
+		ItemInfo.posY += 100;
+
+		m_pItemMag->itemDrop("ItemObject", 4, ItemInfo, m_pEffMagr);
+		ItemInfo.posY += 100;
+
+		m_pItemMag->itemDrop("ItemObject", 5, ItemInfo, m_pEffMagr);
+		ItemInfo.posY += 100;
+
+		m_pItemMag->itemDrop("ItemObject", 6, ItemInfo, m_pEffMagr);
+
 	//}
 
 	
@@ -116,12 +153,13 @@ void titleScene::release()
 	m_pBulletMagMons->release();
 	m_pEffMagr->release();
 	m_pItemMag->release();
+
 }
 
 void titleScene::update()
 {
-	if (KEYMANAGER->isOnceKeyDown(0x71))
-		SCENEMANAGER->changeScene("editor_re");
+	if (KEYMANAGER->isOnceKeyDown(VK_F2))
+		SCENEMANAGER->changeScene("editor");
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
@@ -234,6 +272,7 @@ void titleScene::ColRc()
 		(*MonsIter)->TypeSub(50.0f, 10.0f, MONSTER_DEF_UP, MONSTER_HP_HEALING, true, 4);
 	}
 
+	// æ∆¿Ã≈€ »πµÊ
 	std::vector<item*> vItem = m_pItemMag->getVecItem();
 	std::vector<item*>::iterator ItemIter;
 	for (ItemIter = vItem.begin(); ItemIter != vItem.end(); ItemIter++)
@@ -245,7 +284,7 @@ void titleScene::ColRc()
 			m_pEffMagr->play("Item_Get2", m_player->getX() - (230 / 5) / 2, m_player->getY() - (70) / 2);
 
 			(*ItemIter)->setIsAlive(false);
-			m_player->getItem((*ItemIter)->getItemSkill());
+			m_player->getItem((*ItemIter)->getItemInfo());
 		}
 	}
 

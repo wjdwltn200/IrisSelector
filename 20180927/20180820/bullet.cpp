@@ -15,7 +15,7 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 	// 이미지 초기화
 	m_eff = pEff;
 
-	switch (RANDOM->getInt(4))
+	switch (RANDOM->getFromIntTo(1, 4))
 	{
 	case 1:
 		m_effName = "Bullet_End_0";
@@ -33,6 +33,9 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 	m_bulletInfo.tImageType = bulletInfo->tImageType;
 	switch (m_bulletInfo.tImageType)
 	{
+	case BULLET_IMAGE_TYPE::BULLET_IMAGE_NUM:
+		m_pImg = IMAGEMANAGER->findImage("Bullet_Y");
+		break;
 	case BULLET_IMAGE_TYPE::COLOR_Y:
 		m_pImg = IMAGEMANAGER->findImage("Bullet_Y");
 		break;
@@ -177,7 +180,8 @@ void bullet::movement()
 	// 거리만큼 이동하면 죽임
 	if (m_bulletInfo.tRange < 0.0f)
 	{
-		//m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2), m_bulletInfo.tPosY - (30 / 2));
+		m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2)/* * m_bulletInfo.tScale*/, m_bulletInfo.tPosY - (30 / 2) /** m_bulletInfo.tScale*/);
+
 		m_isAlive = false;
 		SecondBulletFire();
 	}
@@ -239,7 +243,7 @@ void bullet::moveTypeAct(int moveType)
 
 void bullet::HitEff()
 {
-	m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2)* m_bulletInfo.tScale, m_bulletInfo.tPosY - (30 / 2) * m_bulletInfo.tScale);
+	m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2) /** m_bulletInfo.tScale*/, m_bulletInfo.tPosY - (30 / 2) /** m_bulletInfo.tScale*/);
 	m_isAlive = false;
 }
 

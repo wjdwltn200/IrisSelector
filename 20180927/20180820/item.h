@@ -32,7 +32,7 @@ private:
 	tagItemInfo m_tItemInfo;
 
 public:
-	HRESULT init(const char * imageName, tagItemInfo itemInfo, effectManager * pEffItem, int currX, int currY);
+	HRESULT init(const char * imageName, tagItemInfo itemInfo, effectManager * pEffItem);
 	void release();
 	void update();
 	void render(HDC hdc);
@@ -44,6 +44,13 @@ public:
 
 	bool getIsAlive() { return m_isAlive; }
 	void setIsAlive(bool alive) { m_isAlive = alive; }
+
+	void setX(float posX) { m_tItemInfo.posX = posX; }
+	void setY(float posY) { m_tItemInfo.posY = posY; }
+	void setItemIdleY(float posY) { m_fItemIdleY = posY; }
+	void setItemIdleCurrY(float posY) { m_fItemIdleCurrY = posY; }
+
+	void ItemGetSetting();
 
 	void ItemPopup(HDC hdc);
 

@@ -10,7 +10,8 @@ private:
 
 	std::vector<std::string> m_vecItemList;
 
-	int m_currX, m_currY;
+	int m_itemMax;
+	tagItemInfo m_tItemInfo[24];
 
 public:
 	HRESULT init(int vecMaxSize);
@@ -18,7 +19,9 @@ public:
 	void update();
 	void render(HDC hdc);
 
-	void itemDrop(const char * imageName, tagItemInfo bulletInfo, effectManager * pEffMag);
+	void itemDrop(const char * imageName, int itemNum, tagItemInfo bulletInfo, effectManager * pEffMag);
+	void itemGet(const char * imageName, tagItemInfo itemInfo);
+
 
 	inline std::vector<item*> getVecItem()
 	{

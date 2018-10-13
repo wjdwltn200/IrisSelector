@@ -5,8 +5,8 @@
 class button;
 
 
-#define SAMPLE_COUNTX 5
-#define SAMPLE_COUNTY 9
+#define SAMPLE_COUNTX1 8
+#define SAMPLE_COUNTY1 6
 
 #define CAMERA_destX 260
 #define CAMERA_destY 105
@@ -74,7 +74,7 @@ private:
 	MOUSE_STATE  m_mouseSt;
 
 	tagTile		  m_pTiles[MAX_TILECOUNTX * MAX_TILECOUNTY];  // 그려줄 타일의 정보 // 실제로 구성이 되는 타일의 정보
-	tagSampleTile m_pSampleTiles[SAMPLE_COUNTX * SAMPLE_COUNTY]; // 오른쪽의 타일정보들
+	tagSampleTile m_pSampleTiles[SAMPLE_COUNTX1 * SAMPLE_COUNTY1]; // 오른쪽의 타일정보들
 	tagCurrentCamera m_Camera;
 	tagMiniMap	     m_MiniMap;
 	RECT FixedCamera;
@@ -147,9 +147,9 @@ public:
 	void init_Setting();
 
 	// update//
-	void ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam);
 	void MouseEvent();
 	void CameraUpdate();
+	void ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam);
 	void SaveEvent();
 	void LoadEvent();
 	void WheelEvent(int num, WPARAM wParam);
