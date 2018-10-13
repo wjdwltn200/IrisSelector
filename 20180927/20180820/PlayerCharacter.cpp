@@ -18,12 +18,12 @@ HRESULT PlayerCharacter::init()
 
 	m_vecItem.reserve(30); // 가방 사이즈
 
-
 	m_currHp = BAES_HP;
 	m_currHpMax = m_currHp;
 	m_isAlive = true;
 	m_isItemUi = false;
 	m_fPlayerScale = 1.0f;
+	m_isRectCol = false;
 
 	int ani_stay_Curr[] = { 0,1,2,3,4,5,6,7 };
 	img_player = IMAGEMANAGER->addImage("player", "image/resources/player_image/BG_Player_idle_0.bmp", 256, 54, 8, 1, true, RGB(255, 0, 255), m_fX, m_fY);
@@ -152,6 +152,8 @@ void PlayerCharacter::update()
 		//m_currHp--;
 	}
 
+	movement();
+
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
 		if (m_bulletDelayCount == NULL)
@@ -193,7 +195,7 @@ void PlayerCharacter::update()
 					}
 				}
 			}
-			m_bulletDelayCount = m_bulletDelayCountMax;
+			m_bulletDelayCount = m_bulletDelayCountMax; 
 		}
 	}
 	if (m_bulletDelayCount > 0)
@@ -205,75 +207,42 @@ void PlayerCharacter::update()
 	if (m_fCrossHairScale > m_fCrossHairScaleMin)
 		m_fCrossHairScale -= 0.1f;
 
-	if (KEYMANAGER->isOnceKeyUp('A') && !KEYMANAGER->isOnceKeyUp('D'))
+	if (!m_isRectCol)
 	{
-		if (!m_isRunState)
+		if (KEYMANAGER->isOnceKeyUp('A') && !KEYMANAGER->isOnceKeyUp('D'))
 		{
-			m_isRunState = true;
-			m_isRunStart = false;
+			if (!m_isRunState)
+			{
+				m_isRunState = true;
+				m_isRunStart = false;
+			}
+			else if (m_isRunState)
+			{
+				m_isRunStart = true;
+			}		
 		}
-		else if (m_isRunState)
+		if (KEYMANAGER->isOnceKeyUp('D') && !KEYMANAGER->isOnceKeyUp('A'))
 		{
-			m_isRunStart = true;
-		}		
-	}
-	if (KEYMANAGER->isOnceKeyUp('D') && !KEYMANAGER->isOnceKeyUp('A'))
-	{
-		if (!m_isRunState)
-		{
-			m_isRunState = true;
-			m_isRunStart = false;
+			if (!m_isRunState)
+			{
+				m_isRunState = true;
+				m_isRunStart = false;
+			}
+			else if (m_isRunState)
+			{
+				m_isRunStart = true;
+			}
 		}
-		else if (m_isRunState)
+		if (KEYMANAGER->isOnceKeyDown(VK_TAB))
 		{
-			m_isRunStart = true;
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		if (m_isRunStart) // 달리고 있다면
-		{
-			m_fX -= m_fSpeed * 1.5f;
-			ani_left_Run->setFPS(30);
-		}
-		else // 달리지 않고 있다면
-		{
-			ani_left_Run->setFPS(10);
-			m_fX -= m_fSpeed;
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		if (m_isRunStart) // 달리고 있다면
-		{
-			m_fX += m_fSpeed * 1.5f;
-			ani_right_Run->setFPS(30);
-
-		}
-		else // 달리지 않고 있다면
-		{
-			m_fX += m_fSpeed;
-			ani_right_Run->setFPS(10);
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		m_fY -= m_fSpeed;
-	}
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		m_fY += m_fSpeed;
-	}
-
-	if (KEYMANAGER->isOnceKeyDown(VK_TAB))
-	{
-		if (m_isItemUi)
-		{
-			m_isItemUi = false;
-		}
-		else if (!m_isItemUi)
-		{
-			m_isItemUi = true;
+			if (m_isItemUi)
+			{
+				m_isItemUi = false;
+			}
+			else if (!m_isItemUi)
+			{
+				m_isItemUi = true;
+			}
 		}
 	}
 
@@ -489,41 +458,7 @@ void PlayerCharacter::MoveActKeyInput()
 			m_isRunStart = true;
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		if (m_isRunStart) // 달리고 있다면
-		{
-			m_fX -= m_fSpeed * 1.5f;
-			ani_left_Run->setFPS(20);
-		}
-		else // 달리지 않고 있다면
-		{
-			ani_left_Run->setFPS(10);
-			m_fX -= m_fSpeed;
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		if (m_isRunStart) // 달리고 있다면
-		{
-			m_fX += m_fSpeed * 1.5f;
-			ani_right_Run->setFPS(20);
-
-		}
-		else // 달리지 않고 있다면
-		{
-			m_fX += m_fSpeed;
-			ani_right_Run->setFPS(10);
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		m_fY -= m_fSpeed;
-	}
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		m_fY += m_fSpeed;
-	}
+	
 
 	if (m_isRunState)
 	{
@@ -613,6 +548,48 @@ void PlayerCharacter::PlayerInfoUi(HDC hdc)
 
 
 	MY_UTIL::FontDelete(hdc);
+}
+
+void PlayerCharacter::movement()
+{
+	if (!m_isRectCol)
+	{
+		if (KEYMANAGER->isStayKeyDown('A'))
+		{
+			if (m_isRunStart) // 달리고 있다면
+			{
+				m_fX -= m_fSpeed * 1.5f;
+				ani_left_Run->setFPS(20);
+			}
+			else // 달리지 않고 있다면
+			{
+				ani_left_Run->setFPS(10);
+				m_fX -= m_fSpeed;
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown('D'))
+		{
+			if (m_isRunStart) // 달리고 있다면
+			{
+				m_fX += m_fSpeed * 1.5f;
+				ani_right_Run->setFPS(20);
+
+			}
+			else // 달리지 않고 있다면
+			{
+				m_fX += m_fSpeed;
+				ani_right_Run->setFPS(10);
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown('W'))
+		{
+			m_fY -= m_fSpeed;
+		}
+		if (KEYMANAGER->isStayKeyDown('S'))
+		{
+			m_fY += m_fSpeed;
+		}
+	}
 }
 
 PlayerCharacter::PlayerCharacter()

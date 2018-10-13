@@ -80,14 +80,14 @@ private:
 	int m_currHpMax;
 	bool m_isAlive;
 	
+	bool m_isRectCol;
+
 	tagBulletInfo m_tBulletInfo;
 	tagBulletInfo * m_tBulletInfoPoint;
 	tagBulletInfo m_tBulletInfoSub;
 	tagBulletInfo * m_tBulletInfoSubPoint;
 
 	bulletManger** m_pBulletMag;
-
-
 public:
 	HRESULT init();
 	void release();
@@ -108,6 +108,10 @@ public:
 	void MoveActKeyInput();
 	void itemUi(HDC hdc);
 	void PlayerInfoUi(HDC hdc);
+
+	void isColRect(bool isRcet) { m_isRectCol = isRcet; }
+
+	void movement();
 
 	PlayerCharacter();
 	~PlayerCharacter();
