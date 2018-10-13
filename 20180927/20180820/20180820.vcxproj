@@ -156,6 +156,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="editor.h" />
+    <ClInclude Include="editorScene_re.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
     <ClInclude Include="gameNode.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="editor.cpp" />
+    <ClCompile Include="editorScene_re.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
     <ClCompile Include="gameNode.cpp" />

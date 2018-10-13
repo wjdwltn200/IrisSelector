@@ -34,7 +34,7 @@ HRESULT mainGame::init()
 
 
 	m_pEditor = new editor;
-	SCENEMANAGER->addScene("edtior", m_pEditor);
+	SCENEMANAGER->addScene("editor", m_pEditor);
 
 	m_pTitleScene = new titleScene;
 	SCENEMANAGER->addScene("title", m_pTitleScene);

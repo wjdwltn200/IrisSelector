@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MapCamera.h"
+#include "editorScene_re.h"
 #include "editor.h"
 
 

@@ -13,6 +13,7 @@
 #define IDC_MY20180814                  109
 #define IDR_MAINFRAME                   128
 #define IDR_MENU1                       129
+#define ID_NOTICE_HELP                  31000
 #define ID_32771                        32771
 #define ID_OBJECT_TERRAINS32779         32779
 #define ID_FILE_SAVE32780               32780
@@ -38,9 +39,10 @@
 #define ID_FILE_SAVEANDSTART32800       32800
 #define ID_FILE_QUIT                    32801
 #define ID_FILE_SAVE1                   32802
-#define IDC_STATIC                      -1
 #define IDM_NOTICE_HELP                 32803
-#define ID_NOTICE_HELP                  31000
+#define ID_                             32803
+#define ID_FILE_RETURNTOTITLESCENE      32804
+#define IDC_STATIC                      -1
 
 // Next default values for new objects
 // 
@@ -48,7 +50,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        131
-#define _APS_NEXT_COMMAND_VALUE         32803
+#define _APS_NEXT_COMMAND_VALUE         32805
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
