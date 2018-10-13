@@ -1,5 +1,6 @@
 #pragma once
 #include "singletonBase.h"
+#include "editorScene_re.h"
 #include "editor.h"
 
 

@@ -4,8 +4,7 @@
 #include "editor.h"
 #include "button.h"
 #include "image.h"
-
-
+#include "resource.h"
 char szFileName_1[512];
 int editor::m_nPreviewNum = 0;
 
@@ -40,6 +39,9 @@ void editor::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 	case 32801: // Exit
 		PostQuitMessage(0);
 		break;
+	case 32804: // return to titleScene
+		SCENEMANAGER->changeScene("title");
+		break;
 
 	case 32773: // Terrains 
 		st_obj = isTerrain;
@@ -51,18 +53,22 @@ void editor::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 	case 32783: // 사이즈체크
 		st_selSize = x800;
 		m_bIsSelectSize = true;
+		MAPCAMERA->init();
 		break;
 	case 32784:
 		st_selSize = x1600;
 		m_bIsSelectSize = true;
+		MAPCAMERA->init();
 		break;
 	case 32785:
 		st_selSize = x2000;
 		m_bIsSelectSize = true;
+		MAPCAMERA->init();
 		break;
 	case 32786:
 		st_selSize = x2400;
 		m_bIsSelectSize = true;
+		MAPCAMERA->init();
 		break;
 
 		//case IDM_NOTICE_HELP: // 32772
@@ -100,22 +106,21 @@ HRESULT editor::init()
 
 void editor::init_image()
 {
-	m_pBG = IMAGEMANAGER->addImage("black", "image/wook/black.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("space_left", "image/wook/space_left.bmp", 36, 72, 1, 2, true, RGB(255, 255, 255));
-	IMAGEMANAGER->addImage("space_right", "image/wook/space_right.bmp", 36, 72, 1, 2, true, RGB(255, 255, 255));
-
-	m_pBox = IMAGEMANAGER->addImage("box", "image/wook/white.bmp", WINSIZEX, 250, true, RGB(255, 0, 255));
-	m_pTileSet[0] = IMAGEMANAGER->addImage("tileset1", "image/wook/tileset1.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
-	m_pTileSet[1] = IMAGEMANAGER->addImage("tileset2", "image/wook/tileset2.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
-	m_pTileSet[2] = IMAGEMANAGER->addImage("tileset3", "image/wook/tileset3.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
-	m_pTileSet[3] = IMAGEMANAGER->addImage("tileset4", "image/wook/tileset4.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
-
+	m_pBG =	IMAGEMANAGER->findImage("black");
+	m_pBox = IMAGEMANAGER->findImage("box");
+	m_pTileSet[0] = IMAGEMANAGER->findImage("tileset1");
+	m_pTileSet[1] = IMAGEMANAGER->findImage("tileset2");
+	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
+	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
+	m_pCursor = IMAGEMANAGER->findImage("Cursor");
 
 	m_pBtnLspace = new button;
 	m_pBtnLspace->init("space_left", IMAGEMANAGER->findImage("space_left")->getWidth() / 2 + 0, WINSIZEY - 150, PointMake(0, 1), PointMake(0, 0), SpaceFunc_left);
 
 	m_pBtnRspace = new button;
 	m_pBtnRspace->init("space_right", IMAGEMANAGER->findImage("space_right")->getWidth() / 2 + 301, WINSIZEY - 150, PointMake(0, 1), PointMake(0, 0), SpaceFunc_right);
+
+
 
 }
 
@@ -227,6 +232,7 @@ void editor::KeyEvent()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_F2))
 		SCENEMANAGER->changeScene("stage");
+
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && m_isSel == true)
 		m_isSel = false; // 선택해제 단축키
 	if (KEYMANAGER->isOnceKeyDown(VK_DELETE))
@@ -329,8 +335,8 @@ void editor::render(HDC hdc)
 				for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 				{
 					m_pTileSet[m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum]->RatioRender(hdc,
-						550 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
-						560 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
+						550 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio + (MAPCAMERA->getCameraX() / MiniMap_Ratio),
+						560 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio + (MAPCAMERA->getCameraY() / MiniMap_Ratio),
 						m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX,
 						m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY,
 						MiniMap_Ratio,
@@ -378,7 +384,7 @@ void editor::render(HDC hdc)
 		m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
 		m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
 
-
+	m_pCursor->render(hdc, g_ptMouse.x, g_ptMouse.y);
 }
 
 void editor::render_mapTile(HDC hdc)

@@ -3,16 +3,14 @@
 
 class button;
 
-
 #define TILE_SIZEX 32
 #define TILE_SIZEY 32
 
-#define SAMPLE_COUNTX 8 // 256
-#define SAMPLE_COUNTY 6 // 192
+#define SAMPLE_COUNTX 8
+#define SAMPLE_COUNTY 6
 
-#define MAX_TILECOUNTX 40
-#define MAX_TILECOUNTY 40
-
+#define TILE_MAXCOUNTX 60
+#define TILE_MAXCOUNTY 60
 
 enum tagMOUSE_STATE
 {
@@ -51,7 +49,7 @@ private:
 	int m_rcSelectedTileSampleNum;
 	int MiniMap_Ratio;
 
-	tagTile m_pTiles[MAX_TILECOUNTX * MAX_TILECOUNTY];  // 그려줄 타일의 정보 // 실제로 구성이 되는 타일의 정보
+	tagTile m_pTiles[TILE_MAXCOUNTX * TILE_MAXCOUNTY];  // 그려줄 타일의 정보 // 실제로 구성이 되는 타일의 정보
 	//tagTile * m_pTiles[MAX_TILECOUNTX * MAX_TILECOUNTX];
 
 	tagSampleTile m_pSampleTiles[SAMPLE_COUNTX * SAMPLE_COUNTY]; // 오른쪽의 타일정보들
@@ -65,6 +63,7 @@ private:
 	image* m_pTileSet[4]; // 총 4개
 	image* m_pBox;
 	image * m_pBG;
+	image * m_pCursor;
 
 	button * m_pBtnLspace;
 	button * m_pBtnRspace;

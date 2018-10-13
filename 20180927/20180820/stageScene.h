@@ -1,6 +1,7 @@
 #pragma once
 #include "scene.h"
 
+
 class button;
 class image;
 class PlayerCharacter;
@@ -20,6 +21,7 @@ private:
 	image*        m_pImage_checkBox;
 	image*		  m_pTileSet[4];
 
+	int MiniMap_Ratio;
 	int MapSize;
 	bool m_bIsMiniMapOn;
 
@@ -29,9 +31,15 @@ private:
 public:
 	HRESULT init();
 	void release();
-	void update();
 
-	//void render(HDC hdc);
+
+
+	void update();
+	void KeyEvent();
+	void MouseEvent();
+
+
+	void render(HDC hdc);
 	void LoadEvent();
 	void FixedLoadEvent();
 

@@ -43,6 +43,24 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("Player_ItemPopupUI", "image/resources/UI_image/player_Ui/Player_Item_PopupUI.bmp", 307, 126, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_HP_Point", "image/resources/UI_image/player_Ui/Player_Hp_Point.bmp", 27 * 5, 7 * 5, 3, 1, true, RGB(255, 0, 255));
 
+	////// 맵에디터 소스//////////////////////////////
+	IMAGEMANAGER->addImage("black", "image/wook/black.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("space_left", "image/wook/space_left.bmp", 36, 72, 1, 2, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("space_right", "image/wook/space_right.bmp", 36, 72, 1, 2, true, RGB(255, 255, 255));
+
+	IMAGEMANAGER->addImage("box", "image/wook/white.bmp", WINSIZEX, 250, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tileset1", "image/wook/tileset1.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("tileset2", "image/wook/tileset2.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("tileset3", "image/wook/tileset3.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("tileset4", "image/wook/tileset4.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("Cursor", "image/wook/Cursor.bmp", 30, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("800x", "image/wook/800x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("size_box", "image/wook/size_box.bmp", 640, 640, true, RGB(255, 0, 255));
+
+	/////////////////////////////////////////////
+
+
+
 
 	m_pEffMagr = new effectManager;
 	m_pEffMagr->addEffect("Bullet_End_0", "image/resources/bullet_image/Bullet_End_0.bmp", 238, 30, 34, 30, 15, 50);
@@ -123,8 +141,8 @@ void titleScene::release()
 
 void titleScene::update()
 {
-	if (KEYMANAGER->isOnceKeyDown(0x71))
-		SCENEMANAGER->changeScene("editor_re");
+	if (KEYMANAGER->isOnceKeyDown(VK_F2))
+		SCENEMANAGER->changeScene("editor");
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{

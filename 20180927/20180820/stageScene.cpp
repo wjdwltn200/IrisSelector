@@ -26,12 +26,12 @@ static void Func_button2(void)
 HRESULT stageScene::init()
 {
 	//tagTile * m_pTiles = new tagTile[g_saveData.gTileMaxCountX * g_saveData.gTileMaxCountY];
-	m_pTileSet[0] = IMAGEMANAGER->findImage("tiles1");
-	m_pTileSet[1] = IMAGEMANAGER->findImage("tiles2");
-	m_pTileSet[2] = IMAGEMANAGER->findImage("tiles3");
-	m_pTileSet[3] = IMAGEMANAGER->findImage("tiles4");
+	m_pTileSet[0] = IMAGEMANAGER->findImage("tileset1");
+	m_pTileSet[1] = IMAGEMANAGER->findImage("tileset2");
+	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
+	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
 	m_bIsMiniMapOn = false;
-
+	MiniMap_Ratio = 8;
 
 	m_pImage_BG1 = IMAGEMANAGER->findImage("black");
 	m_pImage_checkBox = IMAGEMANAGER->findImage("size_box");
@@ -88,8 +88,19 @@ void stageScene::update()
 			{
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX , y * TILE_SIZEY , TILE_SIZEX, TILE_SIZEY);
 				
-				/*if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 100 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 100)
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum == 1)
+				{
+					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 4)
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 5)
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 7 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 4)
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 7 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 5)
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+				}
 				else
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
 			}
@@ -100,20 +111,7 @@ void stageScene::update()
 	}
 	if (buttonNum == 4)
 	{
-		// 단축키
-		if (KEYMANAGER->isOnceKeyDown('M'))
-		{
-			if (m_bIsMiniMapOn == false)
-				m_bIsMiniMapOn = true;
-			else if (m_bIsMiniMapOn == true)
-				m_bIsMiniMapOn = false;
-		}
-		CAMERA->keyUpdate();
 		
-
-		
-		/////////////////////////////
-
 		m_pPlayer->update();
 		CAMERA->update();
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
@@ -130,142 +128,114 @@ void stageScene::update()
 
 }
 
-//void stageScene::render(HDC hdc)
-//{
-//	m_pImage_BG1->render(hdc,0,0);
-//	if (buttonNum == 0)
-//	{
-//		m_pImage_checkBox->render(hdc, WINSIZEX / 2 - IMAGEMANAGER->findImage("size_box")->getWidth() / 2, 0);
-//		m_pButton1->render(hdc);
-//		m_pButton2->render(hdc);
-//	}
-//	if (buttonNum == 3)
-//	{
-//
-//	}
-//	if (buttonNum == 4)
-//	{
-//
-//
-//
-//		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
-//		{
-//			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
-//			{
-//
-//				switch (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum)
-//				{
-//				case 1:
-//					m_pTileSet[0]->frameRender(hdc,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
-//
-//					if (m_bIsMiniMapOn)
-//					{
-//						m_pTileSet[0]->RatioRender(hdc,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
-//							715 + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
-//							10,
-//							TILE_SIZEX,
-//							TILE_SIZEY);
-//					}
-//					break;
-//				case 2:
-//					m_pTileSet[1]->frameRender(hdc,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
-//
-//					if (m_bIsMiniMapOn)
-//					{
-//						m_pTileSet[1]->RatioRender(hdc,
-//							LOC_MINIMAPX + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
-//							LOC_MINIMAPY + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
-//							10,
-//							TILE_SIZEX,
-//							TILE_SIZEY);
-//					}
-//					break;
-//				case 3:
-//					m_pTileSet[2]->frameRender(hdc,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
-//
-//					if (m_bIsMiniMapOn)
-//					{
-//						m_pTileSet[2]->RatioRender(hdc,
-//							LOC_MINIMAPX + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
-//							LOC_MINIMAPY + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
-//							10,
-//							TILE_SIZEX,
-//							TILE_SIZEY);
-//					}
-//					break;
-//				case 4:
-//					m_pTileSet[3]->frameRender(hdc,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
-//						m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
-//
-//					if (m_bIsMiniMapOn)
-//					{
-//						m_pTileSet[3]->RatioRender(hdc,
-//							LOC_MINIMAPX + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio,
-//							LOC_MINIMAPY + m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
-//							m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY,
-//							10,
-//							TILE_SIZEX,
-//							TILE_SIZEY);
-//					}
-//					break;
-//				}
-//
-//				char szText[256];
-//
-//				// TRANSPARENT : 투명, OPAQUE : 불투명
-//				SetBkMode(hdc, TRANSPARENT);
-//
-//				SetTextColor(hdc, RGB(255, 0, 255));
-//
-//				sprintf_s(szText, "m_ptMoveCameraX : %f / m_ptMoveCameraY : %f",
-//					CAMERA->getfocusCameraX(), CAMERA->getfocusCameraY());
-//				TextOut(hdc, 400, 0, szText, strlen(szText));
-//
-//				sprintf_s(szText, "m_ptCameraX : %f / m_ptCameraY : %f",
-//					CAMERA->getCameraX(), CAMERA->getCameraY());
-//				TextOut(hdc, 400, 100, szText, strlen(szText));
-//
-//				/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-//					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-//					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
-//
-//			}
-//		}
-//
-//
-//
-//
-//
-//
-//
-//		m_pPlayer->render(hdc);
-//
-//
-//	}
-//}
+
+
+
+void stageScene::KeyEvent()
+{
+	// 단축키
+	if (KEYMANAGER->isOnceKeyDown('M'))
+	{
+		if (m_bIsMiniMapOn == false)
+			m_bIsMiniMapOn = true;
+		else if (m_bIsMiniMapOn == true)
+			m_bIsMiniMapOn = false;
+	}
+	CAMERA->keyUpdate();
+	/////////////////////////////
+
+}
+
+
+
+
+void stageScene::MouseEvent()
+{
+}
+
+
+
+
+void stageScene::render(HDC hdc)
+{
+	m_pImage_BG1->render(hdc, 0, 0);
+	if (buttonNum == 0)
+	{
+		m_pImage_checkBox->render(hdc, WINSIZEX / 2 - IMAGEMANAGER->findImage("size_box")->getWidth() / 2, 0);
+		m_pButton1->render(hdc);
+		m_pButton2->render(hdc);
+	}
+	if (buttonNum == 3)
+	{
+
+	}
+	if (buttonNum == 4)
+	{
+
+
+
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
+			{
+				m_pTileSet[m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum]->frameRender(hdc,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
+			}
+
+		}
+	}
+
+
+	//미니맵//
+	if (m_bIsMiniMapOn)
+	{
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
+			{
+				m_pTileSet[m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum]->RatioRender(hdc,
+					550 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio + (CAMERA->getCameraX() / MiniMap_Ratio),
+					15 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio + (CAMERA->getCameraY() / MiniMap_Ratio),
+					m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX,
+					m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY,
+					MiniMap_Ratio,
+					TILE_SIZEX,
+					TILE_SIZEY);
+			}
+		}
+	}
+	//////////
+
+	char szText[256];
+
+	// TRANSPARENT : 투명, OPAQUE : 불투명
+	SetBkMode(hdc, TRANSPARENT);
+
+	SetTextColor(hdc, RGB(255, 0, 255));
+
+	sprintf_s(szText, "m_ptMoveCameraX : %f / m_ptMoveCameraY : %f",
+		CAMERA->getfocusCameraX(), CAMERA->getfocusCameraY());
+	TextOut(hdc, 400, 0, szText, strlen(szText));
+
+	sprintf_s(szText, "m_ptCameraX : %f / m_ptCameraY : %f",
+		CAMERA->getCameraX(), CAMERA->getCameraY());
+	TextOut(hdc, 400, 100, szText, strlen(szText));
+
+	/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+		m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+		m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
+
+
+
+
+
+
+	m_pPlayer->render(hdc);
+
+}
 
 void stageScene::LoadEvent()
 {
@@ -288,7 +258,7 @@ void stageScene::LoadEvent()
 
 void stageScene::FixedLoadEvent()
 {
-	TXTDATA->getSingleton()->mapLoad("mainGame.map", m_pTiles, &MapSize);
+	TXTDATA->getSingleton()->mapLoad("mainGame2.map", m_pTiles, &MapSize);
 }
 
 stageScene::stageScene()
