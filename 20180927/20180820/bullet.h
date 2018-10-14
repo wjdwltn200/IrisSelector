@@ -44,6 +44,9 @@ public:
 	void HitEff();
 	void SecondBulletFire();
 
+	RECT getRect() { return m_rc; }
+
+
 	tagBulletInfo getTagBulletInfo() { return m_bulletInfo; }
 
 	bullet();

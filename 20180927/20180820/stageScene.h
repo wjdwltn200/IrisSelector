@@ -31,6 +31,7 @@ private:
 	static int buttonNum;
 	static int buttonOK;
 
+	bool m_isTest;
 
 	// 타이틀 헤더 이동
 	struct buttonSelect

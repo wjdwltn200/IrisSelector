@@ -61,7 +61,7 @@ HRESULT stageScene::init()
 	m_player->setBulletMagPointer(&m_pBulletMag);
 
 	m_pBulletMag = new bulletManger;
-	m_pBulletMag->init(500, m_pEffMagr);
+	m_pBulletMag->init(100, m_pEffMagr);
 
 	m_pBulletMagMons = new bulletManger;
 	m_pBulletMagMons->init(100, m_pEffMagr);
@@ -73,6 +73,7 @@ HRESULT stageScene::init()
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
 
+	m_isTest = false; // 정지수 : 테스트용으로 만듦
 	
 
 	tagItemInfo ItemInfo;
@@ -173,30 +174,32 @@ void stageScene::update()
 	}
 	if (buttonNum == 4)
 	{
-		
-		//m_player->setInputKey(VK_LBUTTON);
-
-		m_player->isColRect(false);
-
 		for (int i = 0; i < MAX_TILECOUNTX * MAX_TILECOUNTY; i++)
 		{
-			RECT m_rc; 
+			RECT m_rc;
 
 			if (m_pTiles[i].isMove) continue;
 
-			//if (!m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc, &m_player->getRect()))
-			//	m_player->isColRect(true);
+			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc, &m_player->getRect()))
+			{
+				m_player->setTileRc(m_pTiles[i].rc);
+			}
 		}
 
 		m_pMonsterMag->update();
 		m_player->update();
+
 		m_pItemMag->update();
 		m_pBulletMag->update();
-		m_player->update();
+		
 		m_pBulletMagMons->update();
 		m_pEffMagr->update();
 
+
 		ColRc();
+
+
+
 		CAMERA->update();
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -219,7 +222,17 @@ void stageScene::update()
 		m_pMonsterMag->Regeneration("BG_Cetus", Moninfo, m_pBulletMagMons, m_player);
 	}
 	
-		
+	if (KEYMANAGER->isOnceKeyDown('T'))
+	{
+		if (m_isTest)
+		{
+			m_isTest = false;
+		}
+		else
+		{
+			m_isTest = true;
+		}
+	}
 
 }
 
@@ -277,12 +290,12 @@ void stageScene::render(HDC hdc)
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
 
 
-				/*if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
+				if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
 					Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
-				}*/
+				}
 
 			}
 
@@ -306,6 +319,8 @@ void stageScene::render(HDC hdc)
 		m_pEffMagr->render(hdc);
 		m_pBulletMag->render(hdc);
 		m_pBulletMagMons->render(hdc);
+
+		TIMEMANAGER->render(hdc);
 
 	}
 
@@ -373,6 +388,8 @@ void stageScene::FixedLoadEvent()
 
 void stageScene::ColRc()
 {
+	RECT temp_rc;
+
 	// 몬스터 매니저 정보
 	std::vector<monster*> vMonster = m_pMonsterMag->getVecMons();
 	std::vector<monster*>::iterator MonsIter;
@@ -382,6 +399,16 @@ void stageScene::ColRc()
 	for (PlayerBulletIter = vPlayerBullet.begin(); PlayerBulletIter != vPlayerBullet.end(); PlayerBulletIter++) // 플레이어 총알 백터
 	{
 		if (!(*PlayerBulletIter)->getIsAlive()) continue;
+
+		for (int i = 0; i < MAX_TILECOUNTX * MAX_TILECOUNTY; i++)
+		{
+			if (m_pTiles[i].isMove) continue;
+
+			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&temp_rc, &m_pTiles[i].rc, &(*PlayerBulletIter)->getRect()))
+			{
+				(*PlayerBulletIter)->HitEff();
+			}
+		}
 
 		for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 몬스터 백터
 		{
@@ -398,7 +425,7 @@ void stageScene::ColRc()
 				{
 					(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
 					(*MonsIter)->knokback((*PlayerBulletIter)->getTagBulletInfo().tKnokBack, (*MonsIter)->getMonInfo().tUnKnokBack);
-					(*PlayerBulletIter)->setIsAlive(false);
+					(*PlayerBulletIter)->HitEff();
 				}
 			}
 		}

@@ -10,8 +10,10 @@
 
 HRESULT titleScene::init()
 {
+	// 폰트
 	AddFontResourceA("BMHANNAAir_ttf.ttf");
 
+	// 몬스터
 	IMAGEMANAGER->addImage("BG_Beholder", "image/resources/monster_image/BG_Beholder_Run.bmp", 1860, 78, 12, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("BG_Blue_Guardian", "image/resources/monster_image/BG_Blue_Guardian_Run.bmp", 930, 57, 6, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("BG_Blue_Mindflayer", "image/resources/monster_image/BG_Blue_Mindflayer_Run.bmp", 930, 54, 6, 1, true, RGB(255, 0, 255));
@@ -32,18 +34,24 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("BG_Itchy", "image/resources/monster_image/BG_Itchy.bmp", 930, 37, 6, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("BG_Knife_dude", "image/resources/monster_image/BG_Knife_dude.bmp", 930, 60, 6, 1, true, RGB(255, 0, 255));
 
+	// 블렛
 	IMAGEMANAGER->addImage("Bullet_Y", "image/resources/bullet_image/Bullet_Y.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_B", "image/resources/bullet_image/Bullet_B.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_P", "image/resources/bullet_image/Bullet_P.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_G", "image/resources/bullet_image/Bullet_G.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Bullet_R", "image/resources/bullet_image/Bullet_R.bmp", 108, 27, 4, 1, true, RGB(255, 0, 255));
 
-	
+	// 플레이어
 	IMAGEMANAGER->addImage("Player_ItemUI", "image/resources/UI_image/player_Ui/Player_Item_Ui.bmp", 449, 550, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_InfoIcon", "image/resources/UI_image/player_Ui/BG_Player_Icon.bmp", 37 * 2, 43 * 2, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_ItemPopupUI", "image/resources/UI_image/player_Ui/Player_Item_PopupUI.bmp", 307, 126, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_HP_Point", "image/resources/UI_image/player_Ui/Player_Hp_Point.bmp", 27 * 5, 7 * 5, 3, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_CrossHair", "image/resources/bullet_image/crossHair.bmp", 207, 69, 3, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_UI_BG", "image/resources/UI_image/player_Ui/Player_UI_BG.bmp", WINSIZEX, WINSIZEY);
+	IMAGEMANAGER->addImage("Player_L_Idle", "image/resources/player_image/BG_Player_L_idle.bmp", 128, 54, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_R_Idle", "image/resources/player_image/BG_Player_R_idle.bmp", 128, 54, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_L_Run", "image/resources/player_image/BG_Player_L_Run.bmp", 342, 54, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_R_Run", "image/resources/player_image/BG_Player_R_Run.bmp", 342, 54, 6, 1, true, RGB(255, 0, 255));
 
 	////// 맵에디터 소스//////////////////////////////
 	IMAGEMANAGER->addImage("black", "image/wook/black.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
@@ -126,7 +134,6 @@ void titleScene::render(HDC hdc)
 
 	
 
-	TIMEMANAGER->render(hdc);
 }
 
 

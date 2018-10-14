@@ -3,7 +3,7 @@ class animation;
 class bulletManger;
 class item;
 
-#define BULLET_FIRST_DELAY 60
+#define BULLET_FIRST_DELAY 10
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
 #define BAES_HP 10
@@ -28,33 +28,27 @@ private:
 	std::vector<item*>			m_vecItem;
 	std::vector<item*>::iterator	m_iter;
 
-	image * img_player;
-	image * img_left_Run;
-	image * img_right_Run;
+	image * img_PlayerIdle;
+	image * img_PlayerRun;
+
 	image * img_CrossHair;
 	image * img_HpPoint[10];
 
 	image * img_ItemUiBg;
 	image * img_InfoIcon;
 
-	animation * ani_right_stay;
-	animation * ani_left_stay;
-	animation * ani_left_Run;
-	animation * ani_right_Run;
+	animation * ani_PlayerIdle;
+	animation * ani_PlayerRun;
 	animation * ani_CrossHair;
 
 	item * m_pItemInfo;
 
-	int m_count;
-	int ani_stay_Curr[4];
-
 	float m_fPlayerScale;
 
+	bool m_isIdle;
+	bool m_isRun;
+
 	bool m_isItemUi;
-	bool m_Direction;
-	bool m_isRunState;
-	bool m_isRunStart;
-	int m_RunCount = 0;
 
 	int m_itemNum;
 	int m_itemNumY;
@@ -75,11 +69,17 @@ private:
 	RECT m_rc;
 	float m_fX = WINSIZEX / 2;
 	float m_fY = WINSIZEY / 2;
-	
+	float m_fCurrX;
+	float m_fCurrY;
+	float m_fReturnX;
+	float m_fReturnY;
+
+	RECT m_TileRc;
+
 	int m_currHp;
 	int m_currHpMax;
 	bool m_isAlive;
-	
+
 	bool m_isRectCol;
 
 	tagBulletInfo m_tBulletInfo;
@@ -102,15 +102,21 @@ public:
 	RECT getRect() { return m_rc; }
 
 	float getX() { return m_fX; }
+	void setX(float posX) { m_fX = posX; }
 	float getY() { return m_fY; }
+	void setY(float posY) { m_fY = posY; }
+
+	void setTileRc(RECT rc) { m_TileRc = rc; }
+
+	float getSpeed() { return m_fSpeed; }
 
 	void PlayerDamage(int dam);
-	void MoveActKeyInput();
 	void itemUi(HDC hdc);
 	void PlayerInfoUi(HDC hdc);
 
 	void isColRect(bool isRcet) { m_isRectCol = isRcet; }
 
+	void keyInput();
 	void movement();
 
 	PlayerCharacter();
