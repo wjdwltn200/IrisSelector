@@ -10,6 +10,7 @@ HRESULT PlayerCharacter::init()
 	img_ItemUiBg->setX(WINSIZEX / 2 - img_ItemUiBg->getFrameWidth() / 2);
 	img_ItemUiBg->setY(WINSIZEY / 2 - img_ItemUiBg->getFrameHeight() / 2);
 	img_InfoIcon = IMAGEMANAGER->findImage("Player_InfoIcon");
+	img_PlayerShadow = IMAGEMANAGER->findImage("Player_Shadow");
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -202,6 +203,11 @@ void PlayerCharacter::render(HDC hdc)
 	EllipseMakeCenter(hdc, m_fX, m_fY, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 	//Ellipse(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 
+	img_PlayerShadow->alphaRender(hdc,
+		m_fX - (img_PlayerIdle->getFrameWidth() / 2) * 1.5f,
+		m_fY + (img_PlayerIdle->getFrameHeight() / 2 - 5.0f),
+		150);
+
 	// 캐릭터 이미지 랜더
 	if (m_isIdle)
 	{
@@ -217,6 +223,8 @@ void PlayerCharacter::render(HDC hdc)
 			m_fY - (img_PlayerRun->getFrameHeight() / 2) * m_fPlayerScale,
 			ani_PlayerRun, m_fPlayerScale, true, 255);
 	}
+
+
 
 	// 체력 하트 표기
 	for (int i = 0; i < m_currHpMax / 2; i++)

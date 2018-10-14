@@ -3,7 +3,7 @@ class animation;
 class bulletManger;
 class item;
 
-#define BULLET_FIRST_DELAY 10
+#define BULLET_FIRST_DELAY 60
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
 #define BAES_HP 10
@@ -30,6 +30,7 @@ private:
 
 	image * img_PlayerIdle;
 	image * img_PlayerRun;
+	image * img_PlayerShadow;
 
 	image * img_CrossHair;
 	image * img_HpPoint[10];

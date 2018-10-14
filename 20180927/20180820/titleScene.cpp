@@ -52,6 +52,8 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("Player_R_Idle", "image/resources/player_image/BG_Player_R_idle.bmp", 128, 54, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_L_Run", "image/resources/player_image/BG_Player_L_Run.bmp", 342, 54, 6, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Player_R_Run", "image/resources/player_image/BG_Player_R_Run.bmp", 342, 54, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Player_Shadow", "image/resources/item_image/Item_shadow.bmp", 32*1.5f, 9*1.5f, 1, 1, true, RGB(255, 0, 255));
+
 
 	////// 맵에디터 소스//////////////////////////////
 	IMAGEMANAGER->addImage("black", "image/wook/black.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
@@ -70,8 +72,10 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/Item_set.bmp", 682, 614, 20, 18, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ItemShadow", "image/resources/item_image/Item_shadow.bmp", 32, 9, 1, 1, true, RGB(255, 0, 255));
 
+
+	// 타이틀 이미지
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
-	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162, 360, 1, 6, true, RGB(166, 166, 166));
+	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162 * 2, 360 * 2, 1, 6, true, RGB(255, 0, 255));
 
 	// 버튼 tag 초기화
 	memset(&m_tButtonInfo, NULL, sizeof(m_tButtonInfo));
@@ -92,9 +96,31 @@ void titleScene::release()
 
 void titleScene::update()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_F2))
-		SCENEMANAGER->changeScene("editor");
+	//if (KEYMANAGER->isOnceKeyDown(VK_F2))
+	//	SCENEMANAGER->changeScene("editor");
 
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		switch (m_tButtonInfo.carrFrameX)
+		{
+		case TITEL::GAME_START_SC:
+			SCENEMANAGER->changeScene("stage");
+			break;
+		case TITEL::EDITOR_MODE_SC:
+			SCENEMANAGER->changeScene("editor");
+			break;
+		case TITEL::OPTION_SC:
+			SCENEMANAGER->changeScene("stage");
+			break;
+		case TITEL::CREATERS_SC:
+			SCENEMANAGER->changeScene("stage");
+			break;
+		case TITEL::EXIT_SC:
+			SCENEMANAGER->changeScene("stage");
+			break;
+		}
+
+	}
 
 
 	if (!m_tButtonInfo.m_isMovement)
@@ -122,14 +148,14 @@ void titleScene::render(HDC hdc)
 	{
 		m_titleScene->render(hdc,0,0);
 
-		// 센터
-		m_button->frameAlphaRender(hdc, (WINSIZEX / 2) - (m_button->getFrameWidth() / 2) * 1.2f, (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2) * 1.2f, 0, m_tButtonInfo.carrFrameX, 1.2f, 0);
 		// 우측 대기
 		if (!(m_tButtonInfo.carrFrameX == TITEL::GAME_START_SC))
 			m_button->frameAlphaRender(hdc, (WINSIZEX / 2) - ((WINSIZEX / 2) / 2) - (m_button->getFrameWidth() / 2) * 0.8f, (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2) * 0.8f, 0, m_tButtonInfo.carrFrameX - 1, 0.8f, 150);
 		// 좌측 대기
 		if (!(m_tButtonInfo.carrFrameX == TITEL::EXIT_SC))
 			m_button->frameAlphaRender(hdc, (WINSIZEX / 2) + ((WINSIZEX / 2) / 2) - (m_button->getFrameWidth() / 2) * 0.8f, (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2) * 0.8f, 0, m_tButtonInfo.carrFrameX + 1, 0.8f ,150);
+		// 센터
+		m_button->frameAlphaRender(hdc, (WINSIZEX / 2) - (m_button->getFrameWidth() / 2) * 1.2f, (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2) * 1.2f, 0, m_tButtonInfo.carrFrameX, 1.2f, 0);
 	}
 
 	

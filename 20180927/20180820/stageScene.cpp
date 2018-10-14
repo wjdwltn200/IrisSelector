@@ -312,13 +312,12 @@ void stageScene::render(HDC hdc)
 			m_pBulletMag->getIter());
 		TextOut(hdc, 10, WINSIZEY - 20, szText, strlen(szText));
 
-		m_pMonsterMag->render(hdc);
-		m_pItemMag->render(hdc);
-		m_player->render(hdc);
-		m_player->render(hdc);
 		m_pEffMagr->render(hdc);
 		m_pBulletMag->render(hdc);
 		m_pBulletMagMons->render(hdc);
+		m_pMonsterMag->render(hdc);
+		m_player->render(hdc);
+		m_pItemMag->render(hdc);
 
 		TIMEMANAGER->render(hdc);
 
