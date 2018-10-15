@@ -244,6 +244,7 @@ void bullet::moveTypeAct(int moveType)
 void bullet::HitEff()
 {
 	m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2) /** m_bulletInfo.tScale*/, m_bulletInfo.tPosY - (30 / 2) /** m_bulletInfo.tScale*/);
+	SecondBulletFire();
 	m_isAlive = false;
 }
 
