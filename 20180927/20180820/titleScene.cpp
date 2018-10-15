@@ -71,6 +71,7 @@ HRESULT titleScene::init()
 
 	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/Item_set.bmp", 682, 614, 20, 18, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ItemShadow", "image/resources/item_image/Item_shadow.bmp", 32, 9, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tag", "image/wook/tag.bmp", 38, 38, true, RGB(255, 0, 255));
 
 
 	// 타이틀 이미지
@@ -103,20 +104,20 @@ void titleScene::update()
 	{
 		switch (m_tButtonInfo.carrFrameX)
 		{
-		case TITEL::GAME_START_SC:
+		case TITEL::GAME_START_SC: // 스테이지씬
 			SCENEMANAGER->changeScene("stage");
 			break;
-		case TITEL::EDITOR_MODE_SC:
+		case TITEL::EDITOR_MODE_SC: // 에디터씬
 			SCENEMANAGER->changeScene("editor");
 			break;
-		case TITEL::OPTION_SC:
+		case TITEL::OPTION_SC: // 옵션
 			SCENEMANAGER->changeScene("stage");
 			break;
-		case TITEL::CREATERS_SC:
+		case TITEL::CREATERS_SC: // 만든이들
 			SCENEMANAGER->changeScene("stage");
 			break;
-		case TITEL::EXIT_SC:
-			SCENEMANAGER->changeScene("stage");
+		case TITEL::EXIT_SC: // 나가기
+			PostQuitMessage(0);
 			break;
 		}
 

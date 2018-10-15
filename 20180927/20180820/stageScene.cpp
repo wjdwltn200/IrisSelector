@@ -126,9 +126,9 @@ void stageScene::update()
 	if (buttonNum == 1)
 	{
 		FixedLoadEvent(); // 시나리오의 맵 최대크기는 1600 1600
-		g_saveData.gTileMaxCountX = 40;
-		g_saveData.gTileMaxCountY = 40;
 		buttonNum = 3;
+		g_saveData.gTileMaxCountX = 50;
+		g_saveData.gTileMaxCountY = 50;
 	}
 	if (buttonNum == 2)
 	{
@@ -151,6 +151,8 @@ void stageScene::update()
 			{
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX , y * TILE_SIZEY , TILE_SIZEX, TILE_SIZEY);
 				
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
+
 				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum == 1)
 				{
 					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
@@ -164,8 +166,6 @@ void stageScene::update()
 					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 7 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 5)
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
 				}
-				else
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
 			}
 		}
 	
@@ -174,7 +174,7 @@ void stageScene::update()
 	}
 	if (buttonNum == 4)
 	{
-		for (int i = 0; i < MAX_TILECOUNTX * MAX_TILECOUNTY; i++)
+		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
 		{
 			RECT m_rc;
 
@@ -363,6 +363,9 @@ void stageScene::render(HDC hdc)
 
 void stageScene::LoadEvent()
 {
+	int tempX = 0;
+	int tempY = 0;
+
 	OPENFILENAME ofn;
 	HWND hEditFileToBeOpened = NULL;
 
@@ -376,13 +379,18 @@ void stageScene::LoadEvent()
 	if (0 != GetOpenFileName(&ofn))
 	{
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
-		TXTDATA->getSingleton()->mapLoad(szFileName1, m_pTiles, &MapSize);
+		TXTDATA->getSingleton()->mapLoad(szFileName1, m_pTiles, &tempX, &tempY);
 	}
+	g_saveData.gTileMaxCountX = tempX;
+	g_saveData.gTileMaxCountY = tempY;
 }
 
 void stageScene::FixedLoadEvent()
 {
-	TXTDATA->getSingleton()->mapLoad("mainGame2.map", m_pTiles, &MapSize);
+	int tempX = 0;
+	int tempY = 0;
+	TXTDATA->getSingleton()->mapLoad("mainGame4.map", m_pTiles, &tempX, &tempY);
+
 }
 
 void stageScene::ColRc()
@@ -399,7 +407,7 @@ void stageScene::ColRc()
 	{
 		if (!(*PlayerBulletIter)->getIsAlive()) continue;
 
-		for (int i = 0; i < MAX_TILECOUNTX * MAX_TILECOUNTY; i++)
+		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
 		{
 			if (m_pTiles[i].isMove) continue;
 

@@ -1,6 +1,5 @@
 #pragma once
 #include "singletonBase.h"
-#include "editorScene_re.h"
 #include "editor.h"
 
 
@@ -9,16 +8,7 @@
 #define LOC_MINIMAPX_MAP 267
 #define LOC_MINIMAPY_MAP 190
 
-//////////////////////////////
-
-#define CAMERA_destX 260
-#define CAMERA_destY 105
 #define CAMERA_SPEED 5
-#define MINIMAP_destX 10
-#define MINIMAP_destY 110
-#define MINIMAP_WIDTH 180
-#define MINIMAP_HEIGHT 180
-
 
 
 class MapCamera : public singletonBase<MapCamera>

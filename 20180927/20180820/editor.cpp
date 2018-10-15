@@ -4,21 +4,28 @@
 #include "editor.h"
 #include "button.h"
 #include "image.h"
-#include "resource.h"
+
 char szFileName_1[512];
 int editor::m_nPreviewNum = 0;
+int editor::m_nMonsterID = 0;
 
 
 static void SpaceFunc_left(void)
 {
 	if ((editor::m_nPreviewNum) > 0)
 		editor::m_nPreviewNum -= 1;
+	
+	if ((editor::m_nMonsterID) > 0)
+		editor::m_nMonsterID -= 1;
 }
 
 static void SpaceFunc_right(void)
 {
 	if ((editor::m_nPreviewNum) < 3)
 		editor::m_nPreviewNum += 1;
+
+	if ((editor::m_nMonsterID) < ENEMYKINDNUMBER - 1)
+		editor::m_nMonsterID += 1;
 }
 
 void editor::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
@@ -34,20 +41,25 @@ void editor::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 		LoadEvent();
 		break;
 	case 32781: // Save and Start
-		MessageBox(hWnd, "Eraser Button Clicked", "Button", MB_OK);
+		MessageBox(hWnd, "Save Button Clicked", "Button", MB_OK);
+		SaveEvent();
+		SCENEMANAGER->changeScene("stage");
 		break;
 	case 32801: // Exit
 		PostQuitMessage(0);
 		break;
+
 	case 32804: // return to titleScene
 		SCENEMANAGER->changeScene("title");
 		break;
 
-	case 32773: // Terrains 
+	case 32796: // Terrains 
 		st_obj = isTerrain;
+		m_nPreviewNum = 0;
 		break;
-	case 32774: // Units
-		st_obj = isUnit;
+	case 32782: // Units
+		st_obj = isUnit; 
+		m_nPreviewNum = 0;
 		break;
 
 	case 32783: // 사이즈체크
@@ -56,17 +68,17 @@ void editor::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 		MAPCAMERA->init();
 		break;
 	case 32784:
-		st_selSize = x1600;
+		st_selSize = x1120;
 		m_bIsSelectSize = true;
 		MAPCAMERA->init();
 		break;
 	case 32785:
-		st_selSize = x2000;
+		st_selSize = x1440;
 		m_bIsSelectSize = true;
 		MAPCAMERA->init();
 		break;
 	case 32786:
-		st_selSize = x2400;
+		st_selSize = x1600;
 		m_bIsSelectSize = true;
 		MAPCAMERA->init();
 		break;
@@ -89,7 +101,9 @@ void editor::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 HRESULT editor::init()
 {
 	init_image();
-	st_selSize = x1600;
+	st_selSize = x1120;
+	g_saveData.gTileMaxCountX = st_selSize / TILE_SIZEX;
+	g_saveData.gTileMaxCountY = st_selSize / TILE_SIZEY;
 	st_selTile = tileset1;
 	st_view = x1;
 	m_bIsSelectSize = true; // 메뉴에서 사이즈체크시 초기화되고 사이즈 다시측정된다.
@@ -113,6 +127,7 @@ void editor::init_image()
 	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
 	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
 	m_pCursor = IMAGEMANAGER->findImage("Cursor");
+	m_pTag = IMAGEMANAGER->findImage("tag");
 
 	m_pBtnLspace = new button;
 	m_pBtnLspace->init("space_left", IMAGEMANAGER->findImage("space_left")->getWidth() / 2 + 0, WINSIZEY - 150, PointMake(0, 1), PointMake(0, 0), SpaceFunc_left);
@@ -121,7 +136,27 @@ void editor::init_image()
 	m_pBtnRspace->init("space_right", IMAGEMANAGER->findImage("space_right")->getWidth() / 2 + 301, WINSIZEY - 150, PointMake(0, 1), PointMake(0, 0), SpaceFunc_right);
 
 
-
+	int i = 0;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Beholder"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Blue_Guardian"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Blue_Mindflayer"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Bugman"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Cetus"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Coven"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Cow"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Cyclops"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Dark_Lord"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Dog"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Eye_Slime"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Faun_Archer"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Firewolf"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Gargoyle"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Giant_Run"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Gnome_Run"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Igor"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Itchy"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Knife_dude"); ++i; // i = 18
+	
 }
 
 void editor::tileReset()
@@ -153,51 +188,64 @@ void editor::update()
 	if (m_pBtnRspace && m_bIsUnfold)
 		m_pBtnRspace->update();
 
-	MouseEvent();
-
-	if (m_pTileSet[0] && editor::m_nPreviewNum == 0)
-		st_selTile = tileset1;
-	if (m_pTileSet[1] && editor::m_nPreviewNum == 1)
-		st_selTile = tileset2;
-	if (m_pTileSet[2] && editor::m_nPreviewNum == 2)
-		st_selTile = tileset3;
-	if (m_pTileSet[3] && editor::m_nPreviewNum == 3)
-		st_selTile = tileset4;
-
-
-	if (m_bIsUnfold)
+	if (st_obj == isTerrain)
 	{
+		MouseEvent();
 
-		for (int j = 0; j < SAMPLE_COUNTY; ++j)
+		if (m_pTileSet[0] && editor::m_nPreviewNum == 0)
+			st_selTile = tileset1;
+		if (m_pTileSet[1] && editor::m_nPreviewNum == 1)
+			st_selTile = tileset2;
+		if (m_pTileSet[2] && editor::m_nPreviewNum == 2)
+			st_selTile = tileset3;
+		if (m_pTileSet[3] && editor::m_nPreviewNum == 3)
+			st_selTile = tileset4;
+
+
+		if (m_bIsUnfold)
 		{
-			for (int i = 0; i < SAMPLE_COUNTX; ++i)
+
+			for (int j = 0; j < SAMPLE_COUNTY; ++j)
 			{
-				m_pSampleTiles[j * SAMPLE_COUNTX + i].rc = RectMake(40 + i * TILE_SIZEX,
-					(WINSIZEY - 240) + j * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
-				m_pSampleTiles[j * SAMPLE_COUNTX + i].frameX = i; //8까지
-				m_pSampleTiles[j * SAMPLE_COUNTX + i].frameY = j; //6까지
-				m_pSampleTiles[j * SAMPLE_COUNTX + i].SampleNum = (int)st_selTile;
-				// 샘플넘은 계속 바뀔것이다. 최초에는 1
+				for (int i = 0; i < SAMPLE_COUNTX; ++i)
+				{
+					m_pSampleTiles[j * SAMPLE_COUNTX + i].rc = RectMake(40 + i * TILE_SIZEX,
+						(WINSIZEY - 240) + j * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
+					m_pSampleTiles[j * SAMPLE_COUNTX + i].frameX = i; //8까지
+					m_pSampleTiles[j * SAMPLE_COUNTX + i].frameY = j; //6까지
+					m_pSampleTiles[j * SAMPLE_COUNTX + i].SampleNum = (int)st_selTile;
+					// 샘플넘은 계속 바뀔것이다. 최초에는 1
+				}
+			}
+		}
+
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
+			{
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - MAPCAMERA->getCameraX(), y * TILE_SIZEY - MAPCAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
 			}
 		}
 	}
-
-	for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+	else
 	{
-		for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
-		{
-			m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - MAPCAMERA->getCameraX(), y * TILE_SIZEY - MAPCAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
-		}
+		Unit_MouseEvent();
+
 	}
 
 }
+
+void editor::Unit_MouseEvent()
+{
+}
+
 
 void editor::SizeUpdate()
 {
 	if (m_bIsSelectSize == true)
 	{
-		g_saveData.gTileMaxCountX = st_selSize / TILE_SIZEX;
-		g_saveData.gTileMaxCountY = st_selSize / TILE_SIZEY;
+		g_saveData.gTileMaxCountX = (int)st_selSize / TILE_SIZEX;
+		g_saveData.gTileMaxCountY = (int)st_selSize / TILE_SIZEY;
 		//tagTile * m_pTiles = new tagTile[g_saveData.gTileMaxCountX * g_saveData.gTileMaxCountY];
 		tileReset();
 		m_bIsSelectSize = false;
@@ -246,6 +294,22 @@ void editor::KeyEvent()
 			m_bIsMiniMapOn = false;
 		else
 			m_bIsMiniMapOn = true;
+	}
+	if (KEYMANAGER->isOnceKeyDown('Z') && m_bIsUnfold == true)
+	{
+		if (st_obj == isTerrain) m_rcSelectedTile.left -= 1;
+		else 
+			if(m_nMonsterID > 0) m_nMonsterID--;
+	}
+	if (KEYMANAGER->isOnceKeyDown('X') && m_bIsUnfold == true)
+	{
+		if (st_obj == isTerrain)m_rcSelectedTile.left += 1;
+		else
+			if (m_nMonsterID < ENEMYKINDNUMBER - 1) m_nMonsterID++;
+	}
+	if (KEYMANAGER->isOnceKeyDown('C') && m_bIsUnfold == true)
+	{
+		if (st_obj == isTerrain) m_rcSelectedTile.top += 1;
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_F6))
 	{
@@ -317,14 +381,22 @@ void editor::render(HDC hdc)
 		m_pBox->render(hdc, 0, WINSIZEY - 250);
 
 		// 왼쪽에 나타나는 타일 미리보기 렌더링//
-		if (m_pTileSet[0] && editor::m_nPreviewNum == 0)
-			m_pTileSet[0]->render(hdc, 40, WINSIZEY - 240);
-		if (m_pTileSet[1] && editor::m_nPreviewNum == 1)
-			m_pTileSet[1]->render(hdc, 40, WINSIZEY - 240);
-		if (m_pTileSet[2] && editor::m_nPreviewNum == 2)
-			m_pTileSet[2]->render(hdc, 40, WINSIZEY - 240);
-		if (m_pTileSet[3] && editor::m_nPreviewNum == 3)
-			m_pTileSet[3]->render(hdc, 40, WINSIZEY - 240);
+		if (st_obj == isTerrain)
+		{
+			if (m_pTileSet[0] && editor::m_nPreviewNum == 0)
+				m_pTileSet[0]->render(hdc, 40, WINSIZEY - 240);
+			if (m_pTileSet[1] && editor::m_nPreviewNum == 1)
+				m_pTileSet[1]->render(hdc, 40, WINSIZEY - 240);
+			if (m_pTileSet[2] && editor::m_nPreviewNum == 2)
+				m_pTileSet[2]->render(hdc, 40, WINSIZEY - 240);
+			if (m_pTileSet[3] && editor::m_nPreviewNum == 3)
+				m_pTileSet[3]->render(hdc, 40, WINSIZEY - 240);
+		}
+		if (st_obj == isUnit)
+		{
+			m_pEnemy[m_nMonsterID]->frameRender(hdc, 67, WINSIZEY - 172, 1, 0);
+			m_pEnemy[m_nMonsterID]->frameAlphaRender(hdc, - 22, WINSIZEY - 252, 0, 0, 3.0f, 170);
+		}
 		///////////////////////////////////
 
 		//미니맵//
@@ -399,8 +471,14 @@ void editor::render_mapTile(HDC hdc)
 				m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top,
 				m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX,
 				m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY);
+
+			if (m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum == 3)
+			{
+				if(m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX == 4 && m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
+					m_pTag->alphaRender(hdc, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top - 15, 140);
+			}
 		}
-	}
+	}	
 
 }
 
@@ -414,7 +492,8 @@ void editor::render_mapTile(HDC hdc)
 
 void editor::SaveEvent()
 {
-	int mapSize = (int)st_selSize;
+	/*int mapSizeX = (int)st_selSize / TILE_SIZEX;
+	int mapSizeY = (int)st_selSize / TILE_SIZEY;*/
 
 	OPENFILENAME ofn;
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
@@ -430,13 +509,14 @@ void editor::SaveEvent()
 	ofn.Flags = OFN_OVERWRITEPROMPT;
 	GetSaveFileName(&ofn);
 
-	TXTDATA->mapSave(szFileName_1, m_pTiles, &mapSize);
+	TXTDATA->mapSave(szFileName_1, m_pTiles, &g_saveData.gTileMaxCountX, &g_saveData.gTileMaxCountY);
 
 }
 
 void editor::LoadEvent()
 {
-	int mapSize = (int)st_selSize;
+	int tempX = 0; 
+	int tempY = 0;
 
 	OPENFILENAME ofn;
 	HWND hEditFileToBeOpened = NULL;
@@ -451,9 +531,10 @@ void editor::LoadEvent()
 	if (0 != GetOpenFileName(&ofn))
 	{
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
-		TXTDATA->getSingleton()->mapLoad(szFileName_1, m_pTiles, &mapSize);
+		TXTDATA->getSingleton()->mapLoad(szFileName_1, m_pTiles, &tempX, &tempY);
 	}
-
+	g_saveData.gTileMaxCountX = tempX;
+	g_saveData.gTileMaxCountY = tempY;
 }
 
 

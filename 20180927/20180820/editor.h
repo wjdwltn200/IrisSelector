@@ -1,16 +1,9 @@
 #pragma once
+#include "stdafx.h"
 #include "scene.h"
 
+class animation;
 class button;
-
-#define TILE_SIZEX 32
-#define TILE_SIZEY 32
-
-#define SAMPLE_COUNTX 8
-#define SAMPLE_COUNTY 6
-
-#define TILE_MAXCOUNTX 60
-#define TILE_MAXCOUNTY 60
 
 enum tagMOUSE_STATE
 {
@@ -29,7 +22,7 @@ enum tagSELECTED_TILE {
 };
 
 enum tagSELECTED_SIZE {
-	x800 = 800, x1600 = 1600, x2000 = 2000, x2400 = 2400
+	x800 = 800, x1120 = 1120, x1440 = 1440, x1600 = 1600 // 25 35 45 50
 };
 
 enum tagSELECTED_VIEW {
@@ -49,6 +42,8 @@ private:
 	int m_rcSelectedTileSampleNum;
 	int MiniMap_Ratio;
 
+	tagSpawnTile m_pSpawn;
+
 	tagTile m_pTiles[TILE_MAXCOUNTX * TILE_MAXCOUNTY];  // 그려줄 타일의 정보 // 실제로 구성이 되는 타일의 정보
 	//tagTile * m_pTiles[MAX_TILECOUNTX * MAX_TILECOUNTX];
 
@@ -64,12 +59,18 @@ private:
 	image* m_pBox;
 	image * m_pBG;
 	image * m_pCursor;
+	image * m_pTag;
+
+	image * m_pEnemy[20];
+	//animation * m_pAnimation[20];
 
 	button * m_pBtnLspace;
 	button * m_pBtnRspace;
 
 public:
 	static int m_nPreviewNum;
+	static int m_nMonsterID;
+
 
 	friend void SpaceFunc_left(void);
 	friend void SpaceFunc_right(void);
@@ -93,6 +94,8 @@ public:
 	void LoadEvent();
 	void KeyEvent();
 	void MouseEvent();
+
+	void Unit_MouseEvent();
 
 	void render(HDC hdc);
 	void render_mapTile(HDC hdc);

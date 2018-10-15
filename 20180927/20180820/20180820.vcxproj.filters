@@ -183,9 +183,6 @@
     <ClInclude Include="editor.h">
       <Filter>MainGame\editor</Filter>
     </ClInclude>
-    <ClInclude Include="editorScene_re.h">
-      <Filter>MainGame\scene</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -298,9 +295,6 @@
     </ClCompile>
     <ClCompile Include="editor.cpp">
       <Filter>MainGame\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="editorScene_re.cpp">
-      <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

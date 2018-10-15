@@ -1,5 +1,6 @@
 #pragma once
 #include "scene.h"
+#include "stdafx.h"
 
 
 class button;
@@ -15,7 +16,7 @@ class animation;
 class stageScene : public scene
 {
 private:
-	tagTile		  m_pTiles[MAX_TILECOUNTX * MAX_TILECOUNTY];
+	tagTile		  m_pTiles[TILE_MAXCOUNTX * TILE_MAXCOUNTY];
 
 	button*		  m_pButton1;
 	button*       m_pButton2;
@@ -25,13 +26,16 @@ private:
 	image*		  m_pTileSet[4];
 
 	int MiniMap_Ratio;
-	int MapSize;
+	int MapSizeX;
+	int MapSizeY;
 	bool m_bIsMiniMapOn;
+	bool m_bIsCulling;
 
 	static int buttonNum;
 	static int buttonOK;
 
 	bool m_isTest;
+
 
 	// 타이틀 헤더 이동
 	struct buttonSelect
