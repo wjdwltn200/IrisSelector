@@ -105,6 +105,8 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_isMove = false;
 	m_SubDamgeAdd = 5.0f;
 
+	//memset(&m_tSpawnType,)
+
 	
 	return S_OK;
 }
@@ -326,6 +328,12 @@ void monster::update()
 	Move(m_tMonInfo.tMoveType);
 	fireAtk();
 	m_monsterMove->frameUpdate();
+}
+
+void monster::Enemy_LevelUp(int type)
+{
+	
+
 }
 
 void monster::render(HDC hdc)

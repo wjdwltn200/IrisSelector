@@ -61,6 +61,7 @@ private:
 
 	int m_buttonSetX;
 	int m_buttonSetY;
+	int isCount;
 
 public:
 	HRESULT init();

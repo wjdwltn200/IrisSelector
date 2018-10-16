@@ -28,18 +28,25 @@ private:
 
 	bulletManger* m_pBulletMag;
 	PlayerCharacter* m_PlayerCharPoint;
+	SpawnType m_tSpawnType;
 
 	tagMonInfo m_tMonInfo;
 public:
 	HRESULT init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint);
 
 	void release();
+
+
+
 	void update();
+	void Enemy_LevelUp(int type);
 	void Move(int m_moveTypeNum);
 	void fireAtk();
 	void knokback(float playerkuokback, float monsterHitRecovery);
 	void Damge(float dam);
 	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
+
+
 	void render(HDC hdc);
 
 	tagMonInfo getMonInfo() { return m_tMonInfo; }
