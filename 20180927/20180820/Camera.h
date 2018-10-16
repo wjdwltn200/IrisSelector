@@ -1,11 +1,21 @@
 #pragma once
 #include "singletonBase.h"
 
+class PlayerCharacter;
+
+#define LOC_MINIMAPX_MAP 500
+#define LOC_MINIMAPY_MAP 20
+
+//#define CAMERA_SPEED 5
+
+
 class Camera : public singletonBase<Camera>
 {
 private:
 	int m_nMiniMap_LocationX; // 미니맵 생성되는 위치
 	int m_nMiniMap_LocationY; 
+
+	PlayerCharacter * m_pCharacter;
 
 	//POINT m_ptCamera;
 	//POINT m_ptMiniCamera;

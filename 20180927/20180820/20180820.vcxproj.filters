@@ -183,6 +183,9 @@
     <ClInclude Include="editor.h">
       <Filter>MainGame\editor</Filter>
     </ClInclude>
+    <ClInclude Include="ScrollMgr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="editor.cpp">
       <Filter>MainGame\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollMgr.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
