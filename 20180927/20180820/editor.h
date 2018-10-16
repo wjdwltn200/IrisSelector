@@ -29,6 +29,10 @@ enum tagSELECTED_VIEW {
 	x1 = 1, x2 = 2, x3 = 3
 };
 
+struct tagSampleUnit
+{
+
+};
 
 class editor : public scene
 {
@@ -38,6 +42,7 @@ private:
 	bool m_isSel;
 	bool m_bIsMiniMapOn;
 	bool m_bIsTextOn;
+	bool m_bIsNumberOn;
 
 	int m_rcSelectedTileSampleNum;
 	int MiniMap_Ratio;
@@ -49,6 +54,7 @@ private:
 
 	tagSampleTile m_pSampleTiles[SAMPLE_COUNTX * SAMPLE_COUNTY]; // 오른쪽의 타일정보들
 	RECT m_rcSelectedTile;
+	RECT m_rcSelectedUnit;
 	tagSELECTED_TILE st_selTile;
 	tagSELECTED_SIZE st_selSize;
 	tagMOUSE_STATE st_mouse;
@@ -60,6 +66,7 @@ private:
 	image * m_pBG;
 	image * m_pCursor;
 	image * m_pTag;
+	image * m_pTag2;
 
 	image * m_pEnemy[20];
 	//animation * m_pAnimation[20];

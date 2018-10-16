@@ -72,6 +72,8 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/Item_set.bmp", 682, 614, 20, 18, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ItemShadow", "image/resources/item_image/Item_shadow.bmp", 32, 9, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("tag", "image/wook/tag.bmp", 38, 38, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("parchment", "image/wook/parchment.bmp", WINSIZEX, 350, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("tag_done", "image/wook/tag_done.bmp", 38, 38, true, RGB(255, 0, 255));
 
 
 	// 타이틀 이미지

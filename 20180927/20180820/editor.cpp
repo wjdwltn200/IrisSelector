@@ -24,7 +24,7 @@ static void SpaceFunc_right(void)
 	if ((editor::m_nPreviewNum) < 3)
 		editor::m_nPreviewNum += 1;
 
-	if ((editor::m_nMonsterID) < ENEMYKINDNUMBER - 1)
+	if ((editor::m_nMonsterID) < ENEMYKINDNUMBER - 2)
 		editor::m_nMonsterID += 1;
 }
 
@@ -108,6 +108,7 @@ HRESULT editor::init()
 	st_view = x1;
 	m_bIsSelectSize = true; // 메뉴에서 사이즈체크시 초기화되고 사이즈 다시측정된다.
 	m_bIsUnfold = true;
+	m_bIsNumberOn = false;
 	m_isSel = false;
 	m_bIsMiniMapOn = true;
 	m_bIsTextOn = false;
@@ -120,15 +121,16 @@ HRESULT editor::init()
 
 void editor::init_image()
 {
+	
 	m_pBG =	IMAGEMANAGER->findImage("black");
-	m_pBox = IMAGEMANAGER->findImage("box");
+	m_pBox = IMAGEMANAGER->findImage("parchment");
 	m_pTileSet[0] = IMAGEMANAGER->findImage("tileset1");
 	m_pTileSet[1] = IMAGEMANAGER->findImage("tileset2");
 	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
 	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
 	m_pCursor = IMAGEMANAGER->findImage("Cursor");
 	m_pTag = IMAGEMANAGER->findImage("tag");
-
+	m_pTag2 = IMAGEMANAGER->findImage("tag_done");
 	m_pBtnLspace = new button;
 	m_pBtnLspace->init("space_left", IMAGEMANAGER->findImage("space_left")->getWidth() / 2 + 0, WINSIZEY - 150, PointMake(0, 1), PointMake(0, 0), SpaceFunc_left);
 
@@ -145,7 +147,7 @@ void editor::init_image()
 	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Coven"); ++i;
 	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Cow"); ++i;
 	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Cyclops"); ++i;
-	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Dark_Lord"); ++i;
+	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Dark_Lord"); ++i; // 8
 	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Dog"); ++i;
 	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Eye_Slime"); ++i;
 	m_pEnemy[i] = IMAGEMANAGER->findImage("BG_Faun_Archer"); ++i;
@@ -170,6 +172,7 @@ void editor::tileReset()
 			m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX = 6;
 			m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY = 3;  // 29
 			m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum = 1;
+			m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber = 20;
 		}
 	}
 }
@@ -218,6 +221,12 @@ void editor::update()
 				}
 			}
 		}
+	}
+	else
+	{
+		Unit_MouseEvent();
+
+	}
 
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -226,17 +235,37 @@ void editor::update()
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - MAPCAMERA->getCameraX(), y * TILE_SIZEY - MAPCAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
 			}
 		}
-	}
-	else
-	{
-		Unit_MouseEvent();
-
-	}
-
+	
+		//g_saveData.gTileMaxCountX = 35;
+		//g_saveData.gTileMaxCountY = 35;
 }
 
 void editor::Unit_MouseEvent()
 {
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		st_mouse = tagMOUSE_STATE::MOUSE_DOWN1;
+	}
+	else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && st_mouse == tagMOUSE_STATE::MOUSE_DOWN1)
+	{
+		for (int i = 0; i < g_saveData.gTileMaxCountX * g_saveData.gTileMaxCountY; ++i)
+		{
+			if (PtInRect(&m_pTiles[i].rc, g_ptMouse))
+			{
+				if (m_pTiles[i].SampleNum == 3)
+				{
+					if (m_pTiles[i].terrainFrameX == 4 && m_pTiles[i].terrainFrameY == 3)
+					{
+						m_pTiles[i].MonsterNumber = m_nMonsterID;
+					}
+				}
+			}
+			else
+			{
+				st_mouse = tagMOUSE_STATE::MOUSE_IDLE1;
+			}
+		}
+	}
 }
 
 
@@ -305,7 +334,7 @@ void editor::KeyEvent()
 	{
 		if (st_obj == isTerrain)m_rcSelectedTile.left += 1;
 		else
-			if (m_nMonsterID < ENEMYKINDNUMBER - 1) m_nMonsterID++;
+			if (m_nMonsterID < ENEMYKINDNUMBER - 2) m_nMonsterID++;
 	}
 	if (KEYMANAGER->isOnceKeyDown('C') && m_bIsUnfold == true)
 	{
@@ -318,7 +347,13 @@ void editor::KeyEvent()
 		else
 			m_bIsTextOn = true;
 	}
-
+	if (KEYMANAGER->isOnceKeyDown(VK_F7))
+	{
+		if (m_bIsNumberOn)
+			m_bIsNumberOn = false;
+		else
+			m_bIsNumberOn = true;
+	}
 }
 
 void editor::MouseEvent()
@@ -358,6 +393,7 @@ void editor::MouseEvent()
 				m_pTiles[i].terrainFrameX = m_rcSelectedTile.left;
 				m_pTiles[i].terrainFrameY = m_rcSelectedTile.top;
 				m_pTiles[i].SampleNum = m_rcSelectedTileSampleNum;
+				m_pTiles[i].MonsterNumber = 20;
 			}
 
 		}
@@ -426,11 +462,18 @@ void editor::render(HDC hdc)
 
 	if (m_isSel == true)
 	{
+		if(st_obj == isTerrain)
 		m_pTileSet[m_rcSelectedTileSampleNum]->frameRender(hdc,
 			g_ptMouse.x,
 			g_ptMouse.y,
 			m_rcSelectedTile.left,
 			m_rcSelectedTile.top);
+		else
+		{
+			/*m_pEnemy[m_nMonsterID]->frameRender(hdc, g_ptMouse.x - m_pEnemy[m_nMonsterID]->getWidth() / 8,
+				g_ptMouse.y,0,0);*/
+		}
+
 	}
 
 
@@ -450,6 +493,8 @@ void editor::render(HDC hdc)
 		sprintf_s(szText, "m_ptCameraX : %f / m_ptCameraY : %f",
 			MAPCAMERA->getCameraX(), MAPCAMERA->getCameraY());
 		TextOut(hdc, 400, 100, szText, strlen(szText));
+
+		
 	}
 
 	/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
@@ -472,16 +517,55 @@ void editor::render_mapTile(HDC hdc)
 				m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX,
 				m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY);
 
-			if (m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum == 3)
+			if (m_bIsNumberOn)
 			{
-				if(m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX == 4 && m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
+				char szText[50];
+				// TRANSPARENT : 투명, OPAQUE : 불투명
+				SetBkMode(hdc, TRANSPARENT);
+				SetTextColor(hdc, RGB(255, 200, 255));
+				MY_UTIL::FontOption(hdc, 12, 0);
+				sprintf_s(szText, "%d",
+					m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left/ TILE_SIZEX);
+				TextOut(hdc, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left + 11, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top - 55, szText, strlen(szText));
+				MY_UTIL::FontDelete(hdc);
+
+				char szText2[50];
+				// TRANSPARENT : 투명, OPAQUE : 불투명
+				SetBkMode(hdc, TRANSPARENT);
+				SetTextColor(hdc, RGB(255, 191, 255));
+				MY_UTIL::FontOption(hdc, 12, 0);
+				sprintf_s(szText2, "%d",
+					m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.bottom / TILE_SIZEY);
+				TextOut(hdc, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left + 11, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top - 47, szText2, strlen(szText2));
+				MY_UTIL::FontDelete(hdc);
+			}
+
+			if (m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum == 3 && m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20)
+			{
+				if (m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX == 4 && m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
 					m_pTag->alphaRender(hdc, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top - 15, 140);
 			}
+			else if (m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum == 3 && m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber != 20)
+			{
+				if (m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX == 4 && m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
+				{
+					m_pTag2->alphaRender(hdc, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top - 15, 140);
+					char szText[256];
+
+					// TRANSPARENT : 투명, OPAQUE : 불투명
+					SetBkMode(hdc, TRANSPARENT);
+
+					SetTextColor(hdc, RGB(255, 255, 255));
+
+					sprintf_s(szText, "%d",
+						m_pTiles[x *  g_saveData.gTileMaxCountX + y].MonsterNumber);
+					TextOut(hdc, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left + 5, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top - 5, szText, strlen(szText));
+				}
+			}
 		}
-	}	
 
+	}
 }
-
 
 
 
