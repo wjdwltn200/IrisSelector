@@ -38,6 +38,7 @@ private:
 	int m_buttonSetX;
 	int m_buttonSetY;
 
+
 public:
 
 	virtual HRESULT init();
