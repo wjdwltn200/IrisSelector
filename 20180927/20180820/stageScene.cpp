@@ -125,10 +125,10 @@ void stageScene::update()
 	}
 	if (buttonNum == 1)
 	{
-		g_saveData.gTileMaxCountX = 35;
-		g_saveData.gTileMaxCountY = 35;
 		FixedLoadEvent(); // 시나리오의 맵 최대크기는 1600 1600
 		buttonNum = 3;
+		g_saveData.gTileMaxCountX = 50;
+		g_saveData.gTileMaxCountY = 50;
 	}
 	if (buttonNum == 2)
 	{
@@ -172,8 +172,6 @@ void stageScene::update()
 
 		buttonNum++;
 	}
-
-
 	if (buttonNum == 4)
 	{
 		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
@@ -208,17 +206,6 @@ void stageScene::update()
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - CAMERA->getCameraX() , y * TILE_SIZEY - CAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
-			
-
-				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
-
-				switch (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber)
-				{
-
-				default:
-					break;
-				}
-			
 			}
 		}
 
@@ -309,6 +296,7 @@ void stageScene::render(HDC hdc)
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
 				}
+
 			}
 
 		}
@@ -401,7 +389,7 @@ void stageScene::FixedLoadEvent()
 {
 	int tempX = 0;
 	int tempY = 0;
-	TXTDATA->getSingleton()->mapLoad("mainGame6.map", m_pTiles, &tempX, &tempY);
+	TXTDATA->getSingleton()->mapLoad("mainGame4.map", m_pTiles, &tempX, &tempY);
 
 }
 
@@ -472,7 +460,7 @@ void stageScene::ColRc()
 	}
 	for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++)
 	{
-		(*MonsIter)->TypeSub(50.0f, 10.0f, MONSTER_SPEED_UP, MONSTER_HP_HEALING, true, 1);
+		(*MonsIter)->TypeSub(50.0f, 10.0f, MONSTER_DEF_UP, MONSTER_HP_HEALING, true, 4);
 	}
 
 	// 아이템 획득
