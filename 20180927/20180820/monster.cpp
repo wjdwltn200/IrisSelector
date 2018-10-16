@@ -9,45 +9,6 @@
 
 HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint)
 {
-	//IMAGEMANAGER->addImage("BG_Beholder", "image/resources/monster_image/BG_Beholder_Run.bmp", 1860, 78, 12, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Blue_Guardian", "image/resources/monster_image/BG_Blue_Guardian_Run.bmp", 930, 57, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Blue_Mindflayer","image/resources/monster_image/BG_Blue_Mindflayer_Run.bmp", 930, 54, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Bugman", "image/resources/monster_image/BG_Bugman_Run.bmp", 620, 61, 4, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Cetus", "image/resources/monster_image/BG_Cetus_Run.bmp", 620, 37, 4, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Coven", "image/resources/monster_image/BG_Coven_Run.bmp", 620, 33, 4, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Cow", "image/resources/monster_image/BG_Cow.bmp", 620, 28, 4, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Cyclops", "image/resources/monster_image/BG_Cyclops.bmp", 930, 46, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Dark_Lord", "image/resources/monster_image/BG_Dark_Lord.bmp", 620, 78, 4, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Dog", "image/resources/monster_image/BG_Dog.bmp", 465, 37, 3, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Eye_Slime", "image/resources/monster_image/BG_Eye_Slime_Run.bmp", 465, 39, 3, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Faun_Archer", "image/resources/monster_image/BG_Faun_Archer_Run.bmp", 930, 46, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Firewolf", "image/resources/monster_image/BG_Firewolf.bmp", 620, 46, 4, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Gargoyle", "image/resources/monster_image/BG_Gargoyle.bmp", 620, 65, 4, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Giant_Run", "image/resources/monster_image/BG_Giant_Run.bmp", 930, 63, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Gnome_Run", "image/resources/monster_image/BG_Gnome_Run.bmp", 930, 26, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Igor", "image/resources/monster_image/BG_Igor.bmp", 930, 44, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Itchy", "image/resources/monster_image/BG_Itchy.bmp", 930, 37, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-	//IMAGEMANAGER->addImage("BG_Knife_dude", "image/resources/monster_image/BG_Knife_dude.bmp", 930, 60, 6, 1, true, RGB(255, 0, 255),
-	//	m_Mon.m_fX, m_Mon.m_fY);
-
 	m_pBulletMag = bulletP;
 	m_PlayerCharPoint = playerPoint;
 
@@ -111,7 +72,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, 100, 100);
 	m_tMonInfo.tIsAlive = monInfo.tIsAlive;
 	m_tMonInfo.tHp = monInfo.tHp;
-	m_tMonInfo.tHpMax= monInfo.tHpMax = 100.0f;
+	m_tMonInfo.tHpMax= monInfo.tHpMax = 10.0f;
 	m_tMonInfo.tPosX = monInfo.tPosX;
 	m_tMonInfo.tPosY = monInfo.tPosY;
 	m_tMonInfo.tFireCount = monInfo.tFireCount;
@@ -376,7 +337,6 @@ void monster::render(HDC hdc)
 		m_tMonInfo.tPosX - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
 		m_tMonInfo.tPosY - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale,
 		m_monsterMove, m_tMonInfo.tScale, true, 255);
-	
 }
 
 monster::monster()
