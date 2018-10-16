@@ -12,6 +12,7 @@ class effectManager;
 class itemManager;
 class monsterManger;
 class animation;
+class progressBar;
 
 class stageScene : public scene
 {

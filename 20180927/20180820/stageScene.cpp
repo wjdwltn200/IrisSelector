@@ -9,6 +9,7 @@
 #include "itemManager.h"
 #include "monsterManger.h"
 #include "animation.h"
+#include "ProgressBar.h"
 
 char szFileName1[512];
 
@@ -74,7 +75,9 @@ HRESULT stageScene::init()
 	m_pItemMag->init(10);
 
 	m_isTest = false; // 정지수 : 테스트용으로 만듦
+
 	
+	m_pProgressBar = new pProgressBar;
 
 	tagItemInfo ItemInfo;
 	ItemInfo.tScale = 1.0f;
