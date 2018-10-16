@@ -358,6 +358,8 @@ void stageScene::update()
 
 	if (buttonNum == 4)
 	{
+		KeyEvent();
+
 		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
 		{
 			RECT m_rc;
