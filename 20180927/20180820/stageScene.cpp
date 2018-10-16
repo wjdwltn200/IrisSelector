@@ -125,10 +125,10 @@ void stageScene::update()
 	}
 	if (buttonNum == 1)
 	{
-		FixedLoadEvent(); // 시나리오의 맵 최대크기는 1600 1600
-		buttonNum = 3;
 		g_saveData.gTileMaxCountX = 35;
 		g_saveData.gTileMaxCountY = 35;
+		FixedLoadEvent(); // 시나리오의 맵 최대크기는 1600 1600
+		buttonNum = 3;
 	}
 	if (buttonNum == 2)
 	{
@@ -401,7 +401,7 @@ void stageScene::FixedLoadEvent()
 {
 	int tempX = 0;
 	int tempY = 0;
-	TXTDATA->getSingleton()->mapLoad("mainGame5.map", m_pTiles, &tempX, &tempY);
+	TXTDATA->getSingleton()->mapLoad("mainGame6.map", m_pTiles, &tempX, &tempY);
 
 }
 
