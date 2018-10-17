@@ -28,7 +28,6 @@ private:
 
 	bulletManger* m_pBulletMag;
 	PlayerCharacter* m_PlayerCharPoint;
-	SpawnType m_tSpawnType;
 
 	tagMonInfo m_tMonInfo;
 public:

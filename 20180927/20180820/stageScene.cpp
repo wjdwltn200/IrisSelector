@@ -180,13 +180,13 @@ void stageScene::update()
 				case 0:
 					Moninfo.tFireDelay = 120;
 					Moninfo.tMoveSpeed = 0.5f;
-					Moninfo.tMoveType = MONSTER_MOVE::MONSTER_FLY;
+					Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
 					Moninfo.tUnKnokBack = 0.0f;
-					Moninfo.tHp = 100.0f;
-					Moninfo.tHpMax = 100.0f;
+					Moninfo.tHp = 400.0f;
+					Moninfo.tHpMax = 400.0f;
 					m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 					break;
-				case 1:
+				/*case 1:
 					Moninfo.tFireDelay = 120;
 					Moninfo.tMoveSpeed = 0.5f;
 					Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
@@ -206,7 +206,7 @@ void stageScene::update()
 				case 3:
 					Moninfo.tFireDelay = 120;
 					Moninfo.tMoveSpeed = 0.5f;
-					Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
+					Moninfo.tMoveType = MONSTER_MOVE::MONSTER_FLY;
 					Moninfo.tUnKnokBack = 0.0f;
 					Moninfo.tHp = 100.0f;
 					Moninfo.tHpMax = 100.0f;
@@ -295,7 +295,7 @@ void stageScene::update()
 				case 13:
 					Moninfo.tFireDelay = 120;
 					Moninfo.tMoveSpeed = 0.5f;
-					Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
+					Moninfo.tMoveType = MONSTER_MOVE::MONSTER_FLY;
 					Moninfo.tUnKnokBack = 0.0f;
 					Moninfo.tHp = 100.0f;
 					Moninfo.tHpMax = 100.0f;
@@ -345,7 +345,7 @@ void stageScene::update()
 					Moninfo.tHp = 100.0f;
 					Moninfo.tHpMax = 100.0f;
 					m_pMonsterMag->Regeneration("BG_Knife_dude", Moninfo, m_pBulletMagMons, m_player);
-					break;
+					break;*/
 				}
 
 			}
