@@ -10,6 +10,11 @@
 
 HRESULT titleScene::init()
 {
+	// 사운드
+	m_soundMag.init();
+	m_soundMag.addSound("sound/sound_titleBGM.wav", true, true);
+	m_soundMag.play("sound/sound_titleBGM.wav", g_saveData.gMainBGMValue);
+
 	// 폰트
 	AddFontResourceA("BMHANNAAir_ttf.ttf");
 
@@ -104,6 +109,8 @@ void titleScene::update()
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
+		m_soundMag.stop("sound/sound_titleBGM.wav");
+
 		switch (m_tButtonInfo.carrFrameX)
 		{
 		case TITEL::GAME_START_SC: // 스테이지씬
@@ -122,7 +129,6 @@ void titleScene::update()
 			PostQuitMessage(0);
 			break;
 		}
-
 	}
 
 

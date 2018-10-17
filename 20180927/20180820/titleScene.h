@@ -1,5 +1,6 @@
 #pragma once
 #include "scene.h"
+#include "soundManager.h"
 
 class PlayerCharacter;
 class progressBar;
@@ -34,6 +35,8 @@ private:
 	monsterManger * m_pMonsterMag;
 	effectManager * m_pEffMagr;
 	progressBar* m_pProgressBar;
+
+	soundManager m_soundMag;
 
 	int m_buttonSetX;
 	int m_buttonSetY;
