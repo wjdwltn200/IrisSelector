@@ -221,8 +221,6 @@ void stageScene::update()
 		SCROLL->update(m_player->getX(), m_player->getY());
 		//CAMERA->update();
 
-		float xScroll = SCROLL->GetX();
-		float yScroll = SCROLL->GetY();
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
@@ -296,16 +294,14 @@ void stageScene::render(HDC hdc)
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
 
 
-				if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
+				/*if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
 					Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
 
-					//Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left - SCROLL->GetX(),
-					//	m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top - SCROLL->GetY(), m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right - SCROLL->GetX(),
-					//	m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom - SCROLL->GetY());
-				}
+			
+				//}
 			}
 
 		}
@@ -341,8 +337,8 @@ void stageScene::render(HDC hdc)
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
 				m_pTileSet[m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum]->RatioRender(hdc,
-					550 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio + (CAMERA->getCameraX() / MiniMap_Ratio),
-					15 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio + (CAMERA->getCameraY() / MiniMap_Ratio),
+					649 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
+					11 + m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
 					m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX,
 					m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY,
 					MiniMap_Ratio,
@@ -398,7 +394,7 @@ void stageScene::FixedLoadEvent()
 {
 	int tempX = 0;
 	int tempY = 0;
-	TXTDATA->getSingleton()->mapLoad("mainGame6.map", m_pTiles);
+	TXTDATA->getSingleton()->mapLoad("SaveFile/mainGame7.map", m_pTiles);
 
 }
 

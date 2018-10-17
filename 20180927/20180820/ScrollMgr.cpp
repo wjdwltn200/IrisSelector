@@ -36,8 +36,8 @@ void ScrollMgr::update(float playerX, float playerY)
 		m_fX = 0;
 	if (m_fY < 0)
 		m_fY = 0;
-	if (m_fX > m_fMaxofX)
-		m_fX = m_fMaxofX - WINSIZEX;
+	if (m_fX > m_fMaxofX )
+		m_fX = m_fMaxofX - WINSIZEX ;
 	if (m_fY > m_fMaxofY)
 		m_fY = m_fMaxofY - WINSIZEY;
 
