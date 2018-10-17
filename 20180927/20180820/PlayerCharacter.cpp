@@ -439,6 +439,15 @@ void PlayerCharacter::PlayerInfoUi(HDC hdc)
 	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
 	TempYSize += 20.0f;
 
+	sprintf_s(szText, "m_fX : %.1f", m_fX);
+	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
+	TempYSize += 20.0f;
+
+	sprintf_s(szText, "CurrX : %.1f", m_fCurrX);
+	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
+	TempYSize += 20.0f;
+
+
 
 	MY_UTIL::FontDelete(hdc);
 }

@@ -48,7 +48,7 @@ void Camera::update()
 	if (m_ptMoveCameraY < WINSIZEY / 2) m_ptMoveCameraY = WINSIZEY / 2;
 	if (m_ptMoveCameraY > (g_saveData.gTileMaxCountY * TILE_SIZEY)) (g_saveData.gTileMaxCountY * TILE_SIZEY);
 
-	m_ptCameraX = m_ptMoveCameraX - WINSIZEX / 2;
+	m_ptCameraX = m_ptMoveCameraX - WINSIZEX / 2; //ptCamera는 카메라 시작지점 (윈도우를 뜻함)
 	if (m_ptCameraX < 0) m_ptCameraX = 0;
 	if (m_ptCameraX > (g_saveData.gTileMaxCountX * TILE_SIZEX) - WINSIZEX) m_ptCameraX = (g_saveData.gTileMaxCountX * TILE_SIZEX) - WINSIZEX;
 

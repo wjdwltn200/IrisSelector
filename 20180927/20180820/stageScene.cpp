@@ -32,6 +32,7 @@ HRESULT stageScene::init()
 	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
 	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
 	m_bIsMiniMapOn = false;
+	m_bIsCameraTextOn = false;
 	MiniMap_Ratio = 8;
 
 	m_pImage_BG1 = IMAGEMANAGER->findImage("black");
@@ -107,7 +108,7 @@ HRESULT stageScene::init()
 
 
 
-	CAMERA->init();
+	//CAMERA->init();
 	return S_OK;
 }
 
@@ -154,7 +155,7 @@ void stageScene::update()
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
 			{
-				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX, y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
 
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
 
@@ -195,7 +196,7 @@ void stageScene::update()
 
 			if (m_pTiles[i].isMove) continue;
 
-			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc, &m_player->getRect()))
+			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc , &m_player->getRect()))
 			{
 				m_player->setTileRc(m_pTiles[i].rc);
 			}
@@ -214,13 +215,13 @@ void stageScene::update()
 		ColRc();
 
 
-
-		CAMERA->update();
+		SCROLL->update(m_player->getX(), m_player->getY());
+		//CAMERA->update();
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
-				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - CAMERA->getCameraX(), y * TILE_SIZEY - CAMERA->getCameraY(), TILE_SIZEX, TILE_SIZEY);
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX , y * TILE_SIZEY , TILE_SIZEX, TILE_SIZEY);
 			}
 		}
 
@@ -258,7 +259,7 @@ void stageScene::KeyEvent()
 		else if (m_bIsMiniMapOn == true)
 			m_bIsMiniMapOn = false;
 	}
-	CAMERA->keyUpdate();
+	//CAMERA->keyUpdate();
 	/////////////////////////////
 
 }
@@ -293,17 +294,17 @@ void stageScene::render(HDC hdc)
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
 				m_pTileSet[m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum]->frameRender(hdc,
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left - SCROLL->GetX(),
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top - SCROLL->GetY(),
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
 
 
 				if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
-					Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
+					Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left - SCROLL->GetX(),
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top - SCROLL->GetY(), m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right - SCROLL->GetX(),
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom - SCROLL->GetY());
 				}
 			}
 
@@ -352,21 +353,23 @@ void stageScene::render(HDC hdc)
 	}
 	//////////
 
-	char szText[256];
+	if (m_bIsCameraTextOn)
+	{
+		char szText[256];
 
-	// TRANSPARENT : 투명, OPAQUE : 불투명
-	SetBkMode(hdc, TRANSPARENT);
+		// TRANSPARENT : 투명, OPAQUE : 불투명
+		SetBkMode(hdc, TRANSPARENT);
 
-	SetTextColor(hdc, RGB(255, 0, 255));
+		SetTextColor(hdc, RGB(255, 0, 255));
 
-	sprintf_s(szText, "m_ptMoveCameraX : %f / m_ptMoveCameraY : %f",
-		CAMERA->getfocusCameraX(), CAMERA->getfocusCameraY());
-	TextOut(hdc, 400, 0, szText, strlen(szText));
+		sprintf_s(szText, "m_ptMoveCameraX : %f / m_ptMoveCameraY : %f",
+			CAMERA->getfocusCameraX(), CAMERA->getfocusCameraY());
+		TextOut(hdc, 400, 0, szText, strlen(szText));
 
-	sprintf_s(szText, "m_ptCameraX : %f / m_ptCameraY : %f",
-		CAMERA->getCameraX(), CAMERA->getCameraY());
-	TextOut(hdc, 400, 100, szText, strlen(szText));
-
+		sprintf_s(szText, "m_ptCameraX : %f / m_ptCameraY : %f",
+			CAMERA->getCameraX(), CAMERA->getCameraY());
+		TextOut(hdc, 400, 100, szText, strlen(szText));
+	}
 }
 
 void stageScene::LoadEvent()
