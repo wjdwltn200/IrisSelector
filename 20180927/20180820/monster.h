@@ -29,6 +29,8 @@ private:
 	bulletManger* m_pBulletMag;
 	PlayerCharacter* m_PlayerCharPoint;
 
+	tagSpawnTile m_tSpawnTile;
+
 	tagMonInfo m_tMonInfo;
 public:
 	HRESULT init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint);

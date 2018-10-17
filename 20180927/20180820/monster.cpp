@@ -407,6 +407,8 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 	}
 }
 
+
+
 void monster::update()
 {	
 

@@ -58,6 +58,10 @@ private:
 	monsterManger * m_pMonsterMag;
 	effectManager * m_pEffMagr;
 	progressBar* m_pProgressBar;
+	tagSpawnTile m_tSpawnTile;
+	
+	tagSpawnTile SpawnTile;
+	tagMonInfo Moninfo;
 
 	int m_buttonSetX;
 	int m_buttonSetY;
@@ -78,6 +82,8 @@ public:
 	void render(HDC hdc);
 	void LoadEvent();
 	void FixedLoadEvent();
+	void MonSpawnCycle(int SpawnCycle, int SpawnOfNumber, int MonNumber, int CycleDecreaseNum,
+		int TimetoComplete, int AbilityType, int AbilityCycle);
 
 	void ColRc();
 
