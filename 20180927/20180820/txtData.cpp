@@ -97,7 +97,7 @@ vector<string> txtData::charArraySeparation(char charArray[])
 	return vecStr;
 }
 
-void txtData::mapSave(const char * saveFileName, tagTile* tiles, int* MapSizeX, int* MapSizeY)
+void txtData::mapSave(const char * saveFileName, tagTile* tiles)
 {
 	DWORD write;
 
@@ -119,15 +119,13 @@ void txtData::mapSave(const char * saveFileName, tagTile* tiles, int* MapSizeX, 
 
 	// 파일에 내용을 쓴다
 	WriteFile(hFile, tiles, sizeof(tagTile) *g_saveData.gTileMaxCountX *g_saveData.gTileMaxCountY, &write, NULL);
-	WriteFile(hFile, MapSizeX, sizeof(int), &write, NULL);
-	WriteFile(hFile, MapSizeY, sizeof(int), &write, NULL); // Y축의 최대 타일수
 
 	// 다 쓴 파일 핸들을 삭제
 	CloseHandle(hFile);
 }
 
 
-void txtData::mapLoad(const char * loadFileName, tagTile* tiles, int* MapSizeX ,int* MapSizeY)
+void txtData::mapLoad(const char * loadFileName, tagTile* tiles)
 {
 	DWORD read;
 
@@ -141,8 +139,6 @@ void txtData::mapLoad(const char * loadFileName, tagTile* tiles, int* MapSizeX ,
 		NULL);
 
 	ReadFile(hFile, tiles, sizeof(tagTile) *g_saveData.gTileMaxCountX *g_saveData.gTileMaxCountY, &read, NULL);
-	ReadFile(hFile, MapSizeX, sizeof(int), &read, NULL);
-	ReadFile(hFile, MapSizeY, sizeof(int), &read, NULL);
 
 	CloseHandle(hFile);
 }

@@ -18,8 +18,8 @@ public:
 	std::vector<std::string> txtLoad(const char* loadFileName);
 	std::vector<std::string> charArraySeparation(char charArray[]);
 
-	void mapSave(const char * saveFileName, tagTile* tiles, int* MapSize, int* MapSizeY);
-	void mapLoad(const char * loadFileName, tagTile * tiles, int* MapSize, int* MapSizeY);
+	void mapSave(const char * saveFileName, tagTile* tiles);
+	void mapLoad(const char * loadFileName, tagTile * tiles);
 
 	txtData();
 	~txtData();

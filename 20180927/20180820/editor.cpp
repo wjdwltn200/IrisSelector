@@ -64,21 +64,25 @@ void editor::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 
 	case 32783: // 사이즈체크
 		st_selSize = x800;
+		m_pTiles[0].terrain = xx800;
 		m_bIsSelectSize = true;
 		MAPCAMERA->init();
 		break;
 	case 32784:
 		st_selSize = x1120;
+		m_pTiles[0].terrain = xx1120;
 		m_bIsSelectSize = true;
 		MAPCAMERA->init();
 		break;
 	case 32785:
 		st_selSize = x1440;
+		m_pTiles[0].terrain = xx1440;
 		m_bIsSelectSize = true;
 		MAPCAMERA->init();
 		break;
 	case 32786:
 		st_selSize = x1600;
+		m_pTiles[0].terrain = xx1600;
 		m_bIsSelectSize = true;
 		MAPCAMERA->init();
 		break;
@@ -105,6 +109,7 @@ HRESULT editor::init()
 	g_saveData.gTileMaxCountX = st_selSize / TILE_SIZEX;
 	g_saveData.gTileMaxCountY = st_selSize / TILE_SIZEY;
 	st_selTile = tileset1;
+	m_pTiles[0].terrain = xx1120;
 	st_view = x1;
 	m_bIsSelectSize = true; // 메뉴에서 사이즈체크시 초기화되고 사이즈 다시측정된다.
 	m_bIsUnfold = true;
@@ -576,6 +581,7 @@ void editor::render_mapTile(HDC hdc)
 
 void editor::SaveEvent()
 {
+
 	/*int mapSizeX = (int)st_selSize / TILE_SIZEX;
 	int mapSizeY = (int)st_selSize / TILE_SIZEY;*/
 
@@ -593,14 +599,12 @@ void editor::SaveEvent()
 	ofn.Flags = OFN_OVERWRITEPROMPT;
 	GetSaveFileName(&ofn);
 
-	TXTDATA->mapSave(szFileName_1, m_pTiles, &g_saveData.gTileMaxCountX, &g_saveData.gTileMaxCountY);
+	TXTDATA->mapSave(szFileName_1, m_pTiles);
 
 }
 
 void editor::LoadEvent()
 {
-	int tempX = 0; 
-	int tempY = 0;
 
 	OPENFILENAME ofn;
 	HWND hEditFileToBeOpened = NULL;
@@ -615,10 +619,10 @@ void editor::LoadEvent()
 	if (0 != GetOpenFileName(&ofn))
 	{
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
-		TXTDATA->getSingleton()->mapLoad(szFileName_1, m_pTiles, &tempX, &tempY);
+		TXTDATA->getSingleton()->mapLoad(szFileName_1, m_pTiles);
 	}
-	g_saveData.gTileMaxCountX = tempX;
-	g_saveData.gTileMaxCountY = tempY;
+	g_saveData.gTileMaxCountX = m_pTiles[0].terrain;
+	g_saveData.gTileMaxCountY = m_pTiles[0].terrain;
 }
 
 
