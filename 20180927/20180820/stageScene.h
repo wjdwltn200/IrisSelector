@@ -67,7 +67,10 @@ private:
 
 	int m_buttonSetX;
 	int m_buttonSetY;
-	int isCount;
+	int m_isCount;
+	int m_SpawnCount;
+	int m_SpawnWorldTime;
+	bool m_isMonLvUp;
 
 public:
 	HRESULT init();

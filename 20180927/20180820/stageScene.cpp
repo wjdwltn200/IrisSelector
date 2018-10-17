@@ -69,7 +69,10 @@ HRESULT stageScene::init()
 
 	m_pMonsterMag = new monsterManger;
 	m_pMonsterMag->init(50);
-	isCount = 0;
+	m_isCount = 0;
+	m_SpawnCount = 0;
+	m_SpawnWorldTime = 0;
+	m_isMonLvUp = false;
 	//m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 
 	m_pItemMag = new itemManager;
@@ -405,7 +408,6 @@ void stageScene::FixedLoadEvent()
 void stageScene::MonSpawnCycle(int SpawnCycle,int SpawnOfNumber, int MonNumber, int CycleDecreaseNum,
 	int TimetoComplete, int AbilityType, int AbilityCycle)
 {
-	SpawnTile.isActive = true;
 	if (SpawnTile.isActive)
 	{
 		SpawnTile.nSpawnOfNumber = SpawnOfNumber;
@@ -585,15 +587,38 @@ void stageScene::MonSpawnCycle(int SpawnCycle,int SpawnOfNumber, int MonNumber, 
 				break;
 			}
 		}
+		m_SpawnCount++;
 			SpawnTile.isActive = false;
 	}
-	isCount++;
-		if (isCount == SpawnTile.nSPawnCycle)
+	if(TimetoComplete <= m_SpawnWorldTime) // 몬스터 스폰이 지속되는 시간
+	{
+	m_isCount++; // 스폰되는 주기 카운트
+		if (m_isCount == SpawnTile.nSpawnCycle)
 		{
 			SpawnTile.isActive = true;
-			isCount = 0;
+			m_isCount = 0;
 		}
-
+		if (m_SpawnCount == CycleDecreaseNum)
+		{
+			SpawnTile.nSpawnCycle -= 1;
+		}
+	}
+	else
+	{
+		SpawnTile.isActive = false;
+	}
+	m_SpawnWorldTime++;
+	if (AbilityCycle == m_SpawnWorldTime)
+	{
+		m_isMonLvUp = true;
+	}
+	if (m_isMonLvUp)
+	{
+		Moninfo.tHp += AbilityType;
+		Moninfo.tHpMax += AbilityType;
+		Moninfo.tDamageSub += AbilityType;
+		m_isMonLvUp = false;
+	}
 }
 
 void stageScene::ColRc()
