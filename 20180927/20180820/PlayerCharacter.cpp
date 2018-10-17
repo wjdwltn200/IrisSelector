@@ -3,9 +3,12 @@
 #include "PlayerCharacter.h"
 #include "bulletManger.h"
 #include "item.h"
+#include "soundManager.h"
 
-HRESULT PlayerCharacter::init()
+HRESULT PlayerCharacter::init(soundManager * soundPoint)
 {
+	m_pSoundMag = soundPoint;
+
 	img_ItemUiBg = IMAGEMANAGER->findImage("Player_ItemUI");
 	img_ItemUiBg->setX(WINSIZEX / 2 - img_ItemUiBg->getFrameWidth() / 2);
 	img_ItemUiBg->setY(WINSIZEY / 2 - img_ItemUiBg->getFrameHeight() / 2);
@@ -69,6 +72,10 @@ HRESULT PlayerCharacter::init()
 
 	m_itemNum = 0;
 	m_itemNumY = 0;
+	m_isHitState = false;
+	m_HitDelayMax = PLAYER_HIT_DELAY;
+	m_HitDelayCount = 0;
+	m_HitAlphaValue = 255;
 
 	// 정지수 끝
 
@@ -81,7 +88,7 @@ HRESULT PlayerCharacter::init()
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 200.0f;
+	m_tBulletInfo.tRange = 400.0f;
 	m_tBulletInfo.tBulletBoom = false;
 
 	m_tBulletInfo.tDmage = 5.0f;
@@ -138,10 +145,12 @@ void PlayerCharacter::update()
 {
 	movement();
 	keyInput();
+	HitState();
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
 		if (m_bulletDelayCount == NULL)
 		{
+			m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
 			if (m_fCrossHairScale < m_fCrossHairScaleMax)
 			{
 				m_fCrossHairScale += 0.1f;
@@ -214,14 +223,14 @@ void PlayerCharacter::render(HDC hdc)
 		img_PlayerIdle->aniRender(hdc,
 			m_fX - (img_PlayerIdle->getFrameWidth() / 2) * m_fPlayerScale,
 			m_fY - (img_PlayerIdle->getFrameHeight() / 2) * m_fPlayerScale,
-			ani_PlayerIdle, m_fPlayerScale, true, 255);
+			ani_PlayerIdle, m_fPlayerScale, true, m_HitAlphaValue);
 	}
 	else
 	{
 		img_PlayerRun->aniRender(hdc,
 			m_fX - (img_PlayerRun->getFrameWidth() / 2) * m_fPlayerScale,
 			m_fY - (img_PlayerRun->getFrameHeight() / 2) * m_fPlayerScale,
-			ani_PlayerRun, m_fPlayerScale, true, 255);
+			ani_PlayerRun, m_fPlayerScale, true, m_HitAlphaValue);
 	}
 
 
@@ -340,7 +349,7 @@ void PlayerCharacter::getItem(tagItemInfo itemInfo)
 	itemInfo.tIsGet = true;
 	
 	m_itemNum++; // 아이템 개수 추가
-	if (m_itemNum > 4)
+	if (m_itemNum > 7)
 	{
 		m_itemNumY++;
 		m_itemNum = 1;
@@ -361,6 +370,11 @@ void PlayerCharacter::PlayerDamage(int dam)
 	if (m_currHp < 0)
 	{
 		m_isAlive = false;
+	}
+
+	if (!m_isHitState && m_HitDelayCount <= 0)
+	{
+		m_isHitState = true;
 	}
 }
 
@@ -439,13 +453,13 @@ void PlayerCharacter::PlayerInfoUi(HDC hdc)
 	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
 	TempYSize += 20.0f;
 
-	sprintf_s(szText, "m_fX : %.1f", m_fX);
-	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
-	TempYSize += 20.0f;
+	//sprintf_s(szText, "m_fX : %.1f", m_fX);
+	//TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
+	//TempYSize += 20.0f;
 
-	sprintf_s(szText, "CurrX : %.1f", m_fCurrX);
-	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
-	TempYSize += 20.0f;
+	//sprintf_s(szText, "CurrX : %.1f", m_fCurrX);
+	//TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
+	//TempYSize += 20.0f;
 
 
 
@@ -529,6 +543,21 @@ void PlayerCharacter::movement()
 
 		m_fX += m_fCurrX;
 		m_fCurrX = 0.0f;
+	}
+
+}
+
+void PlayerCharacter::HitState()
+{
+	if (!m_isHitState) return;
+
+	m_HitDelayCount++;
+	m_HitAlphaValue += 50;
+	if (m_HitDelayCount >= m_HitDelayMax)
+	{
+		m_isHitState = false;
+		m_HitAlphaValue = 255;
+		m_HitDelayCount = 0;
 	}
 
 }

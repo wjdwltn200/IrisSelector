@@ -2,14 +2,15 @@
 class animation;
 class bulletManger;
 class item;
+class soundManager;
 
 #define BULLET_FIRST_DELAY 60
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
 #define BAES_HP 10
 
-#define ITEM_BAG_X 70.0f
-#define ITEM_BAG_Size_X 100.0f
+#define ITEM_BAG_X 50.0f
+#define ITEM_BAG_Size_X 70.0f
 #define ITEM_BAG_Y 250.0f
 #define ITEM_BAG_Size_Y 70.0f
 
@@ -21,6 +22,8 @@ class item;
 
 #define PLAYER_ICON_X 50.0f
 #define PLAYER_ICON_Y 110.0f
+
+#define PLAYER_HIT_DELAY 120
 
 class PlayerCharacter
 {
@@ -42,6 +45,8 @@ private:
 	animation * ani_PlayerRun;
 	animation * ani_CrossHair;
 
+	soundManager * m_pSoundMag;
+
 	item * m_pItemInfo;
 
 	float m_fPlayerScale;
@@ -53,6 +58,11 @@ private:
 
 	int m_itemNum;
 	int m_itemNumY;
+
+	bool m_isHitState;
+	int m_HitAlphaValue;
+	int m_HitDelayMax;
+	int m_HitDelayCount;
 
 	// 정지수 시작
 
@@ -90,7 +100,7 @@ private:
 
 	bulletManger** m_pBulletMag;
 public:
-	HRESULT init();
+	HRESULT init(soundManager * soundPoint);
 	void release();
 	void update();
 	void render(HDC hdc);
@@ -110,6 +120,7 @@ public:
 	void setTileRc(RECT rc) { m_TileRc = rc; }
 
 	float getSpeed() { return m_fSpeed; }
+	bool getHitState() { return m_isHitState; }
 
 	void PlayerDamage(int dam);
 	void itemUi(HDC hdc);
@@ -119,6 +130,8 @@ public:
 
 	void keyInput();
 	void movement();
+
+	void HitState();
 
 	PlayerCharacter();
 	~PlayerCharacter();

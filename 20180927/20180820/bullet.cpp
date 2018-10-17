@@ -121,33 +121,33 @@ void bullet::update()
 void bullet::render(HDC hdc)
 {
 	//EllipseMakeCenter(hdc, m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth() * m_bulletInfo.tScale, m_pImg->getFrameHeight() * m_bulletInfo.tScale);
-	Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	
 	m_pImg->aniRender(hdc, m_bulletInfo.tPosX - (m_pImg->getFrameWidth() / 2) * m_bulletInfo.tScale,
 		m_bulletInfo.tPosY - (m_pImg->getFrameHeight() / 2) * m_bulletInfo.tScale, m_pAni, m_bulletInfo.tScale, true, 255);
 
-	char szText[256];
+	//char szText[256];
 
-	// TRANSPARENT : 투명, OPAQUE : 불투명
-	SetBkMode(hdc, TRANSPARENT);
+	//// TRANSPARENT : 투명, OPAQUE : 불투명
+	//SetBkMode(hdc, TRANSPARENT);
 
-	SetTextColor(hdc, RGB(255, 0, 255));
+	//SetTextColor(hdc, RGB(255, 0, 255));
 
-	sprintf_s(szText, "m_fAngle : %f",
-		m_fAngle);
-	TextOut(hdc, 10, 100, szText, strlen(szText));
+	//sprintf_s(szText, "m_fAngle : %f",
+	//	m_fAngle);
+	//TextOut(hdc, 10, 100, szText, strlen(szText));
 
-	sprintf_s(szText, "m_fMoveAngle : %f",
-		m_fMoveAngle);
-	TextOut(hdc, 10, 120, szText, strlen(szText));
+	//sprintf_s(szText, "m_fMoveAngle : %f",
+	//	m_fMoveAngle);
+	//TextOut(hdc, 10, 120, szText, strlen(szText));
 
-	sprintf_s(szText, "tMoveTypeCount : %d",
-		tMoveTypeCount);
-	TextOut(hdc, 10, 140, szText, strlen(szText));
+	//sprintf_s(szText, "tMoveTypeCount : %d",
+	//	tMoveTypeCount);
+	//TextOut(hdc, 10, 140, szText, strlen(szText));
 
-	sprintf_s(szText, "m_bulletInfo.tMoveSpeed : %f",
-		m_bulletInfo.tMoveSpeed);
-	TextOut(hdc, 10, 160, szText, strlen(szText));
+	//sprintf_s(szText, "m_bulletInfo.tMoveSpeed : %f",
+	//	m_bulletInfo.tMoveSpeed);
+	//TextOut(hdc, 10, 160, szText, strlen(szText));
 }
 
 void bullet::movement()

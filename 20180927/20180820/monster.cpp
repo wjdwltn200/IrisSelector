@@ -5,13 +5,14 @@
 #include "bulletManger.h"
 #include "PlayerCharacter.h"
 #include "progressBar.h"
+#include "effectManager.h"
+#include "soundManager.h"
 
-
-HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint)
+HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint)
 {
 	m_pBulletMag = bulletP;
 	m_PlayerCharPoint = playerPoint;
-
+	m_pEffMag = effMagPoint;
 	// Monster Bullet 기본 셋팅 (메인)
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
@@ -301,7 +302,7 @@ void monster::knokback(float playerkuokback, float monsterHitRecovery)
 
 }
 
-void monster::Damge(float dam)
+void monster::Damge(float dam, soundManager * soundMagPoint)
 {
 	// 데미지가 받을때 방어력 적용
 
@@ -320,6 +321,30 @@ void monster::Damge(float dam)
 	{
 		m_tMonInfo.tIsAlive = false;
 		m_tMonInfo.tDef = 5.0f;
+		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2), m_tMonInfo.tPosY - (384 / 3 / 2));
+
+		// 사망 사운드
+		switch (RANDOM->getFromIntTo(0, 6))
+		{
+		case 0:
+			soundMagPoint->play("sound/EnemyDead0.wav", g_saveData.gSeValue);
+			break;
+		case 1:
+			soundMagPoint->play("sound/EnemyDead1.wav", g_saveData.gSeValue);
+			break;
+		case 2:
+			soundMagPoint->play("sound/EnemyDead2.wav", g_saveData.gSeValue);
+			break;
+		case 3:
+			soundMagPoint->play("sound/EnemyDead3.wav", g_saveData.gSeValue);
+			break;
+		case 4:
+			soundMagPoint->play("sound/EnemyDead4.wav", g_saveData.gSeValue);
+			break;
+		case 5:
+			soundMagPoint->play("sound/EnemyDead0.wav", g_saveData.gSeValue);
+			break;
+		}
 	}
 }
 
@@ -406,8 +431,6 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 		}
 	}
 }
-
-
 
 void monster::update()
 {	

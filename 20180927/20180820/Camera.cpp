@@ -6,7 +6,7 @@ HRESULT Camera::init()
 {
 	
 	m_pCharacter = new PlayerCharacter;
-	m_pCharacter->init();
+	m_pCharacter->init(NULL);
 
 	MiniMapRatioInit();
 

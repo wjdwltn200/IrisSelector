@@ -3,11 +3,16 @@
 #include "monster.h"
 #include "animation.h"
 #include "progressBar.h"
+
+class effectManager;
+
 class monsterManger
 {
 private:
 	std::vector<monster*>				m_vecMonster;
 	std::vector<monster*>::iterator		m_iter;
+
+	effectManager * m_pEffMag;
 
 	//animation * m_monsterMove;
 	//tagMonInfo m_tMonInfo;
@@ -26,6 +31,8 @@ public:
 	{
 		return m_vecMonster;
 	}
+
+	void setEffMagPoint(effectManager * effPoint) { m_pEffMag = effPoint; }
 
 	monsterManger();
 	~monsterManger();

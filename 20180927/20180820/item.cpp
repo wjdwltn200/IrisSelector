@@ -166,32 +166,32 @@ void item::render(HDC hdc)
 		}
 
 
-		char szText[256];
+		//char szText[256];
 
-		// TRANSPARENT : 투명, OPAQUE : 불투명
-		SetBkMode(hdc, TRANSPARENT);
+		//// TRANSPARENT : 투명, OPAQUE : 불투명
+		//SetBkMode(hdc, TRANSPARENT);
 
-		SetTextColor(hdc, RGB(255, 0, 255));
+		//SetTextColor(hdc, RGB(255, 0, 255));
 
-		sprintf_s(szText, "m_fX : %f / m_fY : %f",
-			m_tItemInfo.posX, m_tItemInfo.posY);
-		TextOut(hdc, 200, 100, szText, strlen(szText));
+		//sprintf_s(szText, "m_fX : %f / m_fY : %f",
+		//	m_tItemInfo.posX, m_tItemInfo.posY);
+		//TextOut(hdc, 200, 100, szText, strlen(szText));
 
-		sprintf_s(szText, "tImageCurrX / Y : %d, %d",
-			m_tItemInfo.tImageCurrX, m_tItemInfo.tImageCurrY);
-		TextOut(hdc, 200, 120, szText, strlen(szText));
+		//sprintf_s(szText, "tImageCurrX / Y : %d, %d",
+		//	m_tItemInfo.tImageCurrX, m_tItemInfo.tImageCurrY);
+		//TextOut(hdc, 200, 120, szText, strlen(szText));
 
-		sprintf_s(szText, "tMoveTypeCount : %f",
-			m_tItemInfo.tScale);
-		TextOut(hdc, 200, 140, szText, strlen(szText));
+		//sprintf_s(szText, "tMoveTypeCount : %f",
+		//	m_tItemInfo.tScale);
+		//TextOut(hdc, 200, 140, szText, strlen(szText));
 
-		sprintf_s(szText, "tTimer : %d",
-			m_tItemInfo.tTimer);
-		TextOut(hdc, 200, 160, szText, strlen(szText));
+		//sprintf_s(szText, "tTimer : %d",
+		//	m_tItemInfo.tTimer);
+		//TextOut(hdc, 200, 160, szText, strlen(szText));
 
-		sprintf_s(szText, "tRadius : %f",
-			m_tItemInfo.tRadius);
-		TextOut(hdc, 200, 180, szText, strlen(szText));
+		//sprintf_s(szText, "tRadius : %f",
+		//	m_tItemInfo.tRadius);
+		//TextOut(hdc, 200, 180, szText, strlen(szText));
 	}
 	else
 	{
@@ -201,7 +201,7 @@ void item::render(HDC hdc)
 
 void item::ItemGetSetting()
 {
-	m_tItemInfo.tScale = m_tItemInfo.tScale * 2;
+	m_tItemInfo.tScale = m_tItemInfo.tScale * 1.5f;
 	m_tItemInfo.tRadius = (m_pImg->getFrameWidth() / 2) * m_tItemInfo.tScale;
 }
 

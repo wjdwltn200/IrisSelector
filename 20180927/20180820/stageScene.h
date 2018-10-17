@@ -1,7 +1,7 @@
 #pragma once
 #include "scene.h"
 #include "stdafx.h"
-
+#include "soundManager.h"
 
 class button;
 class image;
@@ -24,6 +24,8 @@ private:
 	image*		  m_pImage_BG1;
 	image*        m_pImage_checkBox;
 	image*		  m_pTileSet[4];
+
+
 
 	int MiniMap_Ratio;
 	int MapSizeX;
@@ -62,6 +64,8 @@ private:
 	progressBar* m_pProgressBar;
 	tagSpawnTile m_tSpawnTile;
 	
+	soundManager m_soundMag;
+
 	tagSpawnTile SpawnTile;
 	tagMonInfo Moninfo;
 
@@ -91,7 +95,6 @@ public:
 		int TimetoComplete, int AbilityType, int AbilityCycle);
 
 	void ColRc();
-
 	bool getTileIsMove(int x) { return m_pTiles[x].isMove; }
 
 	friend void Func_button1(void);

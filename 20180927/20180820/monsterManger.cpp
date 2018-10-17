@@ -32,13 +32,13 @@ void monsterManger::Regeneration(const char*strKey, tagMonInfo moninfo, bulletMa
 	{
 		if (!(*m_iter)->getMonInfo().tIsAlive)
 		{
-			(*m_iter)->init(strKey, moninfo, bulletInfo, playerInfo);
+			(*m_iter)->init(strKey, moninfo, bulletInfo, playerInfo, m_pEffMag);
 			return;
 		}
 	}
 	monster * pMonster = new monster;
 	
-	pMonster->init(strKey, moninfo, bulletInfo, playerInfo);
+	pMonster->init(strKey, moninfo, bulletInfo, playerInfo, m_pEffMag);
 	m_vecMonster.push_back((pMonster));
 	return;
 }

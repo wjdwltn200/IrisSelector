@@ -4,6 +4,8 @@ class PlayerCharacter;
 class bulletManger;
 class PlayerCharacter;
 class progressBar;
+class effectManager;
+class soundManager;
 
 class monster
 {
@@ -32,8 +34,11 @@ private:
 	tagSpawnTile m_tSpawnTile;
 
 	tagMonInfo m_tMonInfo;
+
+	effectManager * m_pEffMag;
+
 public:
-	HRESULT init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint);
+	HRESULT init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint);
 
 	void release();
 
@@ -44,9 +49,8 @@ public:
 	void Move(int m_moveTypeNum);
 	void fireAtk();
 	void knokback(float playerkuokback, float monsterHitRecovery);
-	void Damge(float dam);
+	void Damge(float dam, soundManager * soundMagPoint);
 	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
-
 
 	void render(HDC hdc);
 

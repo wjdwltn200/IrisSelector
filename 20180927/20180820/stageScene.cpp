@@ -26,6 +26,24 @@ static void Func_button2(void)
 
 HRESULT stageScene::init()
 {
+	m_soundMag.init();
+	m_soundMag.addSound("sound/sound_StageBGM.wav", true, true);
+	m_soundMag.addSound("sound/EnemyDead0.wav", false, false);
+	m_soundMag.addSound("sound/EnemyDead1.wav", false, false);
+	m_soundMag.addSound("sound/EnemyDead2.wav", false, false);
+	m_soundMag.addSound("sound/EnemyDead3.wav", false, false);
+	m_soundMag.addSound("sound/EnemyDead4.wav", false, false);
+	m_soundMag.addSound("sound/EnemyDead5.wav", false, false);
+	m_soundMag.addSound("sound/EnemyDead6.wav", false, false);
+
+	m_soundMag.addSound("sound/sound_MonsterHit.wav", false, false);
+
+	m_soundMag.addSound("sound/sound_itemGet.wav", false, false);
+	m_soundMag.addSound("sound/sound_playerHit.wav", false, false);
+	m_soundMag.addSound("sound/sound_playerAtt.wav", false, false);
+
+	m_soundMag.play("sound/sound_StageBGM.wav", g_saveData.gMainBGMValue);
+
 	//tagTile * m_pTiles = new tagTile[g_saveData.gTileMaxCountX * g_saveData.gTileMaxCountY];
 	m_pTileSet[0] = IMAGEMANAGER->findImage("tileset1");
 	m_pTileSet[1] = IMAGEMANAGER->findImage("tileset2");
@@ -52,13 +70,15 @@ HRESULT stageScene::init()
 	m_pEffMagr->addEffect("Bullet_End_2", "image/resources/bullet_image/Bullet_End_2.bmp", 224, 32, 32, 32, 15, 50);
 	m_pEffMagr->addEffect("Bullet_End_3", "image/resources/bullet_image/Bullet_End_3.bmp", 210, 24, 30, 24, 15, 50);
 
+	m_pEffMagr->addEffect("Monster_die", "image/resources/monster_image/Monster_Die_Eff.bmp", 512, 384, 512/4, 384/3, 15, 10);
+
 	m_pEffMagr->addEffect("Item_Get1", "image/resources/item_image/Item_Get.bmp", 320, 31, (320 / 4), 31, 15, 5);
 	m_pEffMagr->addEffect("Item_Get2", "image/resources/item_image/Item_Get2.bmp", 230, 70, (230 / 5), 70, 15, 5);
 
 	ShowCursor(FALSE);
 
 	m_player = new PlayerCharacter;
-	m_player->init();
+	m_player->init(&m_soundMag);
 	m_player->setBulletMagPointer(&m_pBulletMag);
 
 	m_pBulletMag = new bulletManger;
@@ -68,12 +88,13 @@ HRESULT stageScene::init()
 	m_pBulletMagMons->init(100, m_pEffMagr);
 
 	m_pMonsterMag = new monsterManger;
+	m_pMonsterMag->setEffMagPoint(m_pEffMagr);
 	m_pMonsterMag->init(50);
 	m_isCount = 0;
 	m_SpawnCount = 0;
 	m_SpawnWorldTime = 0;
 	m_isMonLvUp = false;
-	//m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
+	m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
@@ -321,11 +342,10 @@ void stageScene::render(HDC hdc)
 		m_pBulletMag->render(hdc);
 		m_pBulletMagMons->render(hdc);
 		m_pMonsterMag->render(hdc);
-		m_player->render(hdc);
 		m_pItemMag->render(hdc);
+		m_player->render(hdc);
 
-		TIMEMANAGER->render(hdc);
-
+		//TIMEMANAGER->render(hdc);
 	}
 
 
@@ -637,8 +657,13 @@ void stageScene::ColRc()
 				m_player->getY()))
 			)
 		{
-			m_player->PlayerDamage((*MonsterBulletIter)->getTagBulletInfo().tDmage);
-			(*MonsterBulletIter)->HitEff();
+			// 플레이어 피격 처리
+			if (!m_player->getHitState())
+			{
+				m_player->PlayerDamage((*MonsterBulletIter)->getTagBulletInfo().tDmage);
+				(*MonsterBulletIter)->HitEff();
+				m_soundMag.play("sound/sound_playerHit.wav", g_saveData.gSeValue);
+			}
 		}
 	}
 
@@ -672,9 +697,11 @@ void stageScene::ColRc()
 						(*MonsIter)->getMonInfo().tPosY))
 					)
 				{
-					(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage);
+					// 몬스터 피격 처리
+					(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage, &m_soundMag);
 					(*MonsIter)->knokback((*PlayerBulletIter)->getTagBulletInfo().tKnokBack, (*MonsIter)->getMonInfo().tUnKnokBack);
 					(*PlayerBulletIter)->HitEff();
+					m_soundMag.play("sound/sound_MonsterHit.wav", g_saveData.gSeValue);
 				}
 			}
 		}
@@ -697,6 +724,8 @@ void stageScene::ColRc()
 
 			(*ItemIter)->setIsAlive(false);
 			m_player->getItem((*ItemIter)->getItemInfo());
+			m_soundMag.play("sound/sound_itemGet.wav", g_saveData.gSeValue);
+
 		}
 	}
 
