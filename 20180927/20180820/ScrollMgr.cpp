@@ -26,11 +26,11 @@ void ScrollMgr::update(float playerX, float playerY)
 	m_fY = playerY - WINSIZEY / 2; // 플레이어는 항상 중심에 있으므로
 	
 
-	//// 플레이어 중심의 화면 (보이는화면)//
-	//m_rc.left = playerX - WINSIZEX / 2;
-	//m_rc.right = playerX + WINSIZEX / 2;
-	//m_rc.top = playerY - WINSIZEY / 2;
-	//m_rc.bottom = playerY + WINSIZEY / 2;
+	// 플레이어 중심의 화면 (보이는화면)//
+	m_rc.left = playerX - WINSIZEX / 2;
+	m_rc.right = playerX + WINSIZEX / 2;
+	m_rc.top = playerY - WINSIZEY / 2;
+	m_rc.bottom = playerY + WINSIZEY / 2;
 
 	if (m_fX < 0)
 		m_fX = 0;

@@ -155,7 +155,7 @@ void stageScene::update()
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
 			{
-				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX , y * TILE_SIZEY , TILE_SIZEX, TILE_SIZEY);
 
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
 
@@ -217,31 +217,17 @@ void stageScene::update()
 
 		SCROLL->update(m_player->getX(), m_player->getY());
 		//CAMERA->update();
+
+		float xScroll = SCROLL->GetX();
+		float yScroll = SCROLL->GetY();
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
-				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX , y * TILE_SIZEY , TILE_SIZEX, TILE_SIZEY);
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
 			}
 		}
 
-	}
-	//if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	//{
-
-
-	//}
-
-	if (KEYMANAGER->isOnceKeyDown('T'))
-	{
-		if (m_isTest)
-		{
-			m_isTest = false;
-		}
-		else
-		{
-			m_isTest = true;
-		}
 	}
 
 }
@@ -258,6 +244,13 @@ void stageScene::KeyEvent()
 			m_bIsMiniMapOn = true;
 		else if (m_bIsMiniMapOn == true)
 			m_bIsMiniMapOn = false;
+	}
+	if (KEYMANAGER->isOnceKeyDown('T'))
+	{
+		if (m_isTest)
+			m_isTest = false;
+		else
+			m_isTest = true;
 	}
 	//CAMERA->keyUpdate();
 	/////////////////////////////
@@ -294,17 +287,21 @@ void stageScene::render(HDC hdc)
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
 				m_pTileSet[m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum]->frameRender(hdc,
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left - SCROLL->GetX(),
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top - SCROLL->GetY(),
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
 
 
 				if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
-					Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left - SCROLL->GetX(),
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top - SCROLL->GetY(), m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right - SCROLL->GetX(),
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom - SCROLL->GetY());
+					Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
+
+					//Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left - SCROLL->GetX(),
+					//	m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top - SCROLL->GetY(), m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right - SCROLL->GetX(),
+					//	m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom - SCROLL->GetY());
 				}
 			}
 
