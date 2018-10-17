@@ -28,8 +28,10 @@ private:
 	int MiniMap_Ratio;
 	int MapSizeX;
 	int MapSizeY;
+	int m_nTileindex;
 	bool m_bIsMiniMapOn;
 	bool m_bIsCulling;
+	bool m_bIsCameraTextOn;
 
 	static int buttonNum;
 	static int buttonOK;

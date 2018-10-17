@@ -54,7 +54,7 @@ void MapCamera::update()
 	if (m_ptCameraX < 0) m_ptCameraX = 0;
 	if (m_ptCameraX > (g_saveData.gTileMaxCountX * TILE_SIZEX) - WINSIZEX) m_ptCameraX = (g_saveData.gTileMaxCountX * TILE_SIZEX) - WINSIZEX;
 
-	m_ptCameraY = m_ptMoveCameraY - WINSIZEY / 2;
+	m_ptCameraY = m_ptMoveCameraY - WINSIZEY / 2; // 윈도우 시작좌표
 	if (m_ptCameraY < 0) m_ptCameraY = 0;
 	if (m_ptCameraY > (g_saveData.gTileMaxCountY * TILE_SIZEY) - WINSIZEY) m_ptCameraY = (g_saveData.gTileMaxCountY * TILE_SIZEY) - WINSIZEY;
 
