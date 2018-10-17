@@ -125,10 +125,10 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 	switch (m_moveTypeNum)
 	{
 	case MONSTER_MOVE::MONSTER_CRAWL :
-		if (m_tMonInfo.m_rc.left + 50 < m_PlayerCharPoint->getRect().left
-			|| m_tMonInfo.m_rc.right - 50 > m_PlayerCharPoint->getRect().right
-			|| m_tMonInfo.m_rc.bottom + 50 < m_PlayerCharPoint->getRect().bottom
-			|| m_tMonInfo.m_rc.top - 50 > m_PlayerCharPoint->getRect().top)
+		if (m_tMonInfo.m_rc.left + 70 < m_PlayerCharPoint->getRect().left
+			|| m_tMonInfo.m_rc.right - 70 > m_PlayerCharPoint->getRect().right
+			|| m_tMonInfo.m_rc.bottom + 70 < m_PlayerCharPoint->getRect().bottom
+			|| m_tMonInfo.m_rc.top - 70 > m_PlayerCharPoint->getRect().top)
 		{
 			if (m_isMove)
 			{
@@ -142,7 +142,6 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 				m_count = 0;
 				m_isMove = RANDOM->getInt(2);
 				m_monsterMove->setFPS(0);
-				//m_monsterMove->getFramePos();
 			}
 		}
 		break;
@@ -176,24 +175,17 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 			}
 		break;
 	case MONSTER_MOVE::MONSTER_RUN :
-		for (int i = 0; i < 10; i++)
-		{
-			m_tMonInfo.tMoveAngle += i * 18;
-			if (i == 10)
-			{
-				i = 0;
-			}
-		}
-		if (m_tMonInfo.m_rc.left + 200 < m_PlayerCharPoint->getRect().left
-			|| m_tMonInfo.m_rc.right - 200 > m_PlayerCharPoint->getRect().right
-			|| m_tMonInfo.m_rc.bottom + 200 < m_PlayerCharPoint->getRect().bottom
-			|| m_tMonInfo.m_rc.top - 200 > m_PlayerCharPoint->getRect().top)
+
+		if (m_tMonInfo.m_rc.left + 250 < m_PlayerCharPoint->getRect().left
+			|| m_tMonInfo.m_rc.right - 250 > m_PlayerCharPoint->getRect().right
+			|| m_tMonInfo.m_rc.bottom + 250 < m_PlayerCharPoint->getRect().bottom
+			|| m_tMonInfo.m_rc.top - 250 > m_PlayerCharPoint->getRect().top)
 		{
 			if (m_Follow)
 			{
 				m_monsterMove->setFPS(10);
-				m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed*10);
-				m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed*10);
+				m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed);
+				m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed);
 			}
 		}
 		else
@@ -205,25 +197,23 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 			|| m_tMonInfo.m_rc.bottom + 300 < m_PlayerCharPoint->getRect().bottom
 			|| m_tMonInfo.m_rc.top - 300 > m_PlayerCharPoint->getRect().top) && !m_Follow)
 		{
-			if (m_tMonInfo.tHp < m_tMonInfo.tHpMax / 2)
-			{
-				if (m_isMove)
-				{
-				m_monsterMove->setFPS(60);
-				m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed);
-				m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed);
-				}
-				else
-				{
 				m_tMonInfo.tPosX -= cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed);
 				m_tMonInfo.tPosY -= -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed);
+				if (m_isMove)
+				{
+					m_monsterMove->setFPS(60);
+					for (int i = 0; i < 10; i++)
+					{
+						m_tMonInfo.tMoveAngle += i * 36;
+						m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 2);
+						m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 2);
+						if (i == 10)
+						{
+							i = 0;
+						}
+					}
 				}
-			}
-			else
-			{
-				m_tMonInfo.tPosX -= cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed*10);
-				m_tMonInfo.tPosY -= -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed*10);
-			}
+			
 
 		}
 		else
@@ -231,7 +221,7 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 			m_Follow = true;
 		}
 		m_count++;
-		if (m_count >= 20)
+		if (m_count >= 10)
 		{
 			m_count = 0;
 			m_isMove = RANDOM->getInt(2);
@@ -242,6 +232,39 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 
 		break;
 	case MONSTER_MOVE::MONSTER_WALK :
+		if (m_tMonInfo.m_rc.left + 70 < m_PlayerCharPoint->getRect().left
+			|| m_tMonInfo.m_rc.right - 70 > m_PlayerCharPoint->getRect().right
+			|| m_tMonInfo.m_rc.bottom + 70 < m_PlayerCharPoint->getRect().bottom
+			|| m_tMonInfo.m_rc.top - 70 > m_PlayerCharPoint->getRect().top)
+		{
+			if (m_Follow)
+			{
+
+					m_tMonInfo.tPosX += -1.0f + RANDOM->getFromFloatTo(0.0f, 2.0f);
+				m_monsterMove->setFPS(10);
+				m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed / 2);
+				m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed / 2);
+				
+			}
+		}
+		else
+		{
+			m_Follow = false;
+		}
+		if (!(m_tMonInfo.m_rc.left + 100 < m_PlayerCharPoint->getRect().left
+			|| m_tMonInfo.m_rc.right - 100 > m_PlayerCharPoint->getRect().right
+			|| m_tMonInfo.m_rc.bottom + 100 < m_PlayerCharPoint->getRect().bottom
+			|| m_tMonInfo.m_rc.top - 100 > m_PlayerCharPoint->getRect().top) && !m_Follow)
+		{
+				m_monsterMove->setFPS(10);
+				m_tMonInfo.tPosX -= cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed / 2);
+				m_tMonInfo.tPosY -= -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed / 2);
+		}
+		else
+		{
+			m_Follow = true;
+		}
+
 
 		break;
 	}
