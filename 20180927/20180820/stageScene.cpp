@@ -542,8 +542,6 @@ void stageScene::render(HDC hdc)
 
 void stageScene::LoadEvent()
 {
-	int tempX = 0;
-	int tempY = 0;
 
 	OPENFILENAME ofn;
 	HWND hEditFileToBeOpened = NULL;
@@ -558,17 +556,17 @@ void stageScene::LoadEvent()
 	if (0 != GetOpenFileName(&ofn))
 	{
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
-		TXTDATA->getSingleton()->mapLoad(szFileName1, m_pTiles, &tempX, &tempY);
+		TXTDATA->getSingleton()->mapLoad(szFileName1, m_pTiles);
 	}
-	g_saveData.gTileMaxCountX = tempX;
-	g_saveData.gTileMaxCountY = tempY;
+	g_saveData.gTileMaxCountX = m_pTiles[0].terrain;
+	g_saveData.gTileMaxCountY = m_pTiles[0].terrain;
 }
 
 void stageScene::FixedLoadEvent()
 {
 	int tempX = 0;
 	int tempY = 0;
-	TXTDATA->getSingleton()->mapLoad("mainGame6.map", m_pTiles, &tempX, &tempY);
+	TXTDATA->getSingleton()->mapLoad("mainGame6.map", m_pTiles);
 
 }
 
