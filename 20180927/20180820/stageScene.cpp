@@ -217,7 +217,7 @@ void stageScene::update()
 			}
 		}
 		m_isCount++; // 스폰되는 주기 카운트
-		if (m_isCount > 500.0f)
+		if (m_isCount > 200.0f)
 		{
 			m_isSpawnCycle = true;
 			m_isCount = 0;
@@ -783,8 +783,8 @@ void stageScene::ColRc()
 					(MY_UTIL::getDistance(
 					(*PlayerBulletIter)->getTagBulletInfo().tPosX,
 						(*PlayerBulletIter)->getTagBulletInfo().tPosY,
-						(*MonsIter)->getMonInfo().tPosX,
-						(*MonsIter)->getMonInfo().tPosY))
+						(*MonsIter)->getMonInfo().tPosX - SCROLL->GetX(),
+						(*MonsIter)->getMonInfo().tPosY - SCROLL->GetY()))
 					)
 				{
 					// 몬스터 피격 처리
@@ -807,7 +807,7 @@ void stageScene::ColRc()
 	for (ItemIter = vItem.begin(); ItemIter != vItem.end(); ItemIter++)
 	{
 
-		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getItemInfo().posX, (*ItemIter)->getItemInfo().posY)))
+		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getItemInfo().posX - SCROLL->GetX(), (*ItemIter)->getItemInfo().posY - SCROLL->GetY())))
 		{
 			m_pEffMagr->play("Item_Get1", m_player->getX() - (320 / 4) / 2, m_player->getY());
 			m_pEffMagr->play("Item_Get2", m_player->getX() - (230 / 5) / 2, m_player->getY() - (70) / 2);

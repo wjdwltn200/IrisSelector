@@ -120,8 +120,8 @@ void item::update()
 	}
 
 	m_rc = RectMakeCenter(
-		m_tItemInfo.posX,
-		m_tItemInfo.posY,
+		m_tItemInfo.posX ,
+		m_tItemInfo.posY ,
 		(m_pImg->getFrameWidth() * m_tItemInfo.tScale),
 		(m_pImg->getFrameHeight() * m_tItemInfo.tScale));
 }
@@ -134,16 +134,16 @@ void item::render(HDC hdc)
 	//EllipseMakeCenter(hdc, m_fX, m_fY, m_pImg->getFrameWidth() + 5, m_pImg->getFrameHeight() + 5);
 
 	m_pImgShadow->frameAlphaRender(hdc,
-		m_tItemInfo.posX - (m_pImgShadow->getFrameWidth() / 2 * m_tItemInfo.tScale),
-		m_tItemInfo.posY - (m_pImgShadow->getFrameHeight() / 2 * m_tItemInfo.tScale) + 20.0f,
+		(m_tItemInfo.posX - SCROLL->GetX()) - (m_pImgShadow->getFrameWidth() / 2 * m_tItemInfo.tScale) ,
+		(m_tItemInfo.posY - SCROLL->GetY()) - (m_pImgShadow->getFrameHeight() / 2 * m_tItemInfo.tScale) + 20.0f ,
 		m_tItemInfo.tImageCurrX,
 		m_tItemInfo.tImageCurrY,
 		m_tItemInfo.tScale,
 		m_ItemAlphaNum);
 
 	m_pImg->frameAlphaRender(hdc,
-		m_tItemInfo.posX - (m_pImg->getFrameWidth() / 2 * m_tItemInfo.tScale),
-		m_fItemIdleY - (m_pImg->getFrameHeight() / 2 * m_tItemInfo.tScale),
+		(m_tItemInfo.posX -SCROLL->GetX()) - (m_pImg->getFrameWidth() / 2 * m_tItemInfo.tScale) ,
+		(m_fItemIdleY - SCROLL->GetY()) - (m_pImg->getFrameHeight() / 2 * m_tItemInfo.tScale) ,
 		m_tItemInfo.tImageCurrX,
 		m_tItemInfo.tImageCurrY,
 		m_tItemInfo.tScale,

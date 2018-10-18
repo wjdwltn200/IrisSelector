@@ -133,7 +133,7 @@ HRESULT PlayerCharacter::init(soundManager * soundPoint)
 
 	return S_OK;
 }
-
+ 
 void PlayerCharacter::release()
 {
 	SAFE_DELETE(ani_CrossHair);
@@ -200,7 +200,7 @@ void PlayerCharacter::update()
 	if (m_fCrossHairScale > m_fCrossHairScaleMin)
 		m_fCrossHairScale -= 0.1f;
 
-	m_rc = RectMakeCenter(m_fX, m_fY, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
+	m_rc = RectMakeCenter(m_fX, m_fY, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
 
 	ani_CrossHair->frameUpdate();
 	ani_PlayerIdle->frameUpdate();
@@ -209,7 +209,7 @@ void PlayerCharacter::update()
 
 void PlayerCharacter::render(HDC hdc)
 {
-	EllipseMakeCenter(hdc, m_fX, m_fY, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
+	EllipseMakeCenter(hdc, m_fX, m_fY, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale -15);
 	//Ellipse(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 
 	img_PlayerShadow->alphaRender(hdc,
