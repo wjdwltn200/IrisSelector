@@ -34,6 +34,7 @@ private:
 	bool m_bIsMiniMapOn;
 	bool m_bIsCulling;
 	bool m_bIsCameraTextOn;
+	bool m_bIsFireOn;
 
 	static int buttonNum;
 	static int buttonOK;
@@ -77,6 +78,14 @@ private:
 	int m_SpawnWorldTime;
 	bool m_isMonLvUp;
 
+	//////몬스터 게이트
+	int m_GateNum; // 게이트 번호  1 ~ 18 번
+	int m_GateMonsterNum; // 게이트 동시 생성 마릿수
+	int m_GateMonsterIndex; // 게이트 몬스터 종류 인덱스 1 ~ 18
+	int m_stageNum;  // 스테이지
+	int m_MaxSpawnNum; // 스테이지 최대 소환
+	int m_ClearScore; // 스테이지 클리어 스코어
+
 public:
 	HRESULT init();
 	void release();
@@ -96,6 +105,7 @@ public:
 
 	void ColRc();
 	bool getTileIsMove(int x) { return m_pTiles[x].isMove; }
+	void SpawnGateTime();
 
 	friend void Func_button1(void);
 	friend void Func_button2(void);

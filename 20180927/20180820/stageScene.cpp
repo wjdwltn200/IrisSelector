@@ -94,6 +94,12 @@ HRESULT stageScene::init()
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
 	m_isSpawnCycle = false;
+	m_GateNum = 0;
+	m_GateMonsterIndex = 0;
+	m_GateMonsterNum = 0;
+	m_stageNum = 0;
+	m_MaxSpawnNum = 0;
+	m_ClearScore = 0;
 
 	m_isTest = false; // 정지수 : 테스트용으로 만듦
 
@@ -216,44 +222,7 @@ void stageScene::update()
 				m_player->setTileRc(m_pTiles[i].rc);
 			}
 		}
-		m_isCount++; // 스폰되는 주기 카운트
-		if (m_isCount > 200.0f)
-		{
-			m_isSpawnCycle = true;
-			m_isCount = 0;
-		}
-		if (m_isSpawnCycle)
-		{
-			for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
-			{
-				for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
-				{
-					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
-					{
-						Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left;
-						Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
-						if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 1)
-						{
-							MonSpawnCycle(1, 0); // (몬스터 한번에 생성 마리, 몬스터 ID)
-						}
-						else if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 2)
-						{
-							MonSpawnCycle(1, 1); // (몬스터 한번에 생성 마리, 몬스터 ID)
-						}
-						else if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 3)
-						{
-							MonSpawnCycle(1, 2); // (몬스터 한번에 생성 마리, 몬스터 ID)
-						}
-						else if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 4)
-						{
-							MonSpawnCycle(1, 3); // (몬스터 한번에 생성 마리, 몬스터 ID)
-						}
-					}
-
-				}
-			}
-		}
-		m_isSpawnCycle = false;
+		SpawnGateTime();
 
 		m_pMonsterMag->update();
 		m_player->update();
@@ -303,6 +272,13 @@ void stageScene::KeyEvent()
 		else
 			m_isTest = true;
 	}
+	if (KEYMANAGER->isOnceKeyDown('L'))
+	{
+		if (m_bIsFireOn)
+			m_bIsFireOn = false;
+		else
+			m_bIsFireOn = true;
+	}
 	//CAMERA->keyUpdate();
 	/////////////////////////////
 
@@ -347,11 +323,11 @@ void stageScene::render(HDC hdc)
 				/*if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
 				   Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-					  m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-					  m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
+					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
 
 
-					  //}
+					 //}
 			}
 
 		}
@@ -817,6 +793,123 @@ void stageScene::ColRc()
 			m_soundMag.play("sound/sound_itemGet.wav", g_saveData.gSeValue);
 
 		}
+	}
+
+}
+
+void stageScene::SpawnGateTime()
+{
+	m_ClearScore += Moninfo.tScore;
+	m_isCount++; // 스폰되는 주기 카운트
+	if (m_isCount > 200.0f && (MAX_SPAWN_NUMBER >= m_MaxSpawnNum))
+	{
+		m_isSpawnCycle = true;
+		m_GateNum++;
+		m_MaxSpawnNum++;
+		m_isCount = 0;
+		if (m_GateNum > 19)
+		{
+			m_GateNum = 0;
+		}
+	}
+	if (m_isSpawnCycle && MAX_SPAWN_NUMBER >= m_MaxSpawnNum)
+	{
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
+			{
+				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
+				{
+					Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left;
+					Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
+					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
+					{
+						MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)
+					}
+				}
+
+			}
+		}
+	}
+	else if (m_ClearScore == MAX_SCORE && MAX_SPAWN_NUMBER >= m_MaxSpawnNum)
+	{
+		m_stageNum++;
+	}
+
+	switch (m_stageNum)
+	{
+	case GATE_1 :
+		m_GateMonsterNum = 1;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 3); 
+		break;
+	case GATE_2:
+		m_GateMonsterNum = 1;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(4, 6);
+		break;
+	case GATE_3:
+		m_GateMonsterNum = 1;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(7, 9);
+		break;
+	case GATE_4:
+		m_GateMonsterNum = 1;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(10, 13);
+		break;
+	case GATE_5:
+		m_GateMonsterNum = 1;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(14, 16);
+		break;
+	case GATE_6:
+		m_GateMonsterNum = 1;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(17, 18);
+		break;
+	case GATE_7:
+		m_GateMonsterNum = 2;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 6);
+		break;
+	case GATE_8:
+		m_GateMonsterNum = 2;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(7, 13);
+		break;
+	case GATE_9:
+		m_GateMonsterNum = 3;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(14, 18);
+		break;
+	case GATE_10:
+		m_GateMonsterNum = 3;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 10);
+		break;
+	case GATE_11:
+		m_GateMonsterNum = 3;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(11, 18);
+		break;
+	case GATE_12:
+		m_GateMonsterNum = 3;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
+		break;
+	case GATE_13:
+		m_GateMonsterNum = 3;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
+		break;
+	case GATE_14:
+		m_GateMonsterNum = 3;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
+		break;
+	case GATE_15:
+		m_GateMonsterNum = 3;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
+		break;
+	case GATE_16:
+		m_GateMonsterNum = 3;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
+		break;
+	case GATE_17:
+		m_GateMonsterNum = 4;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
+		break;
+	case GATE_18:
+		m_GateMonsterNum = 4;
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
+		break;
 	}
 
 }

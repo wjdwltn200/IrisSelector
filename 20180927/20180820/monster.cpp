@@ -96,6 +96,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tMonInfo.tDef = monInfo.tDef = 0.0f;
 	m_tMonInfo.tHealing = monInfo.tHealing;
 	m_tMonInfo.tMoveType = monInfo.tMoveType;
+	m_tMonInfo.tScore = monInfo.tScore;
 
 	
 	m_monsterMove->setDefPlayFrame(false, true);
@@ -322,6 +323,7 @@ void monster::Damge(float dam, soundManager * soundMagPoint)
 		m_tMonInfo.tIsAlive = false;
 		m_tMonInfo.tDef = 5.0f;
 		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2), m_tMonInfo.tPosY - (384 / 3 / 2));
+		m_tMonInfo.tScore += RANDOM->getInt(4);
 
 		// »ç¸Á »ç¿îµå
 		switch (RANDOM->getFromIntTo(0, 6))
