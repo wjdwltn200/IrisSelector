@@ -422,11 +422,8 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 				m_tMonInfo.tHp = 100.0f;
 			}
 			break;
-		case MONSTER_SUB::MONSTER_BOOM:
-			if (m_tMonInfo.tIsAlive == false)
-			{
-				m_tMonInfo.tIsBoom = true;
-			}
+		case MONSTER_SUB::MONSTER_NOMAL:
+			// 능력이 없는 상태
 			break;
 		}
 	}
