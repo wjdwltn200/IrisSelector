@@ -280,8 +280,8 @@ void monster::fireAtk()
 	if (m_tMonInfo.tFireCount == 0)
 	{
 		m_pBulletMag->fire("юс╫ц",
-			m_tMonInfo.tPosX,
-			m_tMonInfo.tPosY ,
+			m_tMonInfo.tPosX - SCROLL->GetX(),
+			m_tMonInfo.tPosY - SCROLL->GetY(),
 			m_tMonInfo.tFireAngle,
 			&m_tBulletInfo,
 			&m_tBulletInfoSub);
@@ -331,7 +331,7 @@ void monster::Damge(float dam, soundManager * soundMagPoint, itemManager * itemM
 	{
 		m_tMonInfo.tIsAlive = false;
 		m_tMonInfo.tDef = 5.0f;
-		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2), m_tMonInfo.tPosY - (384 / 3 / 2));
+		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2) - SCROLL->GetX(), m_tMonInfo.tPosY - (384 / 3 / 2) - SCROLL->GetY());
 		m_tMonInfo.tScore += RANDOM->getInt(4);
 
 		int tempItem = RANDOM->getFromIntTo(1, tempItemValue + 10);
