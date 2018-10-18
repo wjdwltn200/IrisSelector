@@ -10,6 +10,13 @@ class itemManager;
 class monsterManger;
 class animation;
 
+#define OPTION_SOUND_X 50
+#define OPTION_SOUND_Y 30
+#define OPTION_SOUND_SIZE_Y 120
+
+
+
+
 class titleScene : public scene
 {
 
@@ -41,6 +48,10 @@ private:
 	int m_buttonSetX;
 	int m_buttonSetY;
 
+	bool m_isOption;
+	int m_soundSelectValue;
+	int m_BgmValue;
+	int m_SeValue;
 
 public:
 
@@ -49,7 +60,7 @@ public:
 	virtual void update();
 	virtual void render(HDC hdc);
 
-
+	void OptionOn();
 
 public:
 

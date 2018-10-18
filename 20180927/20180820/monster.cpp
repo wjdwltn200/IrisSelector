@@ -7,6 +7,7 @@
 #include "progressBar.h"
 #include "effectManager.h"
 #include "soundManager.h"
+#include "itemManager.h"
 
 HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint)
 {
@@ -303,9 +304,17 @@ void monster::knokback(float playerkuokback, float monsterHitRecovery)
 
 }
 
-void monster::Damge(float dam, soundManager * soundMagPoint)
+void monster::Damge(float dam, soundManager * soundMagPoint, itemManager * itemMagPoint)
 {
 	// 데미지가 받을때 방어력 적용
+
+	int tempItemValue = itemMagPoint->getItemMax();
+	tagItemInfo ItemInfo;
+	ItemInfo.tScale = 1.0f;
+	ItemInfo.tTimer = 1000;
+	ItemInfo.tRadius = 1.5f;
+	ItemInfo.posX = m_tMonInfo.tPosX;
+	ItemInfo.posY = m_tMonInfo.tPosY;
 
 	dam -= m_tMonInfo.tDef;
 	if (m_isHealing)
@@ -324,6 +333,13 @@ void monster::Damge(float dam, soundManager * soundMagPoint)
 		m_tMonInfo.tDef = 5.0f;
 		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2), m_tMonInfo.tPosY - (384 / 3 / 2));
 		m_tMonInfo.tScore += RANDOM->getInt(4);
+
+		int tempItem = RANDOM->getFromIntTo(1, tempItemValue + 10);
+
+		if (tempItem <= tempItemValue)
+		{
+			itemMagPoint->itemDrop("ItemObject", tempItem, ItemInfo, m_pEffMag);
+		}
 
 		// 사망 사운드
 		switch (RANDOM->getFromIntTo(0, 6))

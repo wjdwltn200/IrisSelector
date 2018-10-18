@@ -22,6 +22,7 @@ public:
 	void itemDrop(const char * imageName, int itemNum, tagItemInfo bulletInfo, effectManager * pEffMag);
 	void itemGet(const char * imageName, tagItemInfo itemInfo);
 
+	int getItemMax() { return m_itemMax; }
 
 	inline std::vector<item*> getVecItem()
 	{

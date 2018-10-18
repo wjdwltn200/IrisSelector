@@ -6,6 +6,7 @@ class PlayerCharacter;
 class progressBar;
 class effectManager;
 class soundManager;
+class itemManager;
 
 class monster
 {
@@ -49,7 +50,7 @@ public:
 	void Move(int m_moveTypeNum);
 	void fireAtk();
 	void knokback(float playerkuokback, float monsterHitRecovery);
-	void Damge(float dam, soundManager * soundMagPoint);
+	void Damge(float dam, soundManager * soundMagPoint, itemManager * itemMagPoint);
 	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
 
 	void render(HDC hdc);

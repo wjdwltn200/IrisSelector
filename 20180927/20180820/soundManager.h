@@ -37,6 +37,8 @@ public:
 	void pause(string soundName);
 	void resume(string soundName);
 
+	void setVolume(string soundName, float volume);
+
 	bool isPlaying(string soundName);
 	bool isPause(string soundName);
 

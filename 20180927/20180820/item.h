@@ -26,6 +26,9 @@ private:
 	bool m_isItemIdle;
 	int m_ItemAlphaNum;
 
+	float m_fItemX;
+	float m_fItemY;
+
 	bool m_isGet;
 
 	bool	m_isAlive;
@@ -45,8 +48,8 @@ public:
 	bool getIsAlive() { return m_isAlive; }
 	void setIsAlive(bool alive) { m_isAlive = alive; }
 
-	void setX(float posX) { m_tItemInfo.posX = posX; }
-	void setY(float posY) { m_tItemInfo.posY = posY; }
+	void setX(float posX) { m_tItemInfo.posX = m_fItemX = posX; }
+	void setY(float posY) { m_tItemInfo.posY = m_fItemY = posY; }
 	void setItemIdleY(float posY) { m_fItemIdleY = posY; }
 	void setItemIdleCurrY(float posY) { m_fItemIdleCurrY = posY; }
 

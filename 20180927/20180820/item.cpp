@@ -133,21 +133,44 @@ void item::render(HDC hdc)
 	//Ellipse(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	//EllipseMakeCenter(hdc, m_fX, m_fY, m_pImg->getFrameWidth() + 5, m_pImg->getFrameHeight() + 5);
 
-	m_pImgShadow->frameAlphaRender(hdc,
-		(m_tItemInfo.posX - SCROLL->GetX()) - (m_pImgShadow->getFrameWidth() / 2 * m_tItemInfo.tScale) ,
-		(m_tItemInfo.posY - SCROLL->GetY()) - (m_pImgShadow->getFrameHeight() / 2 * m_tItemInfo.tScale) + 20.0f ,
-		m_tItemInfo.tImageCurrX,
-		m_tItemInfo.tImageCurrY,
-		m_tItemInfo.tScale,
-		m_ItemAlphaNum);
+	if (!m_tItemInfo.tIsGet)
+	{
+		m_pImgShadow->frameAlphaRender(hdc,
+			(m_tItemInfo.posX - SCROLL->GetX()) - (m_pImgShadow->getFrameWidth() / 2 * m_tItemInfo.tScale),
+			(m_tItemInfo.posY - SCROLL->GetY()) - (m_pImgShadow->getFrameHeight() / 2 * m_tItemInfo.tScale) + 20.0f,
+			m_tItemInfo.tImageCurrX,
+			m_tItemInfo.tImageCurrY,
+			m_tItemInfo.tScale,
+			m_ItemAlphaNum);
 
-	m_pImg->frameAlphaRender(hdc,
-		(m_tItemInfo.posX -SCROLL->GetX()) - (m_pImg->getFrameWidth() / 2 * m_tItemInfo.tScale) ,
-		(m_fItemIdleY - SCROLL->GetY()) - (m_pImg->getFrameHeight() / 2 * m_tItemInfo.tScale) ,
-		m_tItemInfo.tImageCurrX,
-		m_tItemInfo.tImageCurrY,
-		m_tItemInfo.tScale,
-		m_tItemInfo.tItemTimerAlpha);
+		m_pImg->frameAlphaRender(hdc,
+			(m_tItemInfo.posX - SCROLL->GetX()) - (m_pImg->getFrameWidth() / 2 * m_tItemInfo.tScale),
+			(m_fItemIdleY - SCROLL->GetY()) - (m_pImg->getFrameHeight() / 2 * m_tItemInfo.tScale),
+			m_tItemInfo.tImageCurrX,
+			m_tItemInfo.tImageCurrY,
+			m_tItemInfo.tScale,
+			m_tItemInfo.tItemTimerAlpha);
+	}
+	else
+	{
+		m_pImgShadow->frameAlphaRender(hdc,
+			m_fItemX - (m_pImgShadow->getFrameWidth() / 2 * m_tItemInfo.tScale),
+			m_fItemY - (m_pImgShadow->getFrameHeight() / 2 * m_tItemInfo.tScale) + 20.0f,
+			m_tItemInfo.tImageCurrX,
+			m_tItemInfo.tImageCurrY,
+			m_tItemInfo.tScale,
+			m_ItemAlphaNum);
+
+		m_pImg->frameAlphaRender(hdc,
+			m_fItemX - (m_pImg->getFrameWidth() / 2 * m_tItemInfo.tScale),
+			m_fItemIdleY - (m_pImg->getFrameHeight() / 2 * m_tItemInfo.tScale),
+			m_tItemInfo.tImageCurrX,
+			m_tItemInfo.tImageCurrY,
+			m_tItemInfo.tScale,
+			m_tItemInfo.tItemTimerAlpha);
+	}
+	
+	
 
 	if (!m_tItemInfo.tIsGet)
 	{
@@ -212,9 +235,9 @@ void item::ItemPopup(HDC hdc)
 	if (g_ptMouse.x > m_rc.left && g_ptMouse.x < m_rc.right &&
 		g_ptMouse.y > m_rc.top && g_ptMouse.y < m_rc.bottom)
 	{
-		m_pItemPopupUi->render(hdc, m_tItemInfo.posX - (m_pItemPopupUi->getFrameWidth() / 2), m_tItemInfo.posY - (m_pItemPopupUi->getFrameHeight() + 20.0f));
-		m_pItemPopupUi->setX(m_tItemInfo.posX - (m_pItemPopupUi->getFrameWidth() / 2) + 15.0f);
-		m_pItemPopupUi->setY(m_tItemInfo.posY - (m_pItemPopupUi->getFrameHeight() / 2) - 20.0f);
+		m_pItemPopupUi->render(hdc, m_fItemX - (m_pItemPopupUi->getFrameWidth() / 2), m_fItemY - (m_pItemPopupUi->getFrameHeight() + 20.0f));
+		m_pItemPopupUi->setX(m_fItemX - (m_pItemPopupUi->getFrameWidth() / 2) + 15.0f);
+		m_pItemPopupUi->setY(m_fItemY - (m_pItemPopupUi->getFrameHeight() / 2) - 20.0f);
 
 
 		char szText[256];
