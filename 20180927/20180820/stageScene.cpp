@@ -49,11 +49,17 @@ HRESULT stageScene::init()
 	m_pTileSet[1] = IMAGEMANAGER->findImage("tileset2");
 	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
 	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
+
+	//m_pImg_Black = IMAGEMANAGER->findImage("black_big");
+	m_pImg_rad[0] = IMAGEMANAGER->findImage("rad1");
+	m_pImg_rad[1] = IMAGEMANAGER->findImage("rad2");
+	m_pImg_rad[2] = IMAGEMANAGER->findImage("rad3");
+	m_pImg_rad[3] = IMAGEMANAGER->findImage("rad4");
+
 	m_bIsMiniMapOn = false;
 	m_bIsCameraTextOn = false;
 	MiniMap_Ratio = 8;
 
-	m_pImage_BG1 = IMAGEMANAGER->findImage("black");
 	m_pImage_checkBox = IMAGEMANAGER->findImage("size_box");
 
 	m_pButton1 = new button;
@@ -296,7 +302,6 @@ void stageScene::MouseEvent()
 
 void stageScene::render(HDC hdc)
 {
-	m_pImage_BG1->render(hdc, 0, 0);
 	if (buttonNum == 0)
 	{
 		m_pImage_checkBox->render(hdc, WINSIZEX / 2 - IMAGEMANAGER->findImage("size_box")->getWidth() / 2, 0);
@@ -390,6 +395,19 @@ void stageScene::render(HDC hdc)
 		sprintf_s(szText, "m_ptCameraX : %f / m_ptCameraY : %f",
 			CAMERA->getCameraX(), CAMERA->getCameraY());
 		TextOut(hdc, 400, 100, szText, strlen(szText));
+	}
+
+
+	if (m_bIsFireOn)
+	{
+		//m_pImg_Black->alphaRender(hdc, 240);
+		m_pImg_rad[0]->alphaRender(hdc, m_player->getX() - m_pImg_rad[0]->getWidth() / 2 - SCROLL->GetX(), m_player->getY() - m_pImg_rad[0]->getHeight() / 2 - SCROLL->GetY(), 1, 190); // 450
+		m_pImg_rad[1]->alphaRender(hdc, m_player->getX() - m_pImg_rad[1]->getWidth() / 2 - SCROLL->GetX(), m_player->getY() - m_pImg_rad[1]->getHeight() / 2 - SCROLL->GetY(), 1, 170); // 450
+		m_pImg_rad[2]->alphaRender(hdc, m_player->getX() - m_pImg_rad[2]->getWidth() / 2 - SCROLL->GetX(), m_player->getY() - m_pImg_rad[2]->getHeight() / 2 - SCROLL->GetY(), 1, 150); // 450
+		//m_pImg_rad[3]->alphaRender(hdc, m_player->getX() - m_pImg_rad[3]->getWidth() / 2, m_player->getY() - m_pImg_rad[3]->getHeight() / 2, 1, 50); // 450
+
+		
+
 	}
 }
 

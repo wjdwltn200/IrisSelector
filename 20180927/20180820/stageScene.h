@@ -21,7 +21,8 @@ private:
 	button*        m_pButton1;
 	button*       m_pButton2;
 
-	image*        m_pImage_BG1;
+	image*        m_pImg_Black;
+	image*		  m_pImg_rad[4];
 	image*        m_pImage_checkBox;
 	image*        m_pTileSet[4];
 

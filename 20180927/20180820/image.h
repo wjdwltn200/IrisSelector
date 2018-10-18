@@ -102,6 +102,8 @@ public:
 	// ¾ËÆÄ ºí·»µå ·»´õ
 	void alphaRender(HDC hdc, BYTE alpha);
 	void alphaRender(HDC hdc, int destX, int destY, BYTE alpha);
+	void alphaRender(HDC hdc, int destX, int destY, int rad, BYTE alpha);
+
 
 	// ¾Ö´Ï ·»´õ
 	void aniRender(HDC hdc, int destX, int destY, animation* ani, float scalar = 1.0f, bool isAlpha = false, BYTE alpha = NULL);

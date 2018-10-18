@@ -4,6 +4,7 @@
 #include "stageScene.h"
 #include "loadingScene.h"
 #include "editor.h"
+#include "EndingScene.h"
 
 
 void mainGame::setBackBuffer()
@@ -46,6 +47,9 @@ HRESULT mainGame::init()
 	SCENEMANAGER->addLoadingScene("loading", m_pLoadingScene);
 	
 	SCENEMANAGER->changeScene("title");
+
+	m_pEndingScene = new EndingScene;
+	SCENEMANAGER->addScene("ending", m_pEndingScene);
 	// 민욱이는 과연 누구인가? 알랄라 내첫사랑 지수 ㅇㅇ
 	// 이순현 테스트
 	// 정지수 로그인 테스트
