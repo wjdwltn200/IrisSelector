@@ -186,6 +186,9 @@
     <ClInclude Include="ScrollMgr.h">
       <Filter>MainGame</Filter>
     </ClInclude>
+    <ClInclude Include="EndingScene.h">
+      <Filter>MainGame\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -301,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="ScrollMgr.cpp">
       <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

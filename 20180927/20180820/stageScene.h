@@ -21,7 +21,8 @@ private:
 	button*        m_pButton1;
 	button*       m_pButton2;
 
-	image*        m_pImage_BG1;
+	image*        m_pImg_Black;
+	image*		  m_pImg_rad[4];
 	image*        m_pImage_checkBox;
 	image*        m_pTileSet[4];
 
@@ -34,6 +35,7 @@ private:
 	bool m_bIsMiniMapOn;
 	bool m_bIsCulling;
 	bool m_bIsCameraTextOn;
+	bool m_bIsFireOn;
 
 	static int buttonNum;
 	static int buttonOK;

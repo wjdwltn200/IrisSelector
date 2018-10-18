@@ -1,6 +1,7 @@
 #pragma once
 class loadingScene;
 class stageScene;
+class EndingScene;
 class titleScene;
 class editor;
 
@@ -24,6 +25,7 @@ private:
 	loadingScene * m_pLoadingScene;
 	stageScene * m_pStageScene;
 	titleScene * m_pTitleScene;
+	EndingScene * m_pEndingScene;
 
 public:
 	HRESULT init();

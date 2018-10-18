@@ -79,6 +79,12 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("tag", "image/wook/tag.bmp", 38, 38, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("parchment", "image/wook/parchment.bmp", WINSIZEX, 350, true, RGB(255, 255, 255));
 	IMAGEMANAGER->addImage("tag_done", "image/wook/tag_done.bmp", 38, 38, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("black_big", "image/wook/black_big.bmp", 800, 800, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("rad1", "image/wook/rad11.bmp", 800, 800, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("rad2", "image/wook/rad22.bmp", 800, 800, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("rad3", "image/wook/rad33.bmp", 800, 800, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("rad4", "image/wook/rad44.bmp", 800, 800, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("alice_move", "image/wook/alice_move.bmp", 10800, 300, 18,1,true, RGB(255, 0, 255));
 
 
 	// 타이틀 이미지
@@ -129,6 +135,10 @@ void titleScene::update()
 			PostQuitMessage(0);
 			break;
 		}
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_F10))
+	{
+		SCENEMANAGER->changeScene("ending");
 	}
 
 
