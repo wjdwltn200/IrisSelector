@@ -16,14 +16,14 @@ class animation;
 class stageScene : public scene
 {
 private:
-	tagTile		  m_pTiles[TILE_MAXCOUNTX * TILE_MAXCOUNTY];
+	tagTile        m_pTiles[TILE_MAXCOUNTX * TILE_MAXCOUNTY];
 
-	button*		  m_pButton1;
+	button*        m_pButton1;
 	button*       m_pButton2;
 
-	image*		  m_pImage_BG1;
+	image*        m_pImage_BG1;
 	image*        m_pImage_checkBox;
-	image*		  m_pTileSet[4];
+	image*        m_pTileSet[4];
 
 
 
@@ -44,13 +44,13 @@ private:
 	// 타이틀 헤더 이동
 	struct buttonSelect
 	{
-		RECT	m_rc;
-		float	m_fX;
-		float	m_fY;
-		int		carrFrameX;
-		int		carrFrameY;
-		float	m_moveSpeed;
-		bool	m_isMovement;
+		RECT   m_rc;
+		float   m_fX;
+		float   m_fY;
+		int      carrFrameX;
+		int      carrFrameY;
+		float   m_moveSpeed;
+		bool   m_isMovement;
 	};
 	PlayerCharacter* m_player;
 	image* m_titleScene;
@@ -63,7 +63,7 @@ private:
 	effectManager * m_pEffMagr;
 	progressBar* m_pProgressBar;
 	tagSpawnTile m_tSpawnTile;
-	
+
 	soundManager m_soundMag;
 
 	tagSpawnTile SpawnTile;
@@ -72,6 +72,7 @@ private:
 	int m_buttonSetX;
 	int m_buttonSetY;
 	int m_isCount;
+	bool m_isSpawnCycle;
 	int m_SpawnCount;
 	int m_SpawnWorldTime;
 	bool m_isMonLvUp;
@@ -91,8 +92,7 @@ public:
 	void render(HDC hdc);
 	void LoadEvent();
 	void FixedLoadEvent();
-	void MonSpawnCycle(int SpawnCycle, int SpawnOfNumber, int MonNumber, int CycleDecreaseNum,
-		int TimetoComplete, int AbilityType, int AbilityCycle);
+	void MonSpawnCycle(int SpawnOfNumber, int MonNumber);
 
 	void ColRc();
 	bool getTileIsMove(int x) { return m_pTiles[x].isMove; }
@@ -103,4 +103,3 @@ public:
 	stageScene();
 	~stageScene();
 };
-

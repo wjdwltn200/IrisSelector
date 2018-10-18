@@ -70,7 +70,7 @@ HRESULT stageScene::init()
 	m_pEffMagr->addEffect("Bullet_End_2", "image/resources/bullet_image/Bullet_End_2.bmp", 224, 32, 32, 32, 15, 50);
 	m_pEffMagr->addEffect("Bullet_End_3", "image/resources/bullet_image/Bullet_End_3.bmp", 210, 24, 30, 24, 15, 50);
 
-	m_pEffMagr->addEffect("Monster_die", "image/resources/monster_image/Monster_Die_Eff.bmp", 512, 384, 512/4, 384/3, 15, 10);
+	m_pEffMagr->addEffect("Monster_die", "image/resources/monster_image/Monster_Die_Eff.bmp", 512, 384, 512 / 4, 384 / 3, 15, 10);
 
 	m_pEffMagr->addEffect("Item_Get1", "image/resources/item_image/Item_Get.bmp", 320, 31, (320 / 4), 31, 15, 5);
 	m_pEffMagr->addEffect("Item_Get2", "image/resources/item_image/Item_Get2.bmp", 230, 70, (230 / 5), 70, 15, 5);
@@ -90,16 +90,10 @@ HRESULT stageScene::init()
 	m_pMonsterMag = new monsterManger;
 	m_pMonsterMag->setEffMagPoint(m_pEffMagr);
 	m_pMonsterMag->init(50);
-	m_isCount = 0;
-	m_SpawnCount = 0;
-	m_SpawnWorldTime = 0;
-	m_isMonLvUp = false;
-	Moninfo.tHp = 100.0f;
-	Moninfo.tHpMax = 100.0f;
-	m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
+	m_isSpawnCycle = false;
 
 	m_isTest = false; // 정지수 : 테스트용으로 만듦
 
@@ -181,7 +175,7 @@ void stageScene::update()
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
 			{
-				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX , y * TILE_SIZEY , TILE_SIZEX, TILE_SIZEY);
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX, y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
 
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
 
@@ -198,11 +192,6 @@ void stageScene::update()
 					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 7 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 5)
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
 				}
-				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
-				Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left;
-				Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
-				MonSpawnCycle(50, 2, 0, 0, 0, 0, 0); // ( 몬스터 생성 사이클, 몬스터 한번에 생성 마리, 몬스터 ID)이후는 제작중
-
 			}
 		}
 
@@ -222,11 +211,49 @@ void stageScene::update()
 
 			if (m_pTiles[i].isMove) continue;
 
-			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc , &m_player->getRect()))
+			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc, &m_player->getRect()))
 			{
 				m_player->setTileRc(m_pTiles[i].rc);
 			}
 		}
+		m_isCount++; // 스폰되는 주기 카운트
+		if (m_isCount > 500.0f)
+		{
+			m_isSpawnCycle = true;
+			m_isCount = 0;
+		}
+		if (m_isSpawnCycle)
+		{
+			for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+			{
+				for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
+				{
+					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
+					{
+						Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left;
+						Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
+						if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 1)
+						{
+							MonSpawnCycle(1, 0); // (몬스터 한번에 생성 마리, 몬스터 ID)
+						}
+						else if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 2)
+						{
+							MonSpawnCycle(1, 1); // (몬스터 한번에 생성 마리, 몬스터 ID)
+						}
+						else if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 3)
+						{
+							MonSpawnCycle(1, 2); // (몬스터 한번에 생성 마리, 몬스터 ID)
+						}
+						else if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 4)
+						{
+							MonSpawnCycle(1, 3); // (몬스터 한번에 생성 마리, 몬스터 ID)
+						}
+					}
+
+				}
+			}
+		}
+		m_isSpawnCycle = false;
 
 		m_pMonsterMag->update();
 		m_player->update();
@@ -319,12 +346,12 @@ void stageScene::render(HDC hdc)
 
 				/*if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
-					Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
+				   Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+					  m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+					  m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
 
-			
-				//}
+
+					  //}
 			}
 
 		}
@@ -420,313 +447,282 @@ void stageScene::FixedLoadEvent()
 
 }
 
-void stageScene::MonSpawnCycle(int SpawnCycle,int SpawnOfNumber, int MonNumber, int CycleDecreaseNum,
-	int TimetoComplete, int AbilityType, int AbilityCycle)
+void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 {
-	if (true)
+	SpawnTile.nSpawnOfNumber = SpawnOfNumber;
+	SpawnTile.nSPawnNumber = MonNumber;
+	for (int i = 0; i < SpawnTile.nSpawnOfNumber; i++)
 	{
-		SpawnTile.nSpawnOfNumber = SpawnOfNumber;
-		SpawnTile.nSPawnNumber = MonNumber;
-		for (int i = 0; i < SpawnTile.nSpawnOfNumber; i++)
+		switch (SpawnTile.nSPawnNumber)
 		{
-			switch (SpawnTile.nSPawnNumber)
-			{
-			case 0:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_FLY;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_DEF_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
-				Moninfo.tHp = 400.0f;
-				Moninfo.tHpMax = 400.0f;
-				m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 1:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_SPEED_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Blue_Guardian", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 2:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Blue_Mindflayer", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 3:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_FLY;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Bugman", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 4:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Cetus", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 5:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 500.0f;
-				Moninfo.tHpMax = 500.0f;
-				m_pMonsterMag->Regeneration("BG_Coven", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 6:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_DEF_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Cow", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 7:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Cyclops", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 8:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Dark_Lord", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 9:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Dog", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 10:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Eye_Slime", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 11:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Faun_Archer", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 12:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Firewolf", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 13:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_FLY;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Gargoyle", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 14:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 50.0f;
-				Moninfo.tmaxGaugeSub = 20.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Giant_Run", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 15:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Gnome_Run", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 16:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Igor", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 17:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Itchy", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			case 18:
-				Moninfo.tFireDelay = 120;
-				Moninfo.tMoveSpeed = 0.5f;
-				Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tminGaugeSub = 70.0f;
-				Moninfo.tmaxGaugeSub = 50.0f;
-				Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-				Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-				Moninfo.tUnKnokBack = 0.0f;
-				Moninfo.tHp = 100.0f;
-				Moninfo.tHpMax = 100.0f;
-				m_pMonsterMag->Regeneration("BG_Knife_dude", Moninfo, m_pBulletMagMons, m_player);
-				break;
-			}
-		}
-		m_SpawnCount++;
-			SpawnTile.isActive = false;
-	}
-	if(TimetoComplete <= m_SpawnWorldTime) // 몬스터 스폰이 지속되는 시간
-	{
-	m_isCount++; // 스폰되는 주기 카운트
-		if (m_isCount == SpawnTile.nSpawnCycle)
-		{
-			SpawnTile.isActive = true;
-			m_isCount = 0;
-		}
-		if (m_SpawnCount == CycleDecreaseNum)
-		{
-			SpawnTile.nSpawnCycle -= 1;
+		case 0:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_DEF_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
+			Moninfo.tHp = 400.0f;
+			Moninfo.tHpMax = 400.0f;
+			m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 1:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_SPEED_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Blue_Guardian", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 2:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Blue_Mindflayer", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 3:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_FLY;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Bugman", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 4:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Cetus", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 5:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 500.0f;
+			Moninfo.tHpMax = 500.0f;
+			m_pMonsterMag->Regeneration("BG_Coven", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 6:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_DEF_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Cow", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 7:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Cyclops", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 8:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Dark_Lord", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 9:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Dog", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 10:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_CRAWL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Eye_Slime", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 11:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Faun_Archer", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 12:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Firewolf", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 13:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_FLY;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Gargoyle", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 14:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 50.0f;
+			Moninfo.tmaxGaugeSub = 20.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Giant_Run", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 15:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Gnome_Run", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 16:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_WALK;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Igor", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 17:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Itchy", Moninfo, m_pBulletMagMons, m_player);
+			break;
+		case 18:
+			Moninfo.tFireDelay = 120;
+			Moninfo.tMoveSpeed = 0.5f;
+			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tminGaugeSub = 70.0f;
+			Moninfo.tmaxGaugeSub = 50.0f;
+			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
+			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
+			Moninfo.tUnKnokBack = 0.0f;
+			Moninfo.tHp = 100.0f;
+			Moninfo.tHpMax = 100.0f;
+			m_pMonsterMag->Regeneration("BG_Knife_dude", Moninfo, m_pBulletMagMons, m_player);
+			break;
 		}
 	}
-	else
-	{
-		SpawnTile.isActive = false;
-	}
-	m_SpawnWorldTime++;
-	if (AbilityCycle == m_SpawnWorldTime)
-	{
-		m_isMonLvUp = true;
-	}
-	if (m_isMonLvUp)
-	{
-		Moninfo.tHp += AbilityType;
-		Moninfo.tHpMax += AbilityType;
-		Moninfo.tDamageSub += AbilityType;
-		m_isMonLvUp = false;
-	}
+	m_SpawnCount++;
+	m_isSpawnCycle = false;
 }
+
+
 
 void stageScene::ColRc()
 {
