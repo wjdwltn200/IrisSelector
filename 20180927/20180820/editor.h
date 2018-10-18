@@ -43,6 +43,7 @@ private:
 	bool m_bIsMiniMapOn;
 	bool m_bIsTextOn;
 	bool m_bIsNumberOn;
+	bool m_bIsAutoOn;
 
 	int m_rcSelectedTileSampleNum;
 	int MiniMap_Ratio;

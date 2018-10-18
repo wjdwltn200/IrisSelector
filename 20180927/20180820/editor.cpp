@@ -87,9 +87,9 @@ void editor::ButtonEvent(HWND hWnd, UINT iMessage, WPARAM wParam)
 		MAPCAMERA->init();
 		break;
 
-		//case IDM_NOTICE_HELP: // 32772
-		//	DialogBox(g_hInstance, MAKEINTRESOURCE(ID_NOTICE_HELP), hWnd, NULL);
-		//	break;
+	//case 32803: // 32772
+	//	DialogBox(g_hInstance, MAKEINTRESOURCE(ID_NOTICE_HELP), hWnd, NULL);
+	//	break;
 	}
 
 	// aboutBox 여는법
@@ -345,6 +345,17 @@ void editor::KeyEvent()
 	{
 		if (st_obj == isTerrain) m_rcSelectedTile.top += 1;
 	}
+	if (KEYMANAGER->isOnceKeyDown('V') && m_bIsUnfold == true)
+	{
+		if (st_obj == isTerrain) m_rcSelectedTile.top -= 1;
+	}
+	if (KEYMANAGER->isOnceKeyDown('O'))
+	{
+		if (m_bIsAutoOn)
+			m_bIsAutoOn = false;
+		else
+			m_bIsAutoOn = true;
+	}
 	if (KEYMANAGER->isOnceKeyDown(VK_F6))
 	{
 		if (m_bIsTextOn)
@@ -499,7 +510,20 @@ void editor::render(HDC hdc)
 			MAPCAMERA->getCameraX(), MAPCAMERA->getCameraY());
 		TextOut(hdc, 400, 100, szText, strlen(szText));
 
-		
+	}
+
+	if(m_bIsAutoOn)
+	{
+		char szTextAuto[50];
+		// TRANSPARENT : 투명, OPAQUE : 불투명
+		SetBkMode(hdc, TRANSPARENT);
+		SetTextColor(hdc, RGB(0, 0, 10));
+		MY_UTIL::FontOption(hdc, 25, 0);
+		sprintf_s(szTextAuto, "%s", "오토타일ON");
+		TextOut(hdc, 340, 600,szTextAuto, strlen(szTextAuto));
+		MY_UTIL::FontDelete(hdc);
+
+
 	}
 
 	/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
