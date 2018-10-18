@@ -522,8 +522,6 @@ void editor::render(HDC hdc)
 		sprintf_s(szTextAuto, "%s", "오토타일ON");
 		TextOut(hdc, 340, 600,szTextAuto, strlen(szTextAuto));
 		MY_UTIL::FontDelete(hdc);
-
-
 	}
 
 	/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,

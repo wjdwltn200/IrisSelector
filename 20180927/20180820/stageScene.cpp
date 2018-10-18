@@ -26,6 +26,22 @@ static void Func_button2(void)
 
 HRESULT stageScene::init()
 {
+	DWORD dwRemove = WS_CAPTION | WS_BORDER | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+	// This should be kept for reverse operation
+	DWORD dwStyle = ::GetWindowLong(g_hWnd, GWL_STYLE);
+	HMENU hMenu = ::GetMenu(g_hWnd);
+	WINDOWPLACEMENT wp = { sizeof WINDOWPLACEMENT };
+	::GetWindowPlacement(g_hWnd, &wp);
+
+	::LockWindowUpdate(g_hWnd); // prevent intermediate redrawing
+	::SetMenu(g_hWnd, NULL);
+	::SetWindowLong(g_hWnd, GWL_STYLE, dwStyle & ~dwRemove);
+	HDC hDC = ::GetWindowDC(NULL);
+	::LockWindowUpdate(NULL); // allow redrawing
+	::SetWindowPos(g_hWnd, NULL, 100, 100, 800, 800, SWP_FRAMECHANGED);
+
+
+
 	m_soundMag.init();
 	m_soundMag.addSound("sound/sound_StageBGM.wav", true, true);
 	m_soundMag.addSound("sound/EnemyDead0.wav", false, false);
@@ -285,6 +301,13 @@ void stageScene::KeyEvent()
 		else
 			m_bIsFireOn = true;
 	}
+	if (KEYMANAGER->isOnceKeyDown('P'))
+	{
+		if (m_bIsScoreOn)
+			m_bIsScoreOn = false;
+		else
+			m_bIsScoreOn = true;
+	}
 	//CAMERA->keyUpdate();
 	/////////////////////////////
 
@@ -355,6 +378,8 @@ void stageScene::render(HDC hdc)
 		m_pItemMag->render(hdc);
 		m_player->render(hdc);
 
+
+		ClearEvent();
 		//TIMEMANAGER->render(hdc);
 	}
 
@@ -397,6 +422,28 @@ void stageScene::render(HDC hdc)
 		TextOut(hdc, 400, 100, szText, strlen(szText));
 	}
 
+	if (m_bIsScoreOn)
+	{
+		char szTextStage[128];
+		// TRANSPARENT : 투명, OPAQUE : 불투명
+		SetBkMode(hdc, TRANSPARENT);
+		SetTextColor(hdc, RGB(150, 0, 100));
+		MY_UTIL::FontOption(hdc, 25, 0);
+		sprintf_s(szTextStage, "%s : %d", "스테이지", m_stageNum);
+		TextOut(hdc, 320, 42, szTextStage, strlen(szTextStage));
+		MY_UTIL::FontDelete(hdc);
+
+
+		char szTextScore[128];
+		// TRANSPARENT : 투명, OPAQUE : 불투명
+		SetBkMode(hdc, TRANSPARENT);
+		SetTextColor(hdc, RGB(150, 0, 100));
+		MY_UTIL::FontOption(hdc, 25, 0);
+		sprintf_s(szTextScore, "%s : %d", "점수", m_ClearScore);
+		TextOut(hdc, 320, 15, szTextScore, strlen(szTextScore));
+		MY_UTIL::FontDelete(hdc);
+
+	}
 
 	if (m_bIsFireOn)
 	{
@@ -929,6 +976,15 @@ void stageScene::SpawnGateTime()
 		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
 		break;
 	}
+
+}
+
+void stageScene::ClearEvent()
+{
+	if (m_stageNum >= 18 && m_ClearScore >= 500)
+		SCENEMANAGER->changeScene("ending");
+	
+	
 
 }
 

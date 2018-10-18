@@ -36,6 +36,7 @@ private:
 	bool m_bIsCulling;
 	bool m_bIsCameraTextOn;
 	bool m_bIsFireOn;
+	bool m_bIsScoreOn;
 
 	static int buttonNum;
 	static int buttonOK;
@@ -107,6 +108,7 @@ public:
 	void ColRc();
 	bool getTileIsMove(int x) { return m_pTiles[x].isMove; }
 	void SpawnGateTime();
+	void ClearEvent();
 
 	friend void Func_button1(void);
 	friend void Func_button2(void);
