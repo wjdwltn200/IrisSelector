@@ -23,8 +23,12 @@ public:
 
 	void render(HDC hdc);
 
+
 	float GetX() { return m_fX; }
+	void SetX(float fX) { m_fX = fX; }
 	float GetY() { return m_fY; }
+	void SetY(float fY) { m_fX = fY; }
+
 
 	RECT GetRC() { return m_rc; }
 

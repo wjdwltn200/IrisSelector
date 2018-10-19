@@ -157,7 +157,8 @@ void stageScene::update()
 	if (buttonNum == 2)
 	{
 		LoadEvent();
-		buttonNum++;
+		g_saveData.gTileMaxCountX = m_pTiles[0].terrain;
+		g_saveData.gTileMaxCountY = m_pTiles[0].terrain;
 	}
 	if (buttonNum == 3)
 	{
@@ -233,10 +234,6 @@ void stageScene::update()
 
 		ColRc();
 
-
-		SCROLL->update(m_player->getX(), m_player->getY());
-		//CAMERA->update();
-
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
@@ -244,6 +241,9 @@ void stageScene::update()
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
 			}
 		}
+
+		SCROLL->update(m_player->getX(), m_player->getY());
+		//CAMERA->update();
 
 	}
 
@@ -282,6 +282,13 @@ void stageScene::KeyEvent()
 			m_bIsScoreOn = false;
 		else
 			m_bIsScoreOn = true;
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_F6))
+	{
+		if (m_bIsCameraTextOn)
+			m_bIsCameraTextOn = false;
+		else
+			m_bIsCameraTextOn = true;
 	}
 	//CAMERA->keyUpdate();
 	/////////////////////////////
@@ -388,12 +395,12 @@ void stageScene::render(HDC hdc)
 
 		SetTextColor(hdc, RGB(255, 0, 255));
 
-		sprintf_s(szText, "m_ptMoveCameraX : %f / m_ptMoveCameraY : %f",
-			CAMERA->getfocusCameraX(), CAMERA->getfocusCameraY());
+		sprintf_s(szText, "È­¸é½ÃÀÛÁÂÇ¥X : %f / È­¸é½ÃÀÛÁÂÇ¥Y : %f",
+			SCROLL->GetX(), SCROLL->GetY());
 		TextOut(hdc, 400, 0, szText, strlen(szText));
 
-		sprintf_s(szText, "m_ptCameraX : %f / m_ptCameraY : %f",
-			CAMERA->getCameraX(), CAMERA->getCameraY());
+		sprintf_s(szText, "Ä³¸¯ÅÍÁÂÇ¥ : %f / Ä³¸¯ÅÍÁÂÇ¥Y : %f",
+			m_player->getX(), m_player->getY());
 		TextOut(hdc, 400, 100, szText, strlen(szText));
 	}
 
@@ -451,8 +458,6 @@ void stageScene::LoadEvent()
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
 		TXTDATA->getSingleton()->mapLoad(szFileName1, m_pTiles);
 	}
-	g_saveData.gTileMaxCountX = m_pTiles[0].terrain;
-	g_saveData.gTileMaxCountY = m_pTiles[0].terrain;
 }
 
 void stageScene::FixedLoadEvent()

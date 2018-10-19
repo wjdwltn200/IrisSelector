@@ -174,9 +174,6 @@
     <ClInclude Include="itemManager.h">
       <Filter>2DGameFramework\manager</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>MainGame</Filter>
-    </ClInclude>
     <ClInclude Include="MapCamera.h">
       <Filter>MainGame\editor</Filter>
     </ClInclude>
@@ -292,9 +289,6 @@
     </ClCompile>
     <ClCompile Include="itemManager.cpp">
       <Filter>2DGameFramework\manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="MapCamera.cpp">
       <Filter>MainGame\editor</Filter>

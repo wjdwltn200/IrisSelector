@@ -123,8 +123,8 @@ void bullet::render(HDC hdc)
 	//EllipseMakeCenter(hdc, m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth() * m_bulletInfo.tScale, m_pImg->getFrameHeight() * m_bulletInfo.tScale);
 	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	
-	m_pImg->aniRender(hdc, m_bulletInfo.tPosX - (m_pImg->getFrameWidth() / 2) * m_bulletInfo.tScale,
-		m_bulletInfo.tPosY - (m_pImg->getFrameHeight() / 2) * m_bulletInfo.tScale, m_pAni, m_bulletInfo.tScale, true, 255);
+	m_pImg->aniRender(hdc, (m_bulletInfo.tPosX ) - (m_pImg->getFrameWidth() / 2) * m_bulletInfo.tScale,
+		(m_bulletInfo.tPosY ) - (m_pImg->getFrameHeight() / 2) * m_bulletInfo.tScale, m_pAni, m_bulletInfo.tScale, true, 255);
 
 	//char szText[256];
 
@@ -156,7 +156,7 @@ void bullet::movement()
 
 	moveTypeAct(m_bulletInfo.tMoveType);
 
-	m_rc = RectMakeCenter(m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth() * m_bulletInfo.tScale / 2, m_pImg->getFrameHeight() * m_bulletInfo.tScale / 2);
+	m_rc = RectMakeCenter(m_bulletInfo.tPosX - SCROLL->GetX(), m_bulletInfo.tPosY - SCROLL->GetY(), m_pImg->getFrameWidth() * m_bulletInfo.tScale / 2, m_pImg->getFrameHeight() * m_bulletInfo.tScale / 2);
 
 	switch (m_bulletInfo.tMoveActType)
 	{
@@ -243,7 +243,7 @@ void bullet::moveTypeAct(int moveType)
 
 void bullet::HitEff()
 {
-	m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2) /** m_bulletInfo.tScale*/ , m_bulletInfo.tPosY - (30 / 2) /** m_bulletInfo.tScale*/);
+	m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2)  /** m_bulletInfo.tScale*/ , m_bulletInfo.tPosY - (30 / 2)  /** m_bulletInfo.tScale*/);
 	SecondBulletFire();
 	m_isAlive = false;
 }
