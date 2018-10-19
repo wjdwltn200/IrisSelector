@@ -400,7 +400,7 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 		switch (minSubInfo)
 		{
 		case MONSTER_SUB::MONSTER_ATT_UP:
-			m_tMonInfo.tDamageSub = 10.0f;
+			m_tMonInfo.tDamageSub = 1.0f;
 			break;
 		case MONSTER_SUB::MONSTER_DEF_UP:
 			m_tMonInfo.tDef = 4.0f;
