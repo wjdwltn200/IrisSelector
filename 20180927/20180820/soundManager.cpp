@@ -134,6 +134,20 @@ void soundManager::resume(string soundName)
 	}
 }
 
+void soundManager::setVolume(string soundName, float volume)
+{
+	int index = 0;
+	for (auto p : m_mapSounds)
+	{
+		if (p.first == soundName)
+		{
+			m_channel[index]->setVolume(volume);
+			break;
+		}
+		index++;
+	}
+}
+
 bool soundManager::isPlaying(string soundName)
 {
 	bool isPlay = false;

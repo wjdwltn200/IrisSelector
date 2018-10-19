@@ -13,7 +13,13 @@ HRESULT titleScene::init()
 	// 사운드
 	m_soundMag.init();
 	m_soundMag.addSound("sound/sound_titleBGM.wav", true, true);
+	m_soundMag.addSound("sound/sound_playerAtt.wav", false, false);
 	m_soundMag.play("sound/sound_titleBGM.wav", g_saveData.gMainBGMValue);
+
+	m_isOption = false;
+	m_soundSelectValue = 0;
+	m_BgmValue = 10;
+	m_SeValue = 10;
 
 	// 폰트
 	AddFontResourceA("BMHANNAAir_ttf.ttf");
@@ -90,6 +96,11 @@ HRESULT titleScene::init()
 	// 타이틀 이미지
 	m_titleScene = IMAGEMANAGER->addImage("titleImage", "image/resources/UI_image/title_image/titleScene.bmp", WINSIZEX, WINSIZEY);
 	m_button = IMAGEMANAGER->addImage("buttonBase", "image/resources/UI_image/title_image/button_base.bmp", 162 * 2, 360 * 2, 1, 6, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("option_UI", "image/resources/UI_image/title_image/option_Ui.bmp", 498, 365, 1, 1);
+	IMAGEMANAGER->addImage("option_UI_Sound", "image/resources/UI_image/title_image/option_Sound_Icon_Ui.bmp", 43, 69, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("option_UI_Sound_Value", "image/resources/UI_image/title_image/option_Sound_Value_Ui.bmp", 12, 59, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("option_UI_Sound_Select", "image/resources/UI_image/title_image/option_Sound_select_Ui.bmp", 75, 69, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("option_UI_Sound_BG", "image/resources/UI_image/title_image/option_Sound_BG_Ui.bmp", WINSIZEX, WINSIZEY, 1, 1, true, RGB(255, 0, 255));
 
 	// 버튼 tag 초기화
 	memset(&m_tButtonInfo, NULL, sizeof(m_tButtonInfo));
@@ -113,20 +124,25 @@ void titleScene::update()
 	//if (KEYMANAGER->isOnceKeyDown(VK_F2))
 	//	SCENEMANAGER->changeScene("editor");
 
+	OptionOn();
+
+	if (m_isOption) return;
+
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
-		m_soundMag.stop("sound/sound_titleBGM.wav");
 
 		switch (m_tButtonInfo.carrFrameX)
 		{
 		case TITEL::GAME_START_SC: // 스테이지씬
+			m_soundMag.stop("sound/sound_titleBGM.wav");
+
 			SCENEMANAGER->changeScene("stage");
 			break;
 		case TITEL::EDITOR_MODE_SC: // 에디터씬
 			SCENEMANAGER->changeScene("editor");
 			break;
 		case TITEL::OPTION_SC: // 옵션
-			SCENEMANAGER->changeScene("stage");
+			m_isOption = true;
 			break;
 		case TITEL::CREATERS_SC: // 만든이들
 			SCENEMANAGER->changeScene("stage");
@@ -177,8 +193,136 @@ void titleScene::render(HDC hdc)
 		m_button->frameAlphaRender(hdc, (WINSIZEX / 2) - (m_button->getFrameWidth() / 2) * 1.2f, (WINSIZEY / 2) + ((WINSIZEY / 2) / 2) - (m_button->getFrameHeight() / 2) * 1.2f, 0, m_tButtonInfo.carrFrameX, 1.2f, 0);
 	}
 
-	
+	if (m_isOption)
+	{
+		IMAGEMANAGER->findImage("option_UI_Sound_BG")->alphaRender(hdc, 155);
 
+
+		IMAGEMANAGER->findImage("option_UI")->render(hdc,
+			(WINSIZEX / 2) - 498 / 2,
+			(WINSIZEY / 2) - 365 / 2);
+
+		for (int i = 0; i < 2; i++)
+		{
+			IMAGEMANAGER->findImage("option_UI_Sound")->render(hdc,
+				(WINSIZEX / 2 - OPTION_SOUND_X - 10) - 43 / 2,
+				(WINSIZEY / 2 - OPTION_SOUND_Y) + ((i) * OPTION_SOUND_SIZE_Y) - 69 / 2);
+		}
+
+
+		for (int i = 0; i < m_BgmValue; i++)
+		{
+			IMAGEMANAGER->findImage("option_UI_Sound_Value")->render(hdc,
+				(WINSIZEX / 2 - OPTION_SOUND_X + ((i + 1) * 25)) - 12 / 2,
+				(WINSIZEY / 2 - OPTION_SOUND_Y) - 59 / 2);
+		}
+
+		for (int i = 0; i < m_SeValue; i++)
+		{
+			IMAGEMANAGER->findImage("option_UI_Sound_Value")->render(hdc,
+				(WINSIZEX / 2 - OPTION_SOUND_X + ((i + 1) * 25)) - 12 / 2,
+				(WINSIZEY / 2 - OPTION_SOUND_Y) + (OPTION_SOUND_SIZE_Y) - 59 / 2);
+		}
+
+		if (m_soundSelectValue == 0)
+		{
+			IMAGEMANAGER->findImage("option_UI_Sound_Select")->render(hdc,
+				(WINSIZEX / 2 - OPTION_SOUND_X - 150) - 75 / 2,
+				(WINSIZEY / 2 - OPTION_SOUND_Y) - 69 / 2);
+		}
+		else if (m_soundSelectValue == 1)
+		{
+			IMAGEMANAGER->findImage("option_UI_Sound_Select")->render(hdc,
+				(WINSIZEX / 2 - OPTION_SOUND_X - 150) - 75 / 2,
+				(WINSIZEY / 2 - OPTION_SOUND_Y) + (OPTION_SOUND_SIZE_Y) - 69 / 2);
+		}
+
+		char szText[256];
+		SetBkMode(hdc, TRANSPARENT);
+
+		MY_UTIL::FontOption(hdc, 42, 0);
+		sprintf_s(szText, "사운드 설정");
+		TextOut(hdc,
+			(WINSIZEX / 2) - 100,
+			(WINSIZEY / 2) - 160,
+			szText, strlen(szText));
+		MY_UTIL::FontDelete(hdc);
+
+		MY_UTIL::FontOption(hdc, 32, 0);
+		sprintf_s(szText, "BGM");
+		TextOut(hdc,
+			(WINSIZEX / 2 - OPTION_SOUND_X - 70) - 43 / 2,
+			(WINSIZEY / 2 - OPTION_SOUND_Y) - 69 / 2,
+			szText, strlen(szText));
+
+		sprintf_s(szText, "SE");
+		TextOut(hdc,
+			(WINSIZEX / 2 - OPTION_SOUND_X - 70) - 43 / 2,
+			(WINSIZEY / 2 - OPTION_SOUND_Y) + (OPTION_SOUND_SIZE_Y) - 69 / 2,
+			szText, strlen(szText));
+
+		MY_UTIL::FontDelete(hdc);
+
+	}
+
+}
+
+void titleScene::OptionOn()
+{
+	if (!m_isOption) return;
+
+	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
+		m_isOption = false;
+
+	if (m_soundSelectValue != 1 && KEYMANAGER->isOnceKeyDown(VK_DOWN))
+	{
+		m_soundSelectValue += 1;
+	}
+	else if (m_soundSelectValue != 0 && KEYMANAGER->isOnceKeyDown(VK_UP))
+	{
+		m_soundSelectValue -= 1;
+	}
+
+	if (m_soundSelectValue == 0)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		{
+			if (m_BgmValue == 0) return;
+
+			g_saveData.gMainBGMValue -= 0.1f;
+			m_BgmValue -= 1;
+			m_soundMag.setVolume("sound/sound_titleBGM.wav", g_saveData.gMainBGMValue);
+		}
+		else if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		{
+			if (m_BgmValue == 10) return;
+
+			g_saveData.gMainBGMValue += 0.1f;
+			m_BgmValue += 1;
+			m_soundMag.setVolume("sound/sound_titleBGM.wav", g_saveData.gMainBGMValue);
+		}
+	}
+	else if (m_soundSelectValue == 1)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		{
+			if (m_SeValue == 0) return;
+
+			g_saveData.gSeValue -= 0.1f;
+			m_SeValue -= 1;
+			m_soundMag.setVolume("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+			m_soundMag.play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+		}
+		else if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		{
+			if (m_SeValue == 10) return;
+
+			g_saveData.gSeValue += 0.1f;
+			m_SeValue += 1;
+			m_soundMag.setVolume("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+			m_soundMag.play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+		}
+	}
 }
 
 

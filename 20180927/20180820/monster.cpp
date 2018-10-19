@@ -7,6 +7,7 @@
 #include "progressBar.h"
 #include "effectManager.h"
 #include "soundManager.h"
+#include "itemManager.h"
 
 HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint)
 {
@@ -22,8 +23,8 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 200.0f;
-	m_tBulletInfo.tBulletBoom = true;
+	m_tBulletInfo.tRange = 400.0f;
+	m_tBulletInfo.tBulletBoom = false;
 
 	m_tBulletInfo.tDmage = 1.0f + m_tMonInfo.tDamageSub;
 	m_tBulletInfo.tKnokBack = 0.0f;
@@ -46,7 +47,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfoSub.tRadius = 0.5f;
 	m_tBulletInfoSub.tExpRadius = 0.5f;
-	m_tBulletInfoSub.tRange = 200.0f;
+	m_tBulletInfoSub.tRange = 400.0f;
 	m_tBulletInfoSub.tBulletBoom = false;
 
 	m_tBulletInfoSub.tDmage = 1.0f + m_tMonInfo.tDamageSub;
@@ -303,9 +304,17 @@ void monster::knokback(float playerkuokback, float monsterHitRecovery)
 
 }
 
-void monster::Damge(float dam, soundManager * soundMagPoint)
+void monster::Damge(float dam, soundManager * soundMagPoint, itemManager * itemMagPoint)
 {
 	// 데미지가 받을때 방어력 적용
+
+	int tempItemValue = itemMagPoint->getItemMax();
+	tagItemInfo ItemInfo;
+	ItemInfo.tScale = 1.0f;
+	ItemInfo.tTimer = 1000;
+	ItemInfo.tRadius = 1.5f;
+	ItemInfo.posX = m_tMonInfo.tPosX;
+	ItemInfo.posY = m_tMonInfo.tPosY;
 
 	dam -= m_tMonInfo.tDef;
 	if (m_isHealing)
@@ -324,6 +333,13 @@ void monster::Damge(float dam, soundManager * soundMagPoint)
 		m_tMonInfo.tDef = 5.0f;
 		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2) - SCROLL->GetX(), m_tMonInfo.tPosY - (384 / 3 / 2) - SCROLL->GetY());
 		m_tMonInfo.tScore += RANDOM->getInt(4);
+
+		int tempItem = RANDOM->getFromIntTo(1, tempItemValue + 10);
+
+		if (tempItem <= tempItemValue)
+		{
+			itemMagPoint->itemDrop("ItemObject", tempItem, ItemInfo, m_pEffMag);
+		}
 
 		// 사망 사운드
 		switch (RANDOM->getFromIntTo(0, 6))
@@ -450,8 +466,8 @@ void monster::Enemy_LevelUp(int type)
 
 void monster::render(HDC hdc)
 {
-	Ellipse(hdc, m_tMonInfo.m_rc.left - SCROLL->GetX(), m_tMonInfo.m_rc.top - SCROLL->GetY(), m_tMonInfo.m_rc.right - SCROLL->GetX(), m_tMonInfo.m_rc.bottom - SCROLL->GetY());
-	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 10, 10);
+	//Ellipse(hdc, m_tMonInfo.m_rc.left - SCROLL->GetX(), m_tMonInfo.m_rc.top - SCROLL->GetY(), m_tMonInfo.m_rc.right - SCROLL->GetX(), m_tMonInfo.m_rc.bottom - SCROLL->GetY());
+//	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 10, 10);
 
 	m_monsterType->aniRender(hdc,
 		(m_tMonInfo.tPosX - SCROLL->GetX())- (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale  ,

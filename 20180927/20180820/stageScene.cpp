@@ -58,7 +58,6 @@ HRESULT stageScene::init()
 	m_soundMag.addSound("sound/sound_playerHit.wav", false, false);
 	m_soundMag.addSound("sound/sound_playerAtt.wav", false, false);
 
-	m_soundMag.play("sound/sound_StageBGM.wav", g_saveData.gMainBGMValue);
 
 	//tagTile * m_pTiles = new tagTile[g_saveData.gTileMaxCountX * g_saveData.gTileMaxCountY];
 	m_pTileSet[0] = IMAGEMANAGER->findImage("tileset1");
@@ -97,7 +96,6 @@ HRESULT stageScene::init()
 	m_pEffMagr->addEffect("Item_Get1", "image/resources/item_image/Item_Get.bmp", 320, 31, (320 / 4), 31, 15, 5);
 	m_pEffMagr->addEffect("Item_Get2", "image/resources/item_image/Item_Get2.bmp", 230, 70, (230 / 5), 70, 15, 5);
 
-	ShowCursor(FALSE);
 
 	m_player = new PlayerCharacter;
 	m_player->init(&m_soundMag);
@@ -114,6 +112,7 @@ HRESULT stageScene::init()
 	m_pMonsterMag->init(50);
 
 	m_pItemMag = new itemManager;
+	m_pItemMag = m_pItemMag;
 	m_pItemMag->init(10);
 	m_isSpawnCycle = false;
 	m_GateNum = 0;
@@ -123,38 +122,9 @@ HRESULT stageScene::init()
 	m_MaxSpawnNum = 0;
 	m_ClearScore = 0;
 
+
+
 	m_isTest = false; // 정지수 : 테스트용으로 만듦
-
-
-
-
-	tagItemInfo ItemInfo;
-	ItemInfo.tScale = 1.0f;
-	ItemInfo.tTimer = 1000;
-	ItemInfo.tRadius = 1.5f;
-	ItemInfo.tSkillType = 1;
-	ItemInfo.posX = 300;
-	ItemInfo.posY = 100;
-	m_pItemMag->itemDrop("ItemObject", 2, ItemInfo, m_pEffMagr);
-	ItemInfo.posY += 100;
-
-	m_pItemMag->itemDrop("ItemObject", 1, ItemInfo, m_pEffMagr);
-
-	ItemInfo.posY += 100;
-
-	m_pItemMag->itemDrop("ItemObject", 3, ItemInfo, m_pEffMagr);
-	ItemInfo.posY += 100;
-
-	m_pItemMag->itemDrop("ItemObject", 4, ItemInfo, m_pEffMagr);
-	ItemInfo.posY += 100;
-
-	m_pItemMag->itemDrop("ItemObject", 5, ItemInfo, m_pEffMagr);
-	ItemInfo.posY += 100;
-
-	m_pItemMag->itemDrop("ItemObject", 6, ItemInfo, m_pEffMagr);
-
-
-
 
 	//CAMERA->init();
 	return S_OK;
@@ -192,12 +162,7 @@ void stageScene::update()
 	if (buttonNum == 3)
 	{
 		// 최초 한번만 실행되는 부분
-
-
-
-
-
-
+		ShowCursor(FALSE);
 
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -231,6 +196,8 @@ void stageScene::update()
 
 	if (buttonNum == 4)
 	{
+
+
 		KeyEvent();
 
 		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
@@ -244,6 +211,14 @@ void stageScene::update()
 				m_player->setTileRc(m_pTiles[i].rc);
 			}
 		}
+
+		if (!m_BGMreSet)
+		{
+			m_BGMreSet = true;
+			m_soundMag.play("sound/sound_StageBGM.wav", g_saveData.gMainBGMValue);
+		}
+
+
 		SpawnGateTime();
 
 		m_pMonsterMag->update();
@@ -505,8 +480,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tmaxGaugeSub = 50.0f;
 			Moninfo.tminGaugeInfo = MONSTER_DEF_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
-			Moninfo.tHp = 400.0f;
-			Moninfo.tHpMax = 400.0f;
+			Moninfo.tHp = 40.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Beholder", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 1:
@@ -518,8 +493,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tmaxGaugeSub = 50.0f;
 			Moninfo.tminGaugeInfo = MONSTER_SPEED_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 30.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Blue_Guardian", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 2:
@@ -531,8 +506,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 30.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Blue_Mindflayer", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 3:
@@ -544,8 +519,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 30.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Bugman", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 4:
@@ -558,8 +533,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 30.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Cetus", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 5:
@@ -572,8 +547,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 500.0f;
-			Moninfo.tHpMax = 500.0f;
+			Moninfo.tHp = 50.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Coven", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 6:
@@ -586,8 +561,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_DEF_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 30.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Cow", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 7:
@@ -600,8 +575,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 25.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Cyclops", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 8:
@@ -614,8 +589,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 40.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Dark_Lord", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 9:
@@ -628,8 +603,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 50.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Dog", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 10:
@@ -642,8 +617,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 60.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Eye_Slime", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 11:
@@ -656,8 +631,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 40.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Faun_Archer", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 12:
@@ -670,8 +645,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 50.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Firewolf", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 13:
@@ -684,8 +659,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 30.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Gargoyle", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 14:
@@ -697,8 +672,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tmaxGaugeSub = 20.0f;
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_HP_HEALING;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 50.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Giant_Run", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 15:
@@ -711,8 +686,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 40.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Gnome_Run", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 16:
@@ -725,8 +700,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 40.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Igor", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 17:
@@ -739,8 +714,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 50.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Itchy", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 18:
@@ -753,8 +728,8 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
 			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
 			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 100.0f;
-			Moninfo.tHpMax = 100.0f;
+			Moninfo.tHp = 60.0f;
+			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Knife_dude", Moninfo, m_pBulletMagMons, m_player);
 			break;
 		}
@@ -829,7 +804,7 @@ void stageScene::ColRc()
 					)
 				{
 					// 몬스터 피격 처리
-					(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage, &m_soundMag);
+					(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage, &m_soundMag, m_pItemMag);
 					(*MonsIter)->knokback((*PlayerBulletIter)->getTagBulletInfo().tKnokBack, (*MonsIter)->getMonInfo().tUnKnokBack);
 					(*PlayerBulletIter)->HitEff();
 					m_soundMag.play("sound/sound_MonsterHit.wav", g_saveData.gSeValue);

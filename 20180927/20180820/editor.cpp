@@ -208,7 +208,7 @@ void editor::update()
 			st_selTile = tileset3;
 		if (m_pTileSet[3] && editor::m_nPreviewNum == 3)
 			st_selTile = tileset4;
-
+		ShowCursor(FALSE);
 
 		if (m_bIsUnfold)
 		{

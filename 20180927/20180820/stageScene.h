@@ -80,6 +80,8 @@ private:
 	int m_SpawnWorldTime;
 	bool m_isMonLvUp;
 
+	bool m_BGMreSet;
+
 	//////몬스터 게이트
 	int m_GateNum; // 게이트 번호  1 ~ 18 번
 	int m_GateMonsterNum; // 게이트 동시 생성 마릿수
