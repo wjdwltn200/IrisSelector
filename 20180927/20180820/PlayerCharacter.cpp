@@ -349,7 +349,7 @@ void PlayerCharacter::getItem(tagItemInfo itemInfo)
 	itemInfo.tIsGet = true;
 	
 	m_itemNum++; // 아이템 개수 추가
-	if (m_itemNum > 7)
+	if (m_itemNum > 6)
 	{
 		m_itemNumY++;
 		m_itemNum = 1;

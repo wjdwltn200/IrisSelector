@@ -23,8 +23,8 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfo.tRadius = 0.5f;
 	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 200.0f;
-	m_tBulletInfo.tBulletBoom = true;
+	m_tBulletInfo.tRange = 400.0f;
+	m_tBulletInfo.tBulletBoom = false;
 
 	m_tBulletInfo.tDmage = 1.0f + m_tMonInfo.tDamageSub;
 	m_tBulletInfo.tKnokBack = 0.0f;
@@ -47,7 +47,7 @@ HRESULT monster::init(const char * strKey, tagMonInfo monInfo, bulletManger* bul
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
 	m_tBulletInfoSub.tRadius = 0.5f;
 	m_tBulletInfoSub.tExpRadius = 0.5f;
-	m_tBulletInfoSub.tRange = 200.0f;
+	m_tBulletInfoSub.tRange = 400.0f;
 	m_tBulletInfoSub.tBulletBoom = false;
 
 	m_tBulletInfoSub.tDmage = 1.0f + m_tMonInfo.tDamageSub;
