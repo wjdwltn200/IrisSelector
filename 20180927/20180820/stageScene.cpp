@@ -864,9 +864,8 @@ void stageScene::ColRc()
 
 void stageScene::SpawnGateTime()
 {
-	m_ClearScore += Moninfo.tScore;
 	m_isCount++; // 스폰되는 주기 카운트
-	if (m_isCount > 200.0f && (MAX_SPAWN_NUMBER >= m_MaxSpawnNum))
+	if (m_isCount > 200.0f /*&& (MAX_SPAWN_NUMBER >= m_MaxSpawnNum)*/)
 	{
 		m_isSpawnCycle = true;
 		m_GateNum++;
@@ -877,7 +876,7 @@ void stageScene::SpawnGateTime()
 			m_GateNum = 0;
 		}
 	}
-	if (m_isSpawnCycle && MAX_SPAWN_NUMBER >= m_MaxSpawnNum)
+	if (m_isSpawnCycle/* && MAX_SPAWN_NUMBER >= m_MaxSpawnNum*/)
 	{
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -896,16 +895,16 @@ void stageScene::SpawnGateTime()
 			}
 		}
 	}
-	else if (m_ClearScore == MAX_SCORE && MAX_SPAWN_NUMBER >= m_MaxSpawnNum)
-	{
-		m_stageNum++;
-	}
+	//else if (MAX_SPAWN_NUMBER < m_MaxSpawnNum)
+	//{
+	//	m_stageNum++;
+	//}
 
 	switch (m_stageNum)
 	{
 	case GATE_1 :
 		m_GateMonsterNum = 1;
-		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 3); 
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18); 
 		break;
 	case GATE_2:
 		m_GateMonsterNum = 1;
