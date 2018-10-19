@@ -466,8 +466,8 @@ void monster::Enemy_LevelUp(int type)
 
 void monster::render(HDC hdc)
 {
-	Ellipse(hdc, m_tMonInfo.m_rc.left - SCROLL->GetX(), m_tMonInfo.m_rc.top - SCROLL->GetY(), m_tMonInfo.m_rc.right - SCROLL->GetX(), m_tMonInfo.m_rc.bottom - SCROLL->GetY());
-	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 10, 10);
+	//Ellipse(hdc, m_tMonInfo.m_rc.left - SCROLL->GetX(), m_tMonInfo.m_rc.top - SCROLL->GetY(), m_tMonInfo.m_rc.right - SCROLL->GetX(), m_tMonInfo.m_rc.bottom - SCROLL->GetY());
+//	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 10, 10);
 
 	m_monsterType->aniRender(hdc,
 		(m_tMonInfo.tPosX - SCROLL->GetX())- (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale  ,
