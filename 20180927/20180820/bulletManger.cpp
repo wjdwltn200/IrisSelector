@@ -39,6 +39,8 @@ void bulletManger::release()
 
 void bulletManger::update()
 {
+	if (g_saveData.gGamePause) return;
+
 	for (m_iter = m_vecBullet.begin(); m_iter != m_vecBullet.end(); m_iter++)
 	{
 		if (!(*m_iter)->getIsAlive()) continue;

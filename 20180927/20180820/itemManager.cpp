@@ -58,6 +58,8 @@ void itemManager::release()
 
 void itemManager::update()
 {
+	if (g_saveData.gGamePause) return;
+
 	for (m_iter = m_vecItem.begin(); m_iter != m_vecItem.end(); m_iter++)
 	{
 		if ((*m_iter)->getIsAlive())

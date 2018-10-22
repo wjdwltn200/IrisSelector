@@ -20,6 +20,8 @@ void monsterManger::release()
 
 void monsterManger::update()
 {
+	if (g_saveData.gGamePause) return;
+
 	for (m_iter = m_vecMonster.begin(); m_iter != m_vecMonster.end(); m_iter++)
 	{
 		(*m_iter)->update();

@@ -11,7 +11,7 @@ private:
 	vector<uiObject*>::iterator	m_iter;
 
 public:
-	HRESULT init();
+	HRESULT init(int vecMaxSize);
 	void release();
 	void update();
 	void render(HDC hdc);
@@ -22,5 +22,12 @@ public:
 
 	uiManager();
 	~uiManager();
+};
+
+class UIManager
+{
+public:
+	UIManager();
+	~UIManager();
 };
 

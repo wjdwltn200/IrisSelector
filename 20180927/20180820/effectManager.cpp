@@ -47,6 +47,8 @@ void effectManager::release()
 
 void effectManager::update()
 {
+	if (g_saveData.gGamePause) return;
+
 	vector<effect*> vecE;
 	vector<effect*>::iterator iterVE;
 
