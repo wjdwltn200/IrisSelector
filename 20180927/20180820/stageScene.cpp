@@ -754,6 +754,16 @@ void stageScene::ColRc()
 	{
 		if (!(*MonsterBulletIter)->getIsAlive()) continue;
 
+		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
+		{
+			if (m_pTiles[i].isMove) continue;
+
+			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&temp_rc, &m_pTiles[i].rc, &(*MonsterBulletIter)->getRect()))
+			{
+				(*MonsterBulletIter)->HitEff();
+			}
+		}
+
 		if ((*MonsterBulletIter)->getIsAlive() &&
 			(*MonsterBulletIter)->getTagBulletInfo().tRadius + m_player->getRadius() >
 			(MY_UTIL::getDistance(
