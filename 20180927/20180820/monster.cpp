@@ -470,7 +470,7 @@ void monster::render(HDC hdc)
 //	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 10, 10);
 
 	m_monsterType->aniRender(hdc,
-		(m_tMonInfo.tPosX - SCROLL->GetX())- (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale  ,
+		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale  ,
 		(m_tMonInfo.tPosY - SCROLL->GetY()) - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale ,
 		m_monsterMove, m_tMonInfo.tScale, true, 255);
 }

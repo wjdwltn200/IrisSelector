@@ -46,11 +46,14 @@ void MapCamera::release()
 void MapCamera::update()
 {
 	if (m_ptMoveCameraX < WINSIZEX / 2) m_ptMoveCameraX = WINSIZEX / 2;
-	if (m_ptMoveCameraX > (g_saveData.gTileMaxCountX * TILE_SIZEX)) (g_saveData.gTileMaxCountX * TILE_SIZEY);
-	if (m_ptMoveCameraY < WINSIZEY / 2) m_ptMoveCameraY = WINSIZEY / 2;
-	if (m_ptMoveCameraY > (g_saveData.gTileMaxCountY * TILE_SIZEX)) (g_saveData.gTileMaxCountY * TILE_SIZEY);
+	if (m_ptMoveCameraX > (g_saveData.gTileMaxCountX * TILE_SIZEX - WINSIZEX / 2))
+		m_ptMoveCameraX = (g_saveData.gTileMaxCountX * TILE_SIZEX - WINSIZEX / 2);
+	if (m_ptMoveCameraY < WINSIZEY / 2) 
+		m_ptMoveCameraY = WINSIZEY / 2;
+	if (m_ptMoveCameraY > (g_saveData.gTileMaxCountY * TILE_SIZEX - WINSIZEY / 2)) 
+		m_ptMoveCameraY = (g_saveData.gTileMaxCountY * TILE_SIZEY - WINSIZEY / 2);  // 1600기준으로 1200까지 (중심좌표)
 
-	m_ptCameraX = m_ptMoveCameraX - WINSIZEX / 2;
+	m_ptCameraX = m_ptMoveCameraX - WINSIZEX / 2; // 화면시작좌표
 	if (m_ptCameraX < 0) m_ptCameraX = 0;
 	if (m_ptCameraX > (g_saveData.gTileMaxCountX * TILE_SIZEX) - WINSIZEX) m_ptCameraX = (g_saveData.gTileMaxCountX * TILE_SIZEX) - WINSIZEX;
 

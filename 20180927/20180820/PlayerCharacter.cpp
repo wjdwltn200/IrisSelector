@@ -209,27 +209,27 @@ void PlayerCharacter::update()
 
 void PlayerCharacter::render(HDC hdc)
 {
-	EllipseMakeCenter(hdc, m_fX, m_fY, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale -15);
-	//Ellipse(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	EllipseMakeCenter(hdc, (m_fX - SCROLL->GetX()), (m_fY - SCROLL->GetY()), img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
+	//Ellipse(hdc, m_rc.lef(m_fY - SCROLL->GetY())t,(m_fY - SCROLL->GetY()) m_rc.top, m_rc.right, m_rc.bottom);
 
 	img_PlayerShadow->alphaRender(hdc,
-		m_fX - (img_PlayerIdle->getFrameWidth() / 2) * 1.5f,
-		m_fY + (img_PlayerIdle->getFrameHeight() / 2 - 5.0f),
+		(m_fX - SCROLL->GetX()) - (img_PlayerIdle->getFrameWidth() / 2) * 1.5f,
+		(m_fY - SCROLL->GetY())+ (img_PlayerIdle->getFrameHeight() / 2 - 5.0f),
 		150);
 
 	// 캐릭터 이미지 랜더
 	if (m_isIdle)
 	{
 		img_PlayerIdle->aniRender(hdc,
-			m_fX - (img_PlayerIdle->getFrameWidth() / 2) * m_fPlayerScale,
-			m_fY - (img_PlayerIdle->getFrameHeight() / 2) * m_fPlayerScale,
+			(m_fX - SCROLL->GetX()) - (img_PlayerIdle->getFrameWidth() / 2) * m_fPlayerScale,
+			(m_fY - SCROLL->GetY()) - (img_PlayerIdle->getFrameHeight() / 2) * m_fPlayerScale,
 			ani_PlayerIdle, m_fPlayerScale, true, m_HitAlphaValue);
 	}
 	else
 	{
 		img_PlayerRun->aniRender(hdc,
-			m_fX - (img_PlayerRun->getFrameWidth() / 2) * m_fPlayerScale,
-			m_fY - (img_PlayerRun->getFrameHeight() / 2) * m_fPlayerScale,
+			(m_fX - SCROLL->GetX()) - (img_PlayerRun->getFrameWidth() / 2) * m_fPlayerScale,
+			(m_fY - SCROLL->GetY()) - (img_PlayerRun->getFrameHeight() / 2) * m_fPlayerScale,
 			ani_PlayerRun, m_fPlayerScale, true, m_HitAlphaValue);
 	}
 
@@ -453,13 +453,13 @@ void PlayerCharacter::PlayerInfoUi(HDC hdc)
 	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
 	TempYSize += 20.0f;
 
-	//sprintf_s(szText, "m_fX : %.1f", m_fX);
-	//TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
-	//TempYSize += 20.0f;
+	sprintf_s(szText, "m_fX : %.1f", m_fX);
+	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
+	TempYSize += 20.0f;
 
-	//sprintf_s(szText, "CurrX : %.1f", m_fCurrX);
-	//TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
-	//TempYSize += 20.0f;
+	sprintf_s(szText, "CurrX : %.1f", m_fCurrX);
+	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
+	TempYSize += 20.0f;
 
 
 
