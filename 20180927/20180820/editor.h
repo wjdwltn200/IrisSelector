@@ -44,6 +44,7 @@ private:
 	bool m_bIsTextOn;
 	bool m_bIsNumberOn;
 	bool m_bIsAutoOn;
+	bool m_bIsStartingPoint;
 
 	int m_rcSelectedTileSampleNum;
 	int MiniMap_Ratio;
