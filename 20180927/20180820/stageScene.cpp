@@ -364,12 +364,11 @@ void stageScene::render(HDC hdc)
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
 
 
-				/*if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
-				{
-				   Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
-				}*/
+				   //Rectangle(hdc,
+					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].left,
+					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].top,
+					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].right,
+					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].bottom);
 			}
 		}
 
@@ -602,6 +601,16 @@ void stageScene::ColRc()
 	// 몬스터 매니저 정보
 	std::vector<monster*> vMonster = m_pMonsterMag->getVecMons();
 	std::vector<monster*>::iterator MonsIter;
+	for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 플레이어 총알 백터
+	{
+		RECT tempRC = (*MonsIter)->getMonInfo().m_rc;
+		if ((*MonsIter)->getMonInfo().tIsAlive && IntersectRect(&temp_rc, &m_player->getRect(), &tempRC))
+		{
+			if (!m_player->getHitState())
+				m_player->PlayerDamage(1.0f);
+		}
+	}
+
 	// 몬스터 총알 충돌
 	std::vector<bullet*> vMonsterBullet = m_pBulletMagMons->getVecBullet();
 	std::vector<bullet*>::iterator MonsterBulletIter;
@@ -633,7 +642,6 @@ void stageScene::ColRc()
 			{
 				m_player->PlayerDamage((*MonsterBulletIter)->getTagBulletInfo().tDmage);
 				(*MonsterBulletIter)->HitEff();
-				m_soundMag.play("sound/sound_playerHit.wav", g_saveData.gSeValue);
 			}
 		}
 	}
@@ -645,11 +653,9 @@ void stageScene::ColRc()
 	{
 		if (!(*PlayerBulletIter)->getIsAlive()) continue;
 
-		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
+		for (int i = 0; i < m_nNumber; i++)
 		{
-			if (m_pTiles[i].isMove) continue;
-
-			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&temp_rc, &m_pTiles[i].rc, &(*PlayerBulletIter)->getRect()))
+			if (m_isTest && IntersectRect(&temp_rc, &m_pTiles_Collide[i], &(*PlayerBulletIter)->getRect()))
 			{
 				(*PlayerBulletIter)->HitEff();
 			}
@@ -725,8 +731,8 @@ void stageScene::SpawnGateTime()
 			{
 				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
 				{
-					Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right - m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left;
-					Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top - m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom;
+					Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right;
+					Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
 					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
 					{
 						MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)

@@ -72,7 +72,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	memset(&m_tMonInfo.m_rc, 0, sizeof(m_tMonInfo.m_rc));
 	memset(&m_tMonInfo, 0, sizeof(m_tMonInfo));
 
-	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, 100, 100);
+	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, 30, 30);
 	m_tMonInfo.tIsAlive = monInfo.tIsAlive;
 	m_tMonInfo.tHp = monInfo.tHp;
 	m_tMonInfo.tHpMax = monInfo.tHpMax;
@@ -82,7 +82,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_tMonInfo.tFireDelay = monInfo.tFireDelay;
 	m_tMonInfo.tFireAngle = monInfo.tFireAngle;
 	m_tMonInfo.tMoveAngle = monInfo.tMoveAngle;
-	m_tMonInfo.tRadius = m_monsterType->getFrameWidth() / 2;
+	m_tMonInfo.tRadius = 30.0f;
 	m_tMonInfo.tScale = monInfo.tScale;
 	m_tMonInfo.tScaleMax = monInfo.tScaleMax;
 	m_tMonInfo.tUnKnokBack = monInfo.tUnKnokBack;
@@ -125,7 +125,7 @@ void monster::release()
 void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 {
 	if (!m_tMonInfo.tIsAlive) return;
-			m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY - SCROLL->GetY(), m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
+	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY - SCROLL->GetY(), 30, 30);
 			m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX , m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
 	switch (m_moveTypeNum)
 	{
@@ -466,8 +466,8 @@ void monster::Enemy_LevelUp(int type)
 
 void monster::render(HDC hdc)
 {
-	//EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 10, 10);
-	//Rectangle(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
+	Rectangle(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
+	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 30, 30);
 
 	m_monsterType->aniRender(hdc,
 		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
