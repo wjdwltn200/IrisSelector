@@ -82,7 +82,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_tMonInfo.tFireDelay = monInfo.tFireDelay;
 	m_tMonInfo.tFireAngle = monInfo.tFireAngle;
 	m_tMonInfo.tMoveAngle = monInfo.tMoveAngle;
-	m_tMonInfo.tRadius = 50.0f;//monInfo.tRadius;
+	m_tMonInfo.tRadius = m_monsterType->getFrameWidth() / 2;
 	m_tMonInfo.tScale = monInfo.tScale;
 	m_tMonInfo.tScaleMax = monInfo.tScaleMax;
 	m_tMonInfo.tUnKnokBack = monInfo.tUnKnokBack;
@@ -119,6 +119,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 
 void monster::release()
 {
+	SAFE_DELETE(m_monsterMove);
 }
 
 void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)

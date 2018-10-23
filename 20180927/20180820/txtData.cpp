@@ -49,7 +49,7 @@ char * txtData::vectorArrayCombine(vector<string> vecArray)
 
 	for (int i = 0; i < vecArray.size(); i++)
 	{
-		strncat_s(str, 1024, vecArray[i].c_str(), 1022);
+		strncat_s(str, 1024, vecArray[i].c_str(), 1024);
 		if (i + 1 < vecArray.size())
 			strcat_s(str, ",");
 	}
@@ -82,6 +82,7 @@ vector<string> txtData::txtLoad(const char * loadFileName)
 vector<string> txtData::charArraySeparation(char charArray[])
 {
 	vector<string> vecStr;
+	vecStr.reserve(500);
 	const char* separator = ",";
 	char* token;
 	char* temp;

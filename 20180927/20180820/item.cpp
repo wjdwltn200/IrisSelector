@@ -62,8 +62,8 @@ HRESULT item::init(const char * imageName, tagItemInfo itemInfo, effectManager *
 
 	m_isItemIdle = true;
 	m_ItemAlphaNum = 0;
-		// RECT 초기화 (이미지 프레임 크기)
-	m_rc = RectMakeCenter(m_tItemInfo.posX, m_tItemInfo.posY, m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
+	// RECT 초기화 (이미지 프레임 크기)
+	m_rc = RectMakeCenter(m_tItemInfo.posX - SCROLL->GetX(), m_tItemInfo.posY - SCROLL->GetY(), m_pImg->getFrameWidth(), m_pImg->getFrameHeight());
 
 	m_isAlive = true;
 	m_pEffMag = pEffItem;
@@ -182,8 +182,8 @@ void item::render(HDC hdc)
 			m_tItemInfo.tScale,
 			m_tItemInfo.tItemTimerAlpha);
 	}
-	
-	
+
+
 
 	if (!m_tItemInfo.tIsGet)
 	{
@@ -284,7 +284,7 @@ void item::ItemPopup(HDC hdc)
 		MY_UTIL::FontDelete(hdc);
 
 
-		MY_UTIL::FontOption(hdc ,32, 0);
+		MY_UTIL::FontOption(hdc, 32, 0);
 		sprintf_s(szText, "[%s] : %s", tempItemGrade, tempItemName);
 		TextOut(hdc,
 			m_tItemInfo.posX - (m_pItemPopupUi->getFrameWidth() / 2) + 15.0f,
@@ -297,12 +297,12 @@ void item::ItemPopup(HDC hdc)
 		TextOut(hdc,
 			m_tItemInfo.posX - (m_pItemPopupUi->getFrameWidth() / 2) + 15.0f,
 			m_tItemInfo.posY - (m_pItemPopupUi->getFrameHeight() / 2) - 40.0f, szText, strlen(szText));
-		
+
 		RECT rcTextArea = {
 			m_pItemPopupUi->getX(),
 			m_pItemPopupUi->getY(),
 			m_pItemPopupUi->getX() + m_pItemPopupUi->getFrameWidth() - 20.0f,
-			m_pItemPopupUi->getY() + m_pItemPopupUi->getFrameHeight()};
+			m_pItemPopupUi->getY() + m_pItemPopupUi->getFrameHeight() };
 		SetTextColor(hdc, RGB(255, 255, 255));
 		sprintf_s(szText, "내용 : %s", tempItemTxt);
 		DrawText(hdc, szText, strlen(szText), &rcTextArea, DT_WORDBREAK);

@@ -140,6 +140,7 @@ void stageScene::release()
 	m_pBulletMagMons->release();
 	m_pEffMagr->release();
 	m_pItemMag->release();
+	m_soundMag.release();
 }
 
 void stageScene::update()
@@ -232,8 +233,7 @@ void stageScene::update()
 		
 		m_pMonsterMag->update();
 		m_player->update();
-
-		//m_pItemMag->update();
+		m_pItemMag->update();
 		m_pBulletMag->update();
 
 		m_pBulletMagMons->update();
@@ -365,6 +365,7 @@ void stageScene::render(HDC hdc)
 		m_pBulletMagMons->render(hdc);
 		m_pMonsterMag->render(hdc);
 		m_pItemMag->render(hdc);
+		m_pEffMagr->render(hdc);
 		m_player->render(hdc);
 		m_pUiMag->render(hdc);
 
@@ -497,7 +498,7 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			break;
 		case 3:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Bugman", Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Bugman", 4, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 4:
 			Moninfo.tHpMax = Moninfo.tHp;
@@ -707,8 +708,8 @@ void stageScene::SpawnGateTime()
 			{
 				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
 				{
-					Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left;
-					Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
+					Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right - m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left;
+					Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top - m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom;
 					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
 					{
 						MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)

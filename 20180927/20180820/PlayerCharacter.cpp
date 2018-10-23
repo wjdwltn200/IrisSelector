@@ -446,7 +446,7 @@ void PlayerCharacter::keyInput()
 	{
 		if (m_bulletDelayCount == NULL)
 		{
-			//m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+			m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
 			if (m_fCrossHairScale < m_fCrossHairScaleMax)
 			{
 				m_fCrossHairScale += 0.1f;
