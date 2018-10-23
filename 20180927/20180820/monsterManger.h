@@ -13,6 +13,11 @@ private:
 	std::vector<monster*>::iterator		m_iter;
 
 	effectManager * m_pEffMag;
+	std::vector<std::string>	m_Monsterlist;
+
+	tagMonInfo m_MonsterInfo[50];
+	tagBulletInfo m_BulletInfo[2];
+	int m_MaxMonster;
 
 	//animation * m_monsterMove;
 	//tagMonInfo m_tMonInfo;
@@ -22,7 +27,7 @@ public:
 	HRESULT init(int vecMaxSize);
 	void release();
 	void update();
-	void Regeneration(const char*strKey, tagMonInfo moninfo, bulletManger* bulletInfo, PlayerCharacter* playerInfo);
+	void Regeneration(const char*strKey, int monNumber, tagMonInfo moninfo, bulletManger* bulletInfo, PlayerCharacter* playerInfo);
 	void render(HDC hdc);
 
 	int getIter() { return m_vecMonster.size(); }
