@@ -86,13 +86,10 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("parchment", "image/wook/parchment.bmp", WINSIZEX, 350, true, RGB(255, 255, 255));
 	IMAGEMANAGER->addImage("tag_done", "image/wook/tag_done.bmp", 38, 38, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("black_big", "image/wook/black_big.bmp", 800, 800, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("rad1", "image/wook/rad11.bmp", 800, 800, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("rad2", "image/wook/rad22.bmp", 800, 800, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("rad3", "image/wook/rad33.bmp", 800, 800, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("rad4", "image/wook/rad44.bmp", 800, 800, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("alice_move", "image/wook/alice_move.bmp", 10800, 300, 18,1,true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("custom", "image/wook/button_custom.bmp", 480, 120,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("prepared", "image/wook/button_prepared.bmp", 480, 120,1,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("help", "image/wook/help.bmp", 480, 600, true, RGB(255, 0, 255));
 
 
 	// 타이틀 이미지
