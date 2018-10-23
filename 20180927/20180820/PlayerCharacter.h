@@ -4,6 +4,8 @@ class bulletManger;
 class item;
 class soundManager;
 
+#define RECT_BOX 1.5f
+
 #define BULLET_FIRST_DELAY 10
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
