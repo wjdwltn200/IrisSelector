@@ -323,7 +323,7 @@ void PlayerCharacter::getItem(tagItemInfo itemInfo)
 
 void PlayerCharacter::PlayerDamage(int dam)
 {
-	m_pSoundMag->play("sound/sound_playerHit.wav", g_saveData.gSeValue);
+	//m_pSoundMag->play("sound/sound_playerHit.wav", g_saveData.gSeValue);
 
 	m_currHp -= dam;
 	if (m_currHp < 0)
@@ -448,7 +448,7 @@ void PlayerCharacter::keyInput()
 	{
 		if (m_bulletDelayCount == NULL)
 		{
-			m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+		//	m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
 			if (m_fCrossHairScale < m_fCrossHairScaleMax)
 			{
 				m_fCrossHairScale += 0.1f;

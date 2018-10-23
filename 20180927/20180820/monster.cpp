@@ -406,7 +406,7 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 			m_tMonInfo.tDef = 4.0f;
 			break;
 		case MONSTER_SUB::MONSTER_SPEED_UP:
-			m_tMonInfo.tMoveSpeed = 10.0f;
+			m_tMonInfo.tMoveSpeed = 2.0f;
 			break;
 		case MONSTER_SUB::MONSTER_POWER_UP:
 			m_tMonInfo.tDamageSub += 10.0f;
