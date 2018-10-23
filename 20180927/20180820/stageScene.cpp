@@ -497,23 +497,14 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			break;
 		case 3:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Bugman", Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Bugman",4, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 4:
 			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Cetus",5, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 5:
-			Moninfo.tFireDelay = 120;
-			Moninfo.tMoveSpeed = 0.5f;
-			Moninfo.tMoveType = MONSTER_MOVE::MONSTER_RUN;
-			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tminGaugeSub = 70.0f;
-			Moninfo.tmaxGaugeSub = 50.0f;
-			Moninfo.tminGaugeInfo = MONSTER_ATT_UP;
-			Moninfo.tmaxGaugeInfo = MONSTER_NOMAL;
-			Moninfo.tUnKnokBack = 0.0f;
-			Moninfo.tHp = 50.0f;
+
 			Moninfo.tHpMax = Moninfo.tHp;
 			m_pMonsterMag->Regeneration("BG_Coven",6, Moninfo, m_pBulletMagMons, m_player);
 			break;
