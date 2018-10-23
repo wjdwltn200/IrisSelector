@@ -119,17 +119,30 @@ void item::update()
 		m_tItemInfo.tTimer--;
 	}
 
-	m_rc = RectMakeCenter(
-		m_tItemInfo.posX ,
-		m_tItemInfo.posY ,
-		(m_pImg->getFrameWidth() * m_tItemInfo.tScale),
-		(m_pImg->getFrameHeight() * m_tItemInfo.tScale));
+	if (!m_tItemInfo.tIsGet)
+	{
+		m_rc = RectMakeCenter(
+			m_tItemInfo.posX - SCROLL->GetX(),
+			m_tItemInfo.posY - SCROLL->GetY(),
+			(m_pImg->getFrameWidth() * m_tItemInfo.tScale),
+			(m_pImg->getFrameHeight() * m_tItemInfo.tScale));
+	}
+	else
+	{
+		m_rc = RectMakeCenter(
+			m_tItemInfo.posX,
+			m_tItemInfo.posY,
+			(m_pImg->getFrameWidth() * m_tItemInfo.tScale),
+			(m_pImg->getFrameHeight() * m_tItemInfo.tScale));
+	}
+
+
 }
 
 void item::render(HDC hdc)
 {
 	if (!m_isAlive) return;
-	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	//Ellipse(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	//EllipseMakeCenter(hdc, m_fX, m_fY, m_pImg->getFrameWidth() + 5, m_pImg->getFrameHeight() + 5);
 

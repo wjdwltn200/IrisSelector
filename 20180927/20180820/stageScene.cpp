@@ -9,6 +9,7 @@
 #include "itemManager.h"
 #include "monsterManger.h"
 #include "animation.h"
+#include "uiManager.h"
 
 char szFileName1[512];
 
@@ -96,6 +97,8 @@ HRESULT stageScene::init()
 	m_pEffMagr->addEffect("Item_Get1", "image/resources/item_image/Item_Get.bmp", 320, 31, (320 / 4), 31, 15, 5);
 	m_pEffMagr->addEffect("Item_Get2", "image/resources/item_image/Item_Get2.bmp", 230, 70, (230 / 5), 70, 15, 5);
 
+	m_pUiMag = new uiManager;
+	m_pUiMag->init(100);
 
 	m_player = new PlayerCharacter;
 	m_player->init(&m_soundMag);
@@ -132,6 +135,7 @@ HRESULT stageScene::init()
 
 void stageScene::release()
 {
+	m_pUiMag->release();
 	m_pBulletMag->release();
 	m_pBulletMagMons->release();
 	m_pEffMagr->release();
@@ -234,7 +238,7 @@ void stageScene::update()
 
 		m_pBulletMagMons->update();
 		m_pEffMagr->update();
-
+		m_pUiMag->update();
 
 		ColRc();
 
@@ -355,13 +359,13 @@ void stageScene::render(HDC hdc)
 			m_pBulletMag->getIter());
 		TextOut(hdc, 10, WINSIZEY - 20, szText, strlen(szText));
 
-		m_pEffMagr->render(hdc);
-		m_pBulletMag->render(hdc);
-		m_pBulletMagMons->render(hdc);
 		m_pMonsterMag->render(hdc);
 		m_pItemMag->render(hdc);
+		m_pBulletMag->render(hdc);
+		m_pBulletMagMons->render(hdc);
+		m_pEffMagr->render(hdc);
 		m_player->render(hdc);
-
+		m_pUiMag->render(hdc);
 
 		ClearEvent();
 		//TIMEMANAGER->render(hdc);
@@ -816,14 +820,15 @@ void stageScene::ColRc()
 					(MY_UTIL::getDistance(
 					(*PlayerBulletIter)->getTagBulletInfo().tPosX,
 						(*PlayerBulletIter)->getTagBulletInfo().tPosY,
-						(*MonsIter)->getMonInfo().tPosX - SCROLL->GetX(),
-						(*MonsIter)->getMonInfo().tPosY - SCROLL->GetY()))
+						(*MonsIter)->getMonInfo().tPosX,
+						(*MonsIter)->getMonInfo().tPosY))
 					)
 				{
 					// 몬스터 피격 처리
 					(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage, &m_soundMag, m_pItemMag);
 					(*MonsIter)->knokback((*PlayerBulletIter)->getTagBulletInfo().tKnokBack, (*MonsIter)->getMonInfo().tUnKnokBack);
 					(*PlayerBulletIter)->HitEff();
+					m_pUiMag->addHitTxt((*PlayerBulletIter)->getTagBulletInfo().tDmage, (*MonsIter)->getMonInfo().tPosX, (*MonsIter)->getMonInfo().tPosY);
 					m_soundMag.play("sound/sound_MonsterHit.wav", g_saveData.gSeValue);
 				}
 			}
@@ -840,7 +845,7 @@ void stageScene::ColRc()
 	for (ItemIter = vItem.begin(); ItemIter != vItem.end(); ItemIter++)
 	{
 
-		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getItemInfo().posX - SCROLL->GetX(), (*ItemIter)->getItemInfo().posY - SCROLL->GetY())))
+		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getItemInfo().posX, (*ItemIter)->getItemInfo().posY)))
 		{
 			m_pEffMagr->play("Item_Get1", m_player->getX() - (320 / 4) / 2, m_player->getY());
 			m_pEffMagr->play("Item_Get2", m_player->getX() - (230 / 5) / 2, m_player->getY() - (70) / 2);

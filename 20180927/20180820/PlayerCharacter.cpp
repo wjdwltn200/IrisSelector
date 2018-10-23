@@ -156,7 +156,7 @@ void PlayerCharacter::update()
 	if (m_fCrossHairScale > m_fCrossHairScaleMin)
 		m_fCrossHairScale -= 0.1f;
 
-	m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY(), img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
+	m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
 
 	ani_CrossHair->frameUpdate();
 	ani_PlayerIdle->frameUpdate();
@@ -165,13 +165,13 @@ void PlayerCharacter::update()
 
 void PlayerCharacter::render(HDC hdc)
 {
-	Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
-	EllipseMakeCenter(hdc, (m_fX - SCROLL->GetX()), (m_fY - SCROLL->GetY()), img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
+	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	//EllipseMakeCenter(hdc, (m_fX - SCROLL->GetX()), (m_fY - SCROLL->GetY()), img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
 	//Ellipse(hdc, m_rc.lef(m_fY - SCROLL->GetY())t,(m_fY - SCROLL->GetY()) m_rc.top, m_rc.right, m_rc.bottom);
 
 	img_PlayerShadow->alphaRender(hdc,
 		(m_fX - SCROLL->GetX()) - (img_PlayerIdle->getFrameWidth() / 2) * 1.5f,
-		(m_fY - SCROLL->GetY())+ (img_PlayerIdle->getFrameHeight() / 2 - 5.0f),
+		(m_fY - SCROLL->GetY())+ (img_PlayerIdle->getFrameHeight() / 2 - (5.0f * m_fPlayerScale)),
 		150);
 
 	// 캐릭터 이미지 랜더
@@ -446,7 +446,7 @@ void PlayerCharacter::keyInput()
 	{
 		if (m_bulletDelayCount == NULL)
 		{
-			m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+			//m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
 			if (m_fCrossHairScale < m_fCrossHairScaleMax)
 			{
 				m_fCrossHairScale += 0.1f;
@@ -460,13 +460,13 @@ void PlayerCharacter::keyInput()
 			{
 				if (m_tBulletInfo.tBulletSetNum == 1)
 				{
-					(*m_pBulletMag)->fire("임시", m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY(), MY_UTIL::getMouseAngle(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY()), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
+					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY()), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 				}
 				else // 총알 개수 만큼 방향을 분리
 				{
 					for (int i = 0; i < m_tBulletInfo.tBulletSetNum; i++)
 					{
-						(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY) - (i * (PI / 180.0f * (30.0f))) - ((PI / 180.0f) * MY_UTIL::getMouseAngle(m_fX, m_fY) - ((m_tBulletInfo.tBulletSetNum - 1) * (PI / 180.0f * (30.0f)))) / 2, m_tBulletInfoPoint, m_tBulletInfoSubPoint);
+						(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY()) - (i * (PI / 180.0f * (30.0f))) - ((PI / 180.0f) * MY_UTIL::getMouseAngle(m_fX, m_fY) - ((m_tBulletInfo.tBulletSetNum - 1) * (PI / 180.0f * (30.0f)))) / 2, m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 					}
 				}
 			}
@@ -474,13 +474,13 @@ void PlayerCharacter::keyInput()
 			{
 				if (m_tBulletInfo.tBulletSetNum == 1)
 				{
-					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
+					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY()), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 				}
 				else // 총알 개수 만큼 방향을 분리
 				{
 					for (int i = 0; i < m_tBulletInfo.tBulletSetNum; i++)
 					{
-						(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY) + (i * (PI / 180.0f * (360.0f / m_tBulletInfo.tBulletSetNum))), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
+						(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY()) + (i * (PI / 180.0f * (360.0f / m_tBulletInfo.tBulletSetNum))), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 					}
 				}
 			}

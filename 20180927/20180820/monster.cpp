@@ -123,7 +123,7 @@ void monster::release()
 void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 {
 	if (!m_tMonInfo.tIsAlive) return;
-			m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX , m_tMonInfo.tPosY , m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
+			m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY - SCROLL->GetY(), m_tMonInfo.tRadius * 2.0f, m_tMonInfo.tRadius * 2.0f);
 			m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX , m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
 	switch (m_moveTypeNum)
 	{
@@ -231,9 +231,7 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 			m_monsterMove->setFPS(10);
 		}
 		break;
-
-
-		break;
+		
 	case MONSTER_MOVE::MONSTER_WALK :
 		if (m_tMonInfo.m_rc.left + 70 < m_PlayerCharPoint->getRect().left
 			|| m_tMonInfo.m_rc.right - 70 > m_PlayerCharPoint->getRect().right
@@ -280,8 +278,8 @@ void monster::fireAtk()
 	if (m_tMonInfo.tFireCount == 0)
 	{
 		m_pBulletMag->fire("юс╫ц",
-			m_tMonInfo.tPosX - SCROLL->GetX(),
-			m_tMonInfo.tPosY - SCROLL->GetY(),
+			m_tMonInfo.tPosX,
+			m_tMonInfo.tPosY,
 			m_tMonInfo.tFireAngle,
 			&m_tBulletInfo,
 			&m_tBulletInfoSub);
@@ -331,7 +329,7 @@ void monster::Damge(float dam, soundManager * soundMagPoint, itemManager * itemM
 	{
 		m_tMonInfo.tIsAlive = false;
 		m_tMonInfo.tDef = 5.0f;
-		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2) - SCROLL->GetX(), m_tMonInfo.tPosY - (384 / 3 / 2) - SCROLL->GetY());
+		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2), m_tMonInfo.tPosY - (384 / 3 / 2));
 		m_tMonInfo.tScore += RANDOM->getInt(4);
 
 		int tempItem = RANDOM->getFromIntTo(1, tempItemValue + 10);
@@ -466,8 +464,8 @@ void monster::Enemy_LevelUp(int type)
 
 void monster::render(HDC hdc)
 {
-	//Ellipse(hdc, m_tMonInfo.m_rc.left - SCROLL->GetX(), m_tMonInfo.m_rc.top - SCROLL->GetY(), m_tMonInfo.m_rc.right - SCROLL->GetX(), m_tMonInfo.m_rc.bottom - SCROLL->GetY());
-//	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 10, 10);
+	//EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 10, 10);
+	//Rectangle(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
 
 	m_monsterType->aniRender(hdc,
 		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale  ,

@@ -126,15 +126,6 @@
     <ClInclude Include="button.h">
       <Filter>2DGameFramework\button</Filter>
     </ClInclude>
-    <ClInclude Include="uiButton.h">
-      <Filter>2DGameFramework\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="uiObject.h">
-      <Filter>2DGameFramework\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="uiImageView.h">
-      <Filter>2DGameFramework\ui</Filter>
-    </ClInclude>
     <ClInclude Include="uiManager.h">
       <Filter>2DGameFramework\manager</Filter>
     </ClInclude>
@@ -185,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="EndingScene.h">
       <Filter>MainGame\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="uiTxt.h">
+      <Filter>2DGameFramework\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,15 +236,6 @@
     <ClCompile Include="button.cpp">
       <Filter>2DGameFramework\button</Filter>
     </ClCompile>
-    <ClCompile Include="uiButton.cpp">
-      <Filter>2DGameFramework\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="uiImageView.cpp">
-      <Filter>2DGameFramework\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="uiObject.cpp">
-      <Filter>2DGameFramework\ui</Filter>
-    </ClCompile>
     <ClCompile Include="uiManager.cpp">
       <Filter>2DGameFramework\manager</Filter>
     </ClCompile>
@@ -301,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="EndingScene.cpp">
       <Filter>MainGame\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="uiTxt.cpp">
+      <Filter>2DGameFramework\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
