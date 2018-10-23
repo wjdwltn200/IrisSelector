@@ -57,6 +57,7 @@ private:
 	bool m_isRun;
 
 	bool m_isItemUi;
+	bool m_isRect;
 
 	int m_itemNum;
 	int m_itemNumY;
@@ -120,6 +121,7 @@ public:
 	void setY(float posY) { m_fY = posY; }
 
 	void setTileRc(RECT rc) { m_TileRc = rc; }
+	void setIsRc(bool isRc) { m_isRect = isRc; }
 
 	float getSpeed() { return m_fSpeed; }
 	bool getHitState() { return m_isHitState; }
@@ -131,7 +133,6 @@ public:
 	void isColRect(bool isRcet) { m_isRectCol = isRcet; }
 
 	void keyInput();
-	void movement();
 
 	void HitState();
 

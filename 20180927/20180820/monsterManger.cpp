@@ -27,8 +27,10 @@ HRESULT monsterManger::init(int vecMaxSize)
 		m_MonsterInfo[i].tUnKnokBack = atof(m_Monsterlist[temp++].c_str());
 		m_MonsterInfo[i].tFireDelay = atoi(m_Monsterlist[temp++].c_str());
 
-		m_BulletInfo[i].tShootType = atoi(m_Monsterlist[temp++].c_str());
-		m_BulletInfo[i].tBoomType = atoi(m_Monsterlist[temp++].c_str());
+		//m_MonsterInfo[i].tScale = atof(m_Monsterlist[temp++].c_str());
+
+		//m_BulletInfo[i].tShootType = atoi(m_Monsterlist[temp++].c_str());
+		//m_BulletInfo[i].tBoomType = atoi(m_Monsterlist[temp++].c_str());
 	}
 
 

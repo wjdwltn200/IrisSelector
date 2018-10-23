@@ -59,6 +59,8 @@ HRESULT PlayerCharacter::init(soundManager * soundPoint)
 
 	// 정지수 시작
 	memset(&m_rc, 0, sizeof(m_rc));
+	memset(&m_TileRc, 0, sizeof(m_TileRc));
+
 
 	m_fRadius = img_PlayerIdle->getFrameWidth() / 2;
 	m_fSpeed = 2.0f;
@@ -143,7 +145,7 @@ void PlayerCharacter::release()
 
 void PlayerCharacter::update()
 {
-	movement();
+	m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 	keyInput();
 	HitState();
 	
@@ -156,7 +158,6 @@ void PlayerCharacter::update()
 	if (m_fCrossHairScale > m_fCrossHairScaleMin)
 		m_fCrossHairScale -= 0.1f;
 
-	m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
 	ani_CrossHair->frameUpdate();
 	ani_PlayerIdle->frameUpdate();
@@ -323,7 +324,7 @@ void PlayerCharacter::getItem(tagItemInfo itemInfo)
 
 void PlayerCharacter::PlayerDamage(int dam)
 {
-	m_pSoundMag->play("sound/sound_playerHit.wav", g_saveData.gSeValue);
+	//m_pSoundMag->play("sound/sound_playerHit.wav", g_saveData.gSeValue);
 
 	m_currHp -= dam;
 	if (m_currHp < 0)
@@ -448,7 +449,7 @@ void PlayerCharacter::keyInput()
 	{
 		if (m_bulletDelayCount == NULL)
 		{
-			m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+		//	m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
 			if (m_fCrossHairScale < m_fCrossHairScaleMax)
 			{
 				m_fCrossHairScale += 0.1f;
@@ -499,7 +500,9 @@ void PlayerCharacter::keyInput()
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
 		if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
+		{
 			m_fY += m_fSpeed + RECT_BOX;
+		}
 	}
 	
 	if (KEYMANAGER->isStayKeyDown('S'))
@@ -509,7 +512,10 @@ void PlayerCharacter::keyInput()
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
 		if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
+		{
 			m_fY -= m_fSpeed + RECT_BOX;
+
+		}
 	}
 
 	if (KEYMANAGER->isStayKeyDown('A'))
@@ -519,7 +525,10 @@ void PlayerCharacter::keyInput()
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
 		if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
+		{
 			m_fX += m_fSpeed + RECT_BOX;
+
+		}
 		img_PlayerRun = IMAGEMANAGER->findImage("Player_L_Run");
 		img_PlayerIdle = IMAGEMANAGER->findImage("Player_L_Idle");
 
@@ -532,49 +541,15 @@ void PlayerCharacter::keyInput()
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
 		if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
+		{
 			m_fX -= m_fSpeed + RECT_BOX;
+
+		}
 		img_PlayerRun = IMAGEMANAGER->findImage("Player_R_Run");
 		img_PlayerIdle = IMAGEMANAGER->findImage("Player_R_Idle");
 	}
-}
 
-void PlayerCharacter::movement()
-{
-	//RECT temp_rc;
-
-	//if (!(IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
-	//{
-	//	if (m_fCurrY == 0.0f && m_fCurrX == 0.0f)
-	//	{
-	//		m_isIdle = true;
-	//	}
-	//	else
-	//	{
-	//		m_fReturnX = m_fX;
-	//		m_fReturnY = m_fY;
-
-	//		m_isIdle = false;
-	//		m_fY += m_fCurrY;
-	//		m_fCurrY = 0.0f;
-
-	//		m_fX += m_fCurrX;
-	//		m_fCurrX = 0.0f;
-	//	}
-	//}
-
-	//if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
-	//{
-	//	m_fX = m_fReturnX;
-	//	m_fY = m_fReturnY;
-
-
-	//	m_isIdle = false;
-	//	m_fY += m_fCurrY;
-	//	m_fCurrY = 0.0f;
-
-	//	m_fX += m_fCurrX;
-	//	m_fCurrX = 0.0f;
-	//}
+	memset(&m_TileRc, 0, sizeof(m_TileRc));
 
 }
 

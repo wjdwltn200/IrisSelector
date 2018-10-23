@@ -16,7 +16,7 @@ private:
 	std::vector<std::string>	m_Monsterlist;
 
 	tagMonInfo m_MonsterInfo[50];
-	tagBulletInfo m_BulletInfo[2];
+	tagBulletInfo m_BulletInfo[50];
 	int m_MaxMonster;
 
 	//animation * m_monsterMove;
