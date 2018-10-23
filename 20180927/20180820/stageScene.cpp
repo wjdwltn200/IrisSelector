@@ -76,13 +76,13 @@ HRESULT stageScene::init()
 	m_bIsCameraTextOn = false;
 	MiniMap_Ratio = 8;
 
-	m_pImage_checkBox = IMAGEMANAGER->findImage("size_box");
+	m_pImage_checkBox = IMAGEMANAGER->findImage("black");
 
 	m_pButton1 = new button;
-	m_pButton1->init("800x", WINSIZEX / 2, 80, PointMake(0, 1), PointMake(0, 0), Func_button1); // 시나리오
+	m_pButton1->init("prepared", WINSIZEX / 2, 380, PointMake(0, 1), PointMake(0, 0), Func_button1); // 시나리오
 
 	m_pButton2 = new button;
-	m_pButton2->init("800x", WINSIZEX / 2, 180, PointMake(0, 1), PointMake(0, 0), Func_button2); // 사용자 지정게임
+	m_pButton2->init("custom", WINSIZEX / 2, 480, PointMake(0, 1), PointMake(0, 0), Func_button2); // 사용자 지정게임
 
 	// 타이틀 CPP 이동
 
@@ -348,7 +348,7 @@ void stageScene::render(HDC hdc)
 {
 	if (buttonNum == 0)
 	{
-		m_pImage_checkBox->render(hdc, WINSIZEX / 2 - IMAGEMANAGER->findImage("size_box")->getWidth() / 2, 0);
+		m_pImage_checkBox->render(hdc, 0, 0);
 		m_pButton1->render(hdc);
 		m_pButton2->render(hdc);
 	}

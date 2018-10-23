@@ -116,6 +116,7 @@ HRESULT editor::init()
 	m_bIsNumberOn = false;
 	m_isSel = false;
 	m_bIsMiniMapOn = true;
+	m_bIsStartingPoint = false;
 	m_bIsTextOn = false;
 	MiniMap_Ratio = 8;
 	MAPCAMERA->init();
@@ -377,13 +378,23 @@ void editor::MouseEvent()
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		st_mouse = tagMOUSE_STATE::MOUSE_DOWN1;
+
+		if (m_rcSelectedTileSampleNum == 3)
+		{
+			if ((m_rcSelectedTile.left == 5) && (m_rcSelectedTile.top == 3))
+			{
+				if (m_bIsStartingPoint)
+					m_isSel = false;
+			}
+		}
+
 	}
 	else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && st_mouse == tagMOUSE_STATE::MOUSE_DOWN1)
 	{
 		for (int i = 0; i < SAMPLE_COUNTX * SAMPLE_COUNTY; ++i)
 		{
 			if (PtInRect(&m_pSampleTiles[i].rc, g_ptMouse))
-			{
+			{	
 				st_mouse = tagMOUSE_STATE::MOUSE_UP1;
 				m_rcSelectedTile.left = m_pSampleTiles[i].frameX;
 				m_rcSelectedTile.top = m_pSampleTiles[i].frameY;
@@ -396,6 +407,7 @@ void editor::MouseEvent()
 			}
 		}
 	}
+
 
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON) && m_isSel == true)
@@ -490,6 +502,25 @@ void editor::render(HDC hdc)
 				g_ptMouse.y,0,0);*/
 		}
 
+	}
+
+
+
+
+	if (m_bIsStartingPoint == false)
+	{
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
+			{
+				if ((m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum == 3) &&
+					m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX == 5 &&
+					m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
+				{
+					m_bIsStartingPoint = true;
+				}
+			}
+		}
 	}
 
 
