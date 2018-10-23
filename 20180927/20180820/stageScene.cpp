@@ -121,7 +121,8 @@ HRESULT stageScene::init()
 	m_stageNum = 0;
 	m_MaxSpawnNum = 0;
 	m_ClearScore = 0;
-
+	m_nNumber = 0;
+	m_nTempNumber = 0;
 
 
 	m_isTest = false; // 정지수 : 테스트용으로 만듦
@@ -159,9 +160,10 @@ void stageScene::update()
 	}
 	if (buttonNum == 2)
 	{
+		g_saveData.gTileMaxCountX = 50;
+		g_saveData.gTileMaxCountY = 50;
 		LoadEvent();
-		g_saveData.gTileMaxCountX = m_pTiles[0].terrain;
-		g_saveData.gTileMaxCountY = m_pTiles[0].terrain;
+		buttonNum = 3;
 	}
 	if (buttonNum == 3)
 	{
@@ -173,26 +175,38 @@ void stageScene::update()
 			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
 			{
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX, y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
-
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
 
-				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum == 1)
+				if(m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum == 1)
 				{
-					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
+					if ((m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 3) ||
+						(m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 4) ||
+						(m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 5) ||
+						(m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 7 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 4) ||
+						(m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 7 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 5))
+					{
+						m_nNumber++;
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
-					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 4)
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
-					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 5)
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
-					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 7 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 4)
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
-					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 7 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 5)
-						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+					}
 				}
 			}
 		}
+		// 충돌타일만 따로 빼기/////////////////////
+		RECT*  m_pTiles_Collide = new RECT[m_nNumber];
 
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
+			{
+				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove == false)
+				{
+					m_pTiles_Collide[m_nTempNumber] = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc;
+					m_nTempNumber++;
+				}
+			}
 
+		}
+		//////////////////////////////
 		buttonNum++;
 	}
 
@@ -204,7 +218,7 @@ void stageScene::update()
 
 		KeyEvent();
 
-		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
+		/*for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
 		{
 			RECT m_rc;
 
@@ -213,6 +227,16 @@ void stageScene::update()
 			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc, &m_player->getRect()))
 			{
 				m_player->setTileRc(m_pTiles[i].rc);
+			}
+		}*/
+
+		for (int i = 0; i < m_nNumber; i++)
+		{
+			RECT m_rc;
+
+			if (m_isTest && IntersectRect(&m_rc, &m_pTiles_Collide[i], &m_player->getRect()))
+			{
+				m_player->setTileRc(m_pTiles_Collide[i]);
 			}
 		}
 
@@ -235,14 +259,20 @@ void stageScene::update()
 		m_pBulletMagMons->update();
 		m_pEffMagr->update();
 
-
 		ColRc();
 
+		m_nTilesNumber = 0;
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
-				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove == false)
+				{
+					m_pTiles_Collide[m_nTilesNumber] = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+					m_nTilesNumber++;
+				}
+				else
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
 			}
 		}
 
@@ -334,15 +364,22 @@ void stageScene::render(HDC hdc)
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
 
 
-				if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
+				/*if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
 				   Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
 					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
 					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
-				}
+				}*/
 			}
-
 		}
+
+		for (int i = 0; i < m_nNumber; ++i)
+		{
+			Rectangle(hdc, m_pTiles_Collide[i].left,
+				m_pTiles_Collide[i].top, m_pTiles_Collide[i].right,
+				m_pTiles_Collide[i].bottom);
+		}
+
 
 		char szText[256];
 
@@ -460,12 +497,15 @@ void stageScene::LoadEvent()
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
 		TXTDATA->getSingleton()->mapLoad(szFileName1, m_pTiles);
 	}
+
+	g_saveData.gTileMaxCountX = m_pTiles[0].terrain;
+	g_saveData.gTileMaxCountY = m_pTiles[0].terrain;
+
 }
 
 void stageScene::FixedLoadEvent()
 {
-	int tempX = 0;
-	int tempY = 0;
+
 	TXTDATA->getSingleton()->mapLoad("SaveFile/mainGame7.map", m_pTiles);
 
 }
@@ -814,10 +854,10 @@ void stageScene::ColRc()
 				if ((*PlayerBulletIter)->getIsAlive() &&
 					(*PlayerBulletIter)->getTagBulletInfo().tRadius + (*MonsIter)->getMonInfo().tRadius >
 					(MY_UTIL::getDistance(
-					(*PlayerBulletIter)->getTagBulletInfo().tPosX,
-						(*PlayerBulletIter)->getTagBulletInfo().tPosY,
-						(*MonsIter)->getMonInfo().tPosX - SCROLL->GetX(),
-						(*MonsIter)->getMonInfo().tPosY - SCROLL->GetY()))
+					(*PlayerBulletIter)->getTagBulletInfo().tPosX ,
+						(*PlayerBulletIter)->getTagBulletInfo().tPosY ,
+						(*MonsIter)->getMonInfo().tPosX ,
+						(*MonsIter)->getMonInfo().tPosY ))
 					)
 				{
 					// 몬스터 피격 처리
@@ -840,7 +880,7 @@ void stageScene::ColRc()
 	for (ItemIter = vItem.begin(); ItemIter != vItem.end(); ItemIter++)
 	{
 
-		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX(), m_player->getY(), (*ItemIter)->getItemInfo().posX - SCROLL->GetX(), (*ItemIter)->getItemInfo().posY - SCROLL->GetY())))
+		if ((*ItemIter)->getIsAlive() && m_player->getRadius() + (*ItemIter)->getItemRadius() > (MY_UTIL::getDistance(m_player->getX() - SCROLL->GetX(), m_player->getY() - SCROLL->GetY(), (*ItemIter)->getItemInfo().posX - SCROLL->GetX(), (*ItemIter)->getItemInfo().posY - SCROLL->GetY())))
 		{
 			m_pEffMagr->play("Item_Get1", m_player->getX() - (320 / 4) / 2, m_player->getY());
 			m_pEffMagr->play("Item_Get2", m_player->getX() - (230 / 5) / 2, m_player->getY() - (70) / 2);

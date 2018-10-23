@@ -643,6 +643,8 @@ void editor::LoadEvent()
 		SetWindowText(hEditFileToBeOpened, ofn.lpstrFile);
 		TXTDATA->getSingleton()->mapLoad(szFileName_1, m_pTiles);
 	}
+	g_saveData.gTileMaxCountX = m_pTiles[0].terrain;
+	g_saveData.gTileMaxCountY = m_pTiles[0].terrain;
 }
 
 

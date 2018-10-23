@@ -17,6 +17,7 @@ class stageScene : public scene
 {
 private:
 	tagTile        m_pTiles[TILE_MAXCOUNTX * TILE_MAXCOUNTY];
+	//tagTile        m_pTiles_Collide[100];
 
 	button*        m_pButton1;
 	button*       m_pButton2;
@@ -26,8 +27,11 @@ private:
 	image*        m_pImage_checkBox;
 	image*        m_pTileSet[4];
 
+	RECT m_pTiles_Collide[1000];
 
-
+	int m_nTilesNumber;
+	int m_nNumber;
+	int m_nTempNumber;
 	int MiniMap_Ratio;
 	int MapSizeX;
 	int MapSizeY;
