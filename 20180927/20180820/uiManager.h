@@ -1,14 +1,14 @@
 #pragma once
-#include "singletonBase.h"
-#include "uiButton.h"
+#include <vector>
+#include "uiTxt.h"
 
 class uiObject;
 
-class uiManager : public singletonBase<uiManager>, iButtonDelegate
+class uiManager
 {
 private:
-	vector<uiObject*>	m_vecUIObjects;
-	vector<uiObject*>::iterator	m_iter;
+	vector<uiTxt*>	m_vecUIObjects;
+	vector<uiTxt*>::iterator	m_iter;
 
 public:
 	HRESULT init(int vecMaxSize);
@@ -16,18 +16,8 @@ public:
 	void update();
 	void render(HDC hdc);
 
-	void addUIObject(uiObject* pUI);
-
-	virtual void OnClick(uiButton* pSender) override;
+	void addHitTxt(float dam, float posX, float posY);
 
 	uiManager();
 	~uiManager();
 };
-
-class UIManager
-{
-public:
-	UIManager();
-	~UIManager();
-};
-

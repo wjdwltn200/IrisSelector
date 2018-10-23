@@ -69,8 +69,8 @@ HRESULT bullet::init(const char * imageName, float posX, float posY, float angle
 	m_bulletInfo.tExpRadius = bulletInfo->tExpRadius;
 	m_bulletInfo.tMoveSpeed = bulletInfo->tMoveSpeed;
 	m_bulletInfo.tKnokBack = bulletInfo->tKnokBack;
-	m_bulletInfo.tPosX = bulletInfo->tPosX = posX;
-	m_bulletInfo.tPosY = bulletInfo->tPosY = posY;
+	m_bulletInfo.tPosX = m_fSetPosX = bulletInfo->tPosX = posX;
+	m_bulletInfo.tPosY = m_fSetPosY = bulletInfo->tPosY = posY;
 	m_bulletInfo.tDmage = bulletInfo->tDmage;
 	m_bulletInfo.tRange = bulletInfo->tRange;
 	m_bulletInfo.tMoveActType = bulletInfo->tMoveActType;
@@ -121,34 +121,13 @@ void bullet::update()
 
 void bullet::render(HDC hdc)
 {
-	//EllipseMakeCenter(hdc, m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth() * m_bulletInfo.tScale, m_pImg->getFrameHeight() * m_bulletInfo.tScale);
-	Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	//EllipseMakeCenter(hdc, m_bulletInfo.tPosX - SCROLL->GetX(), m_bulletInfo.tPosY - SCROLL->GetY(), m_pImg->getFrameWidth() * m_bulletInfo.tScale, m_pImg->getFrameHeight() * m_bulletInfo.tScale);
+	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	
-	m_pImg->aniRender(hdc, (m_bulletInfo.tPosX ) - (m_pImg->getFrameWidth() / 2) * m_bulletInfo.tScale,
-		(m_bulletInfo.tPosY ) - (m_pImg->getFrameHeight() / 2) * m_bulletInfo.tScale, m_pAni, m_bulletInfo.tScale, true, 255);
-
-	//char szText[256];
-
-	//// TRANSPARENT : 투명, OPAQUE : 불투명
-	//SetBkMode(hdc, TRANSPARENT);
-
-	//SetTextColor(hdc, RGB(255, 0, 255));
-
-	//sprintf_s(szText, "m_fAngle : %f",
-	//	m_fAngle);
-	//TextOut(hdc, 10, 100, szText, strlen(szText));
-
-	//sprintf_s(szText, "m_fMoveAngle : %f",
-	//	m_fMoveAngle);
-	//TextOut(hdc, 10, 120, szText, strlen(szText));
-
-	//sprintf_s(szText, "tMoveTypeCount : %d",
-	//	tMoveTypeCount);
-	//TextOut(hdc, 10, 140, szText, strlen(szText));
-
-	//sprintf_s(szText, "m_bulletInfo.tMoveSpeed : %f",
-	//	m_bulletInfo.tMoveSpeed);
-	//TextOut(hdc, 10, 160, szText, strlen(szText));
+	m_pImg->aniRender(hdc,
+		(m_bulletInfo.tPosX - SCROLL->GetX()) - (m_pImg->getFrameWidth() / 2) * m_bulletInfo.tScale,
+		(m_bulletInfo.tPosY - SCROLL->GetY()) - (m_pImg->getFrameHeight() / 2) * m_bulletInfo.tScale,
+		m_pAni, m_bulletInfo.tScale, true, 255);
 }
 
 void bullet::movement()
@@ -157,7 +136,7 @@ void bullet::movement()
 
 	moveTypeAct(m_bulletInfo.tMoveType);
 
-	m_rc = RectMakeCenter(m_bulletInfo.tPosX, m_bulletInfo.tPosY, m_pImg->getFrameWidth() * m_bulletInfo.tScale / 2, m_pImg->getFrameHeight() * m_bulletInfo.tScale / 2);
+	m_rc = RectMakeCenter(m_bulletInfo.tPosX - SCROLL->GetX(), m_bulletInfo.tPosY - SCROLL->GetY(), m_pImg->getFrameWidth() * m_bulletInfo.tScale / 2, m_pImg->getFrameHeight() * m_bulletInfo.tScale / 2);
 
 	switch (m_bulletInfo.tMoveActType)
 	{
@@ -181,7 +160,7 @@ void bullet::movement()
 	// 거리만큼 이동하면 죽임
 	if (m_bulletInfo.tRange < 0.0f)
 	{
-		m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2)/* * m_bulletInfo.tScale*/, m_bulletInfo.tPosY - (30 / 2) /** m_bulletInfo.tScale*/);
+		m_eff->play(m_effName, m_bulletInfo.tPosX - (34 / 2), m_bulletInfo.tPosY - (30 / 2));
 
 		m_isAlive = false;
 		SecondBulletFire();

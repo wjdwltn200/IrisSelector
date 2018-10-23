@@ -186,10 +186,8 @@
     <ClInclude Include="timer.h" />
     <ClInclude Include="titleScene.h" />
     <ClInclude Include="txtData.h" />
-    <ClInclude Include="uiButton.h" />
-    <ClInclude Include="uiImageView.h" />
     <ClInclude Include="uiManager.h" />
-    <ClInclude Include="uiObject.h" />
+    <ClInclude Include="uiTxt.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -231,10 +229,8 @@
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="titleScene.cpp" />
     <ClCompile Include="txtData.cpp" />
-    <ClCompile Include="uiButton.cpp" />
-    <ClCompile Include="uiImageView.cpp" />
     <ClCompile Include="uiManager.cpp" />
-    <ClCompile Include="uiObject.cpp" />
+    <ClCompile Include="uiTxt.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>

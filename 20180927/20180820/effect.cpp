@@ -49,8 +49,8 @@ void effect::render(HDC hdc)
 	if (!m_isAlive)	return;
 
 	if (m_pImg)
-		m_pImg->aniRender(hdc, m_nX, m_nY, m_pAnimation);
-}
+		m_pImg->aniRender(hdc, m_nX - SCROLL->GetX(), m_nY - SCROLL->GetY(), m_pAnimation);
+}									 
 
 void effect::startEffect(int x, int y)
 {
