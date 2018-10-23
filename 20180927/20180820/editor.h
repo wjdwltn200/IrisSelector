@@ -70,6 +70,8 @@ private:
 	image * m_pCursor;
 	image * m_pTag;
 	image * m_pTag2;
+	image * m_pPlayer;
+
 	image * m_pHelp;
 
 	image * m_pEnemy[20];

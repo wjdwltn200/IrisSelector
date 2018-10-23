@@ -78,7 +78,6 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("tileset4", "image/wook/tileset4.bmp", 256, 192, 8, 6, true, RGB(255, 255, 255));
 	IMAGEMANAGER->addImage("Cursor", "image/wook/Cursor.bmp", 30, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("800x", "image/wook/800x.bmp", 320, 168, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("size_box", "image/wook/size_box.bmp", 640, 640, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("ItemObject", "image/resources/item_image/Item_set.bmp", 682, 614, 20, 18, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ItemShadow", "image/resources/item_image/Item_shadow.bmp", 32, 9, 1, 1, true, RGB(255, 0, 255));
@@ -90,6 +89,7 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("custom", "image/wook/button_custom.bmp", 480, 120,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("prepared", "image/wook/button_prepared.bmp", 480, 120,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("help", "image/wook/help.bmp", 480, 600, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("player", "image/wook/player.bmp", 34, 34, true, RGB(255, 255, 255));
 
 
 	// 타이틀 이미지

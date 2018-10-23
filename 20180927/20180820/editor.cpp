@@ -138,6 +138,7 @@ void editor::init_image()
 	m_pCursor = IMAGEMANAGER->findImage("Cursor");
 	m_pTag = IMAGEMANAGER->findImage("tag");
 	m_pTag2 = IMAGEMANAGER->findImage("tag_done");
+	m_pPlayer = IMAGEMANAGER->findImage("player");
 	m_pBtnLspace = new button;
 	m_pBtnLspace->init("space_left", IMAGEMANAGER->findImage("space_left")->getWidth() / 2 + 0, WINSIZEY - 150, PointMake(0, 1), PointMake(0, 0), SpaceFunc_left);
 
@@ -372,6 +373,13 @@ void editor::KeyEvent()
 		else
 			m_bIsNumberOn = true;
 	}
+	if (KEYMANAGER->isOnceKeyDown(VK_F1))
+	{
+		if (m_bIsHelpOn)
+			m_bIsHelpOn = false;
+		else
+			m_bIsHelpOn = true;
+	}
 }
 
 void editor::MouseEvent()
@@ -483,6 +491,27 @@ void editor::render(HDC hdc)
 			}
 		}
 		//////////
+		if (m_bIsAutoOn)
+		{
+			char szTextAuto[50];
+			// TRANSPARENT : 투명, OPAQUE : 불투명
+			SetBkMode(hdc, TRANSPARENT);
+			SetTextColor(hdc, RGB(0, 0, 10));
+			MY_UTIL::FontOption(hdc, 25, 0);
+			sprintf_s(szTextAuto, "%s", "오토타일ON");
+			TextOut(hdc, 340, 600, szTextAuto, strlen(szTextAuto));
+			MY_UTIL::FontDelete(hdc);
+		}
+
+		char szTextHelp[64];
+		// TRANSPARENT : 투명, OPAQUE : 불투명
+		SetBkMode(hdc, TRANSPARENT);
+		SetTextColor(hdc, RGB(0, 0, 10));
+		MY_UTIL::FontOption(hdc, 25, 0);
+		sprintf_s(szTextHelp, "%s", "도움말 : F1");
+		TextOut(hdc, 340, 725, szTextHelp, strlen(szTextHelp));
+		MY_UTIL::FontDelete(hdc);
+		
 
 		m_pBtnLspace->render(hdc);
 		m_pBtnRspace->render(hdc);
@@ -544,16 +573,35 @@ void editor::render(HDC hdc)
 
 	}
 
-	if(m_bIsAutoOn)
+
+	if (m_bIsHelpOn)
 	{
-		char szTextAuto[50];
+		m_pHelp->render(hdc, WINSIZEX / 2 - m_pHelp->getWidth() / 2, 100);
+
+		
 		// TRANSPARENT : 투명, OPAQUE : 불투명
 		SetBkMode(hdc, TRANSPARENT);
 		SetTextColor(hdc, RGB(0, 0, 10));
-		MY_UTIL::FontOption(hdc, 25, 0);
-		sprintf_s(szTextAuto, "%s", "오토타일ON");
-		TextOut(hdc, 340, 600,szTextAuto, strlen(szTextAuto));
+		MY_UTIL::FontOption(hdc, 28, 0);
+		char szTextHelp1[256];
+		int temp_term = 0;
+		sprintf_s(szTextHelp1, "%s", "타일 생성창 : 'U' "); 
+		TextOut(hdc, WINSIZEX/2 - 140, 120 + temp_term, szTextHelp1, strlen(szTextHelp1)); temp_term += 80;
+
+		sprintf_s(szTextHelp1, "%s", "타일 미니맵 : 'M' ");
+		TextOut(hdc, WINSIZEX / 2 - 140, 120 + temp_term, szTextHelp1, strlen(szTextHelp1)); temp_term += 80;
+
+		sprintf_s(szTextHelp1, "%s", "타일 넘버링 : 'F7' ");
+		TextOut(hdc, WINSIZEX / 2 - 140, 120 + temp_term, szTextHelp1, strlen(szTextHelp1)); temp_term += 80;
+
+		sprintf_s(szTextHelp1, "%s", "카메라 좌표계 : 'F6' ");
+		TextOut(hdc, WINSIZEX / 2 - 140, 120 + temp_term, szTextHelp1, strlen(szTextHelp1)); temp_term += 80;
+
+		sprintf_s(szTextHelp1, "%s", "타일선택단축키 :  'Z, X, C, V' ");
+		TextOut(hdc, WINSIZEX / 2 - 140, 120 + temp_term, szTextHelp1, strlen(szTextHelp1)); temp_term += 80;
+
 		MY_UTIL::FontDelete(hdc);
+
 	}
 
 	/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
@@ -620,6 +668,15 @@ void editor::render_mapTile(HDC hdc)
 						m_pTiles[x *  g_saveData.gTileMaxCountX + y].MonsterNumber);
 					TextOut(hdc, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left + 5, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top - 5, szText, strlen(szText));
 				}
+
+			}
+
+			if ((m_pTiles[x *  g_saveData.gTileMaxCountX + y].SampleNum == 3))
+			{
+				if (m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameX == 5 && m_pTiles[x *  g_saveData.gTileMaxCountX + y].terrainFrameY == 3)
+				{
+					m_pPlayer->alphaRender(hdc, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.left - 2, m_pTiles[x *  g_saveData.gTileMaxCountX + y].rc.top - 2, 140);
+				}
 			}
 		}
 
@@ -643,7 +700,7 @@ void editor::SaveEvent()
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = g_hWnd;
-	ofn.lpstrFilter = _T("txt Files(*.txt)\0*.txt\0All Files (*.*)\0*.*\0");
+	ofn.lpstrFilter = _T("All Files (*.*)\0*.*\0");
 	ofn.lpstrFile = szFileName_1;
 	ofn.nMaxFile = 512;
 	//ofn.nFilterIndex = 1;
@@ -666,7 +723,7 @@ void editor::LoadEvent()
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = g_hWnd;
-	ofn.lpstrFilter = "txt Files(*.txt)\0*.txt\0All Files (*.*)\0*.*\0"; //"All Files(*.*)\0*.*\0";
+	ofn.lpstrFilter = "All Files (*.*)\0*.*\0"; //"All Files(*.*)\0*.*\0";
 	ofn.lpstrFile = szFileName_1;
 	ofn.nMaxFile = 512;
 

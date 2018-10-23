@@ -28,7 +28,7 @@ private:
 	image*        m_pImage_checkBox;
 	image*        m_pTileSet[4];
 
-	RECT m_pTiles_Collide[1000];
+	RECT m_pTiles_Collide[TILE_MAXCOUNTX * TILE_MAXCOUNTY];
 
 	int m_nTilesNumber;
 	int m_nNumber;

@@ -29,14 +29,14 @@ HRESULT stageScene::init()
 {
 	DWORD dwRemove = WS_CAPTION | WS_BORDER | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
 	// This should be kept for reverse operation
-	DWORD dwStyle = ::GetWindowLong(g_hWnd, GWL_STYLE);
+	DWORD dwStyle = ::GetWindowLong(g_hWnd, 2);
 	HMENU hMenu = ::GetMenu(g_hWnd);
 	WINDOWPLACEMENT wp = { sizeof WINDOWPLACEMENT };
 	::GetWindowPlacement(g_hWnd, &wp);
 
 	::LockWindowUpdate(g_hWnd); // prevent intermediate redrawing
 	::SetMenu(g_hWnd, NULL);
-	::SetWindowLong(g_hWnd, GWL_STYLE, dwStyle & ~dwRemove);
+	::SetWindowLong(g_hWnd, 2, dwStyle & ~dwRemove);
 	HDC hDC = ::GetWindowDC(NULL);
 	::LockWindowUpdate(NULL); // allow redrawing
 	::SetWindowPos(g_hWnd, NULL, 100, 100, 800, 800, SWP_FRAMECHANGED);
@@ -189,10 +189,18 @@ void stageScene::update()
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
 					}
 				}
+
+				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum == 3)
+				{
+					if ((m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 5 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 3))
+					{
+						//m_pTiles[x * g_saveData.gTileMaxCountX + y].rc; 플레이어스타팅//
+					}
+				}
 			}
 		}
 		// 충돌타일만 따로 빼기/////////////////////
-		RECT*  m_pTiles_Collide = new RECT[m_nNumber];
+		//RECT*  m_pTiles_Collide = new RECT[m_nNumber];
 
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -266,13 +274,17 @@ void stageScene::update()
 		{
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
+				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+
+
 				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove == false)
 				{
 					m_pTiles_Collide[m_nTilesNumber] = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
 					m_nTilesNumber++;
+					//m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
 				}
-				else
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+				//else
+					//m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
 			}
 		}
 
@@ -358,26 +370,24 @@ void stageScene::render(HDC hdc)
 			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
 			{
 				m_pTileSet[m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum]->frameRender(hdc,
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left ,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX,
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
-
-
-				   //Rectangle(hdc,
-					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].left,
-					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].top,
-					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].right,
-					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].bottom);
+			
+				/*Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
+			
 			}
 		}
 
-		for (int i = 0; i < m_nNumber; ++i)
+		/*for (int i = 0; i < m_nNumber; ++i)
 		{
 			Rectangle(hdc, m_pTiles_Collide[i].left,
 				m_pTiles_Collide[i].top, m_pTiles_Collide[i].right,
 				m_pTiles_Collide[i].bottom);
-		}
+		}*/
 
 
 		char szText[256];
