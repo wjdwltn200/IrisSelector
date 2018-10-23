@@ -44,7 +44,7 @@ HRESULT stageScene::init()
 
 
 	m_soundMag.init();
-	m_soundMag.addSound("sound/sound_StageBGM.wav", true, true);
+	//m_soundMag.addSound("sound/sound_StageBGM.wav", true, true);
 	m_soundMag.addSound("sound/EnemyDead0.wav", false, false);
 	m_soundMag.addSound("sound/EnemyDead1.wav", false, false);
 	m_soundMag.addSound("sound/EnemyDead2.wav", false, false);
@@ -108,6 +108,11 @@ HRESULT stageScene::init()
 	m_pMonsterMag = new monsterManger;
 	m_pMonsterMag->setEffMagPoint(m_pEffMagr);
 	m_pMonsterMag->init(50);
+
+	Moninfo.tPosX = 100;
+	Moninfo.tPosY = 100;
+
+	//m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player);
 
 	m_pItemMag = new itemManager;
 	m_pItemMag = m_pItemMag;
@@ -192,7 +197,7 @@ void stageScene::update()
 			}
 		}
 		// 충돌타일만 따로 빼기/////////////////////
-		RECT*  m_pTiles_Collide = new RECT[m_nNumber];
+		//RECT*  m_pTiles_Collide = new RECT[m_nNumber];
 
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -214,44 +219,37 @@ void stageScene::update()
 
 	if (buttonNum == 4)
 	{
-
-
 		KeyEvent();
-
-		/*for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
-		{
-			RECT m_rc;
-
-			if (m_pTiles[i].isMove) continue;
-
-			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&m_rc, &m_pTiles[i].rc, &m_player->getRect()))
-			{
-				m_player->setTileRc(m_pTiles[i].rc);
-			}
-		}*/
-
-		for (int i = 0; i < m_nNumber; i++)
-		{
-			RECT m_rc;
-
-			if (m_isTest && IntersectRect(&m_rc, &m_pTiles_Collide[i], &m_player->getRect()))
-			{
-				m_player->setTileRc(m_pTiles_Collide[i]);
-			}
-		}
-
+			   		 
 		if (!m_BGMreSet)
 		{
 			m_BGMreSet = true;
 			m_soundMag.play("sound/sound_StageBGM.wav", g_saveData.gMainBGMValue);
 		}
-
-
+		
 		SpawnGateTime();
 
-		
-		m_pMonsterMag->update();
+		m_nTilesNumber = 0;
+		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		{
+			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
+			{
+				if (m_nTilesNumber < m_nNumber && !m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
+				{
+					m_pTiles_Collide[m_nTilesNumber] = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+					m_nTilesNumber++;
+				}
+				else
+				{
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+				}
+			}
+		}
+
+
+
 		m_player->update();
+		m_pMonsterMag->update();
 		m_pItemMag->update();
 		m_pBulletMag->update();
 
@@ -261,21 +259,17 @@ void stageScene::update()
 
 		ColRc();
 
-		m_nTilesNumber = 0;
-		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
+		for (int i = 0; i < m_nNumber; i++)
 		{
-			for (int y = 0; y < g_saveData.gTileMaxCountY; y++)
+			RECT m_rc;
+
+			if (IntersectRect(&m_rc, &m_pTiles_Collide[i], &m_player->getRect()))
 			{
-				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove == false)
-				{
-					m_pTiles_Collide[m_nTilesNumber] = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
-					m_nTilesNumber++;
-				}
-				else
-					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+				m_player->setTileRc(m_pTiles_Collide[i]);
+				break;
+				//m_player->setIsRc(true);
 			}
 		}
-
 		SCROLL->update(m_player->getX(), m_player->getY());
 		//CAMERA->update();
 
@@ -365,10 +359,10 @@ void stageScene::render(HDC hdc)
 
 
 				   //Rectangle(hdc,
-					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].left,
-					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].top,
-					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].right,
-					  // m_pTiles_Collide[x * g_saveData.gTileMaxCountX + y].bottom);
+					  // m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+					  // m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+					  // m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+					  // m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
 			}
 		}
 
@@ -618,11 +612,9 @@ void stageScene::ColRc()
 	{
 		if (!(*MonsterBulletIter)->getIsAlive()) continue;
 
-		for (int i = 0; i < TILE_MAXCOUNTX * TILE_MAXCOUNTY; i++)
+		for (int i = 0; i < m_nNumber; i++)
 		{
-			if (m_pTiles[i].isMove) continue;
-
-			if (m_isTest && !m_pTiles[i].isMove && IntersectRect(&temp_rc, &m_pTiles[i].rc, &(*MonsterBulletIter)->getRect()))
+			if (IntersectRect(&temp_rc, &m_pTiles_Collide[i], &(*MonsterBulletIter)->getRect()))
 			{
 				(*MonsterBulletIter)->HitEff();
 			}
@@ -655,7 +647,7 @@ void stageScene::ColRc()
 
 		for (int i = 0; i < m_nNumber; i++)
 		{
-			if (m_isTest && IntersectRect(&temp_rc, &m_pTiles_Collide[i], &(*PlayerBulletIter)->getRect()))
+			if (IntersectRect(&temp_rc, &m_pTiles_Collide[i], &(*PlayerBulletIter)->getRect()))
 			{
 				(*PlayerBulletIter)->HitEff();
 			}
@@ -735,7 +727,7 @@ void stageScene::SpawnGateTime()
 					Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
 					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
 					{
-						MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)
+						//MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)
 					}
 				}
 
