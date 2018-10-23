@@ -115,6 +115,7 @@ HRESULT editor::init()
 	m_bIsUnfold = true;
 	m_bIsNumberOn = false;
 	m_isSel = false;
+	m_bIsHelpOn = false;
 	m_bIsMiniMapOn = true;
 	m_bIsStartingPoint = false;
 	m_bIsTextOn = false;
@@ -127,7 +128,7 @@ HRESULT editor::init()
 
 void editor::init_image()
 {
-	
+	m_pHelp = IMAGEMANAGER->findImage("help");
 	m_pBG =	IMAGEMANAGER->findImage("black");
 	m_pBox = IMAGEMANAGER->findImage("parchment");
 	m_pTileSet[0] = IMAGEMANAGER->findImage("tileset1");

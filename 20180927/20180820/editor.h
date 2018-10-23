@@ -45,6 +45,7 @@ private:
 	bool m_bIsNumberOn;
 	bool m_bIsAutoOn;
 	bool m_bIsStartingPoint;
+	bool m_bIsHelpOn;
 
 	int m_rcSelectedTileSampleNum;
 	int MiniMap_Ratio;
@@ -69,6 +70,7 @@ private:
 	image * m_pCursor;
 	image * m_pTag;
 	image * m_pTag2;
+	image * m_pHelp;
 
 	image * m_pEnemy[20];
 	//animation * m_pAnimation[20];

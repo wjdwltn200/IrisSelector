@@ -66,11 +66,6 @@ HRESULT stageScene::init()
 	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
 	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
 
-	//m_pImg_Black = IMAGEMANAGER->findImage("black_big");
-	m_pImg_rad[0] = IMAGEMANAGER->findImage("rad1");
-	m_pImg_rad[1] = IMAGEMANAGER->findImage("rad2");
-	m_pImg_rad[2] = IMAGEMANAGER->findImage("rad3");
-	m_pImg_rad[3] = IMAGEMANAGER->findImage("rad4");
 
 	m_bIsMiniMapOn = false;
 	m_bIsCameraTextOn = false;
@@ -473,17 +468,7 @@ void stageScene::render(HDC hdc)
 
 	}
 
-	if (m_bIsFireOn)
-	{
-		//m_pImg_Black->alphaRender(hdc, 240);
-		m_pImg_rad[0]->alphaRender(hdc, m_player->getX() - m_pImg_rad[0]->getWidth() / 2 - SCROLL->GetX(), m_player->getY() - m_pImg_rad[0]->getHeight() / 2 - SCROLL->GetY(), 1, 190); // 450
-		m_pImg_rad[1]->alphaRender(hdc, m_player->getX() - m_pImg_rad[1]->getWidth() / 2 - SCROLL->GetX(), m_player->getY() - m_pImg_rad[1]->getHeight() / 2 - SCROLL->GetY(), 1, 170); // 450
-		m_pImg_rad[2]->alphaRender(hdc, m_player->getX() - m_pImg_rad[2]->getWidth() / 2 - SCROLL->GetX(), m_player->getY() - m_pImg_rad[2]->getHeight() / 2 - SCROLL->GetY(), 1, 150); // 450
-		//m_pImg_rad[3]->alphaRender(hdc, m_player->getX() - m_pImg_rad[3]->getWidth() / 2, m_player->getY() - m_pImg_rad[3]->getHeight() / 2, 1, 50); // 450
-
-		
-
-	}
+	
 }
 
 void stageScene::LoadEvent()
