@@ -12,6 +12,7 @@ class effectManager;
 class itemManager;
 class monsterManger;
 class animation;
+class uiManager;
 
 class stageScene : public scene
 {
@@ -59,6 +60,8 @@ private:
 		float   m_moveSpeed;
 		bool   m_isMovement;
 	};
+	uiManager * m_pUiMag;
+
 	PlayerCharacter* m_player;
 	image* m_titleScene;
 	image* m_button;

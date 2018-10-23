@@ -20,6 +20,9 @@ private:
 	float	m_fAngleRadius;
 	int		tMoveTypeCount;
 	
+	float	m_fSetPosX;
+	float	m_fSetPosY;
+
 	bool	m_isAlive;
 	
 	bulletManger * m_pBulletMag;

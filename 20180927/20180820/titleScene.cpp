@@ -117,6 +117,7 @@ HRESULT titleScene::init()
 
 void titleScene::release()
 {
+	m_soundMag.release();
 }
 
 void titleScene::update()
@@ -271,7 +272,7 @@ void titleScene::OptionOn()
 {
 	if (!m_isOption) return;
 
-	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
+	if (KEYMANAGER->isOnceKeyDown(VK_BACK))
 		m_isOption = false;
 
 	if (m_soundSelectValue != 1 && KEYMANAGER->isOnceKeyDown(VK_DOWN))
