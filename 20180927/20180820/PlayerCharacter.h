@@ -6,7 +6,7 @@ class soundManager;
 
 #define RECT_BOX 1.6f
 
-#define BULLET_FIRST_DELAY 10
+#define BULLET_FIRST_DELAY 45
 #define CROSSHAIR_MAX_SCALE 5.0f
 #define CROSSHAIR_MIN_SCALE 1.0f
 #define BAES_HP 10

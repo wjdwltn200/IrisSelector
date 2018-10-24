@@ -27,7 +27,7 @@ public:
 	HRESULT init(int vecMaxSize);
 	void release();
 	void update();
-	void Regeneration(const char*strKey, int monNumber, tagMonInfo moninfo, bulletManger* bulletInfo, PlayerCharacter* playerInfo);
+	void Regeneration(const char*strKey, int monNumber, tagMonInfo moninfo, bulletManger* bulletInfo, PlayerCharacter* playerInfo, tagBulletInfo tbulletInfo);
 	void render(HDC hdc);
 
 	int getIter() { return m_vecMonster.size(); }

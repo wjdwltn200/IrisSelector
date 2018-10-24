@@ -37,13 +37,11 @@ private:
 	tagSpawnTile m_tSpawnTile;
 
 	tagMonInfo m_tMonInfo;
-	float m_RePosX;
-	float m_RePosY;
 
 	effectManager * m_pEffMag;
 
 public:
-	HRESULT init(const char * strKey, int monNumber, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint);
+	HRESULT init(const char * strKey, int monNumber, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint, tagBulletInfo tBulletInfo);
 
 	void release();
 
@@ -53,7 +51,7 @@ public:
 	void Enemy_LevelUp(int type);
 	void Move(int m_moveTypeNum);
 	void fireAtk();
-	void knokback(float playerkuokback, float monsterHitRecovery);
+	void knokback(float playerkuokback, float monsterHitRecovery, float bulletAngle);
 	void Damge(float dam, soundManager * soundMagPoint, itemManager * itemMagPoint);
 	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
 

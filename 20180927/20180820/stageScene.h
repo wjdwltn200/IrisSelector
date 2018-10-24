@@ -79,8 +79,10 @@ private:
 
 	soundManager m_soundMag;
 
-	tagSpawnTile SpawnTile;
-	tagMonInfo Moninfo;
+	tagSpawnTile tSpawnTile;
+	tagMonInfo tMoninfo;
+
+	tagBulletInfo m_tBulletInfo;
 
 	int m_buttonSetX;
 	int m_buttonSetY;

@@ -9,60 +9,61 @@
 #include "soundManager.h"
 #include "itemManager.h"
 
-HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint)
+HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint, tagBulletInfo tBulletInfo)
 {
 	m_pBulletMag = bulletP;
 	m_PlayerCharPoint = playerPoint;
 	m_pEffMag = effMagPoint;
-	m_RePosX = 0.0f;
-	m_RePosY = 0.0f;
 
 	// Monster Bullet 기본 셋팅 (메인)
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 	m_tBulletInfo.tIsAlive = true;
-	m_tBulletInfo.tBulletSetNum = 1;
-	m_tBulletInfo.tScale = 2.0f;
+	m_tBulletInfo.tBulletSetNum = tBulletInfo.tBulletSetNum;
+	m_tBulletInfo.tScale = tBulletInfo.tScale;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
-	m_tBulletInfo.tRadius = 0.5f;
-	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 400.0f;
-	m_tBulletInfo.tBulletBoom = false;
+	m_tBulletInfo.tRadius = tBulletInfo.tRadius;
+	m_tBulletInfo.tExpRadius = tBulletInfo.tExpRadius;
+	m_tBulletInfo.tRange = tBulletInfo.tRange;
+	m_tBulletInfo.tBulletBoom = tBulletInfo.tBulletBoom;
 
-	m_tBulletInfo.tDmage = 1.0f + m_tMonInfo.tDamageSub;
-	m_tBulletInfo.tKnokBack = 0.0f;
-	m_tBulletInfo.tMoveSpeed = 5.0f;
+	m_tBulletInfo.tDmage = tBulletInfo.tDmage + m_tMonInfo.tDamageSub;
+	m_tBulletInfo.tKnokBack = tBulletInfo.tKnokBack;
+	m_tBulletInfo.tMoveSpeed = tBulletInfo.tMoveSpeed;
+	m_tBulletInfo.tScatter = tBulletInfo.tScatter;
 
-	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
+
+	m_tBulletInfo.tBoomType = tBulletInfo.tBoomType;
+	m_tBulletInfo.tShootType = tBulletInfo.tShootType;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::MONSTER;
-	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
-	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
-	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfo.tMoveActType = tBulletInfo.tMoveActType;
+	m_tBulletInfo.tImageType = tBulletInfo.tImageType;
+	m_tBulletInfo.tMoveType = tBulletInfo.tMoveType;
 
 	// 서브 탄환 (이중 폭발)
 
 	memset(&m_tBulletInfoSub, 0, sizeof(m_tBulletInfoSub));
 
 	m_tBulletInfoSub.tIsAlive = true;
-	m_tBulletInfoSub.tBulletSetNum = 2;
-	m_tBulletInfoSub.tScale = 1.0f;
+	m_tBulletInfoSub.tBulletSetNum = 1;
+	m_tBulletInfoSub.tScale = m_tBulletInfo.tScale / 2;
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
-	m_tBulletInfoSub.tRadius = 0.5f;
-	m_tBulletInfoSub.tExpRadius = 0.5f;
-	m_tBulletInfoSub.tRange = 400.0f;
+	m_tBulletInfoSub.tRadius = m_tBulletInfo.tRadius / 2;
+	m_tBulletInfoSub.tExpRadius = m_tBulletInfo.tExpRadius / 2;
+	m_tBulletInfoSub.tRange = m_tBulletInfo.tRange / 2;
 	m_tBulletInfoSub.tBulletBoom = false;
 
-	m_tBulletInfoSub.tDmage = 1.0f + m_tMonInfo.tDamageSub;
-	m_tBulletInfoSub.tKnokBack = 5.0f;
-	m_tBulletInfoSub.tMoveSpeed = 5.0f;
+	m_tBulletInfoSub.tDmage = m_tBulletInfo.tDmage / 2;
+	m_tBulletInfoSub.tKnokBack = m_tBulletInfo.tKnokBack / 2;
+	m_tBulletInfoSub.tMoveSpeed = m_tBulletInfo.tMoveSpeed / 2;
+	m_tBulletInfoSub.tScatter = m_tBulletInfo.tScatter / 2;
 
 	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
 	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::MONSTER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
-	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::MOVE_NUM;
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
 
@@ -102,6 +103,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_tMonInfo.tMoveType = monInfo.tMoveType;
 	m_tMonInfo.tScore = monInfo.tScore;
 	m_tMonInfo.tMonsterNumber = monNumber;
+	m_tMonInfo.tMonsterBoss = monInfo.tMonsterBoss = 1.0f;
 
 
 	m_monsterMove->setDefPlayFrame(false, true);
@@ -129,9 +131,6 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 		m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY - SCROLL->GetY(), 30, 30);
 		m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX , m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
 	}
-
-	m_RePosX = m_tMonInfo.tPosX;
-	m_RePosY = m_tMonInfo.tPosY;
 
 	switch (m_moveTypeNum)
 	{
@@ -215,9 +214,9 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 				m_monsterMove->setFPS(60);
 				for (int i = 0; i < 10; i++)
 				{
-					m_tMonInfo.tMoveAngle += i * 36;
-					m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 2);
-					m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 2);
+					m_tMonInfo.tMoveAngle += i * 36.0f;
+					m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 1.3f);
+					m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 1.3f);
 					if (i == 10)
 					{
 						i = 0;
@@ -297,14 +296,14 @@ void monster::fireAtk()
 
 }
 
-void monster::knokback(float playerkuokback, float monsterHitRecovery)
+void monster::knokback(float playerkuokback, float monsterHitRecovery, float bulletAngle)
 {
 	playerkuokback -= monsterHitRecovery;
 	if (playerkuokback > 0.0f)
 	{
 		m_Follow = false;
-		m_tMonInfo.tPosX -= cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed) + playerkuokback;
-		m_tMonInfo.tPosY -= -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed) + playerkuokback;
+		m_tMonInfo.tPosX += cosf(bulletAngle) * ((m_tMonInfo.tMoveSpeed) + playerkuokback);
+		m_tMonInfo.tPosY += -sinf(bulletAngle) * ((m_tMonInfo.tMoveSpeed) + playerkuokback);
 		m_Follow = true;
 	}
 
@@ -340,7 +339,7 @@ void monster::Damge(float dam, soundManager * soundMagPoint, itemManager * itemM
 		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2), m_tMonInfo.tPosY - (384 / 3 / 2));
 		m_tMonInfo.tScore += RANDOM->getInt(4);
 
-		int tempItem = RANDOM->getFromIntTo(1, tempItemValue + 10);
+		int tempItem = RANDOM->getFromIntTo(1, tempItemValue + 30);
 
 		if (tempItem <= tempItemValue)
 		{
@@ -412,7 +411,7 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 			m_tMonInfo.tDef = 4.0f;
 			break;
 		case MONSTER_SUB::MONSTER_SPEED_UP:
-			m_tMonInfo.tMoveSpeed = 2.0f;
+			m_tMonInfo.tMoveSpeed = 1.0f;
 			break;
 		case MONSTER_SUB::MONSTER_POWER_UP:
 			m_tMonInfo.tDamageSub += 10.0f;
@@ -472,13 +471,13 @@ void monster::Enemy_LevelUp(int type)
 
 void monster::render(HDC hdc)
 {
-	Rectangle(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
-	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 30, 30);
+	//Rectangle(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
+	//EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 30, 30);
 
 	m_monsterType->aniRender(hdc,
-		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
-		(m_tMonInfo.tPosY - SCROLL->GetY()) - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale,
-		m_monsterMove, m_tMonInfo.tScale, true, 255);
+		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale*m_tMonInfo.tMonsterBoss,
+		(m_tMonInfo.tPosY - SCROLL->GetY()) - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale*m_tMonInfo.tMonsterBoss,
+		m_monsterMove, m_tMonInfo.tScale*m_tMonInfo.tMonsterBoss, true, 255);
 }
 
 void monster::rectNotMove(RECT rRc)
