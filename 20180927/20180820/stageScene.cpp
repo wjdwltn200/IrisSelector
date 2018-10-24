@@ -741,7 +741,7 @@ void stageScene::SpawnGateTime()
 			{
 				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
 				{
-					Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right;
+					Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right ;
 					Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
 					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
 					{
