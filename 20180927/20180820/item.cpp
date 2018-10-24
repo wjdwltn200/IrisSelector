@@ -142,7 +142,7 @@ void item::update()
 void item::render(HDC hdc)
 {
 	if (!m_isAlive) return;
-	Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	//Ellipse(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	//EllipseMakeCenter(hdc, m_fX, m_fY, m_pImg->getFrameWidth() + 5, m_pImg->getFrameHeight() + 5);
 

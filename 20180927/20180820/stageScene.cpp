@@ -225,6 +225,8 @@ void stageScene::update()
 					{
 						m_player->setX(m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left + 16.0f);
 						m_player->setY(m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top + 16.0f);
+						m_pEffMagr->play("Item_Get1", m_player->getX() - (320 / 4) / 2, m_player->getY());
+						m_pEffMagr->play("Item_Get2", m_player->getX() - (230 / 5) / 2, m_player->getY() - (70) / 2);
 					}
 				}
 			}
@@ -811,6 +813,8 @@ void stageScene::SpawnGateTime()
 				tMoninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top + 16.0f + SCROLL->GetY();
 				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
 				{
+					m_pEffMagr->play("Item_Get1", tMoninfo.tPosX - (320 / 4) / 2, tMoninfo.tPosY);
+					m_pEffMagr->play("Item_Get2", tMoninfo.tPosX - (230 / 5) / 2, tMoninfo.tPosY - (70) / 2);
 					MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)
 				}
 			}

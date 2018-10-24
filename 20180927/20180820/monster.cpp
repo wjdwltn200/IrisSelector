@@ -76,7 +76,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	memset(&m_tMonInfo.m_rc, 0, sizeof(m_tMonInfo.m_rc));
 	memset(&m_tMonInfo, 0, sizeof(m_tMonInfo));
 
-	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, 30, 30);
+	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX, m_tMonInfo.tPosY, 50, 50);
 	m_tMonInfo.tIsAlive = monInfo.tIsAlive;
 	m_tMonInfo.tHp = monInfo.tHp;
 	m_tMonInfo.tHpMax = monInfo.tHpMax;
@@ -128,7 +128,7 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 {
 	if (!m_tMonInfo.tIsAlive) return;
 	{
-		m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY - SCROLL->GetY(), 30, 30);
+		m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY - SCROLL->GetY(), 50, 50);
 		m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX , m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
 	}
 
