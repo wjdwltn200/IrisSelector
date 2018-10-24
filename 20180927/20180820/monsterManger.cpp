@@ -54,7 +54,7 @@ void monsterManger::update()
 	}
 }
 
-void monsterManger::Regeneration(const char*strKey, int monNumber, tagMonInfo moninfo, bulletManger* bulletInfo, PlayerCharacter* playerInfo)
+void monsterManger::Regeneration(const char*strKey, int monNumber, tagMonInfo moninfo, bulletManger* bulletInfo, PlayerCharacter* playerInfo, tagBulletInfo tbulletInfo)
 {
 	monNumber--;
 	moninfo.tMonsterNumber = m_MonsterInfo[monNumber].tMonsterNumber;
@@ -77,13 +77,13 @@ void monsterManger::Regeneration(const char*strKey, int monNumber, tagMonInfo mo
 	{
 		if (!(*m_iter)->getMonInfo().tIsAlive)
 		{
-			(*m_iter)->init(strKey, monNumber, moninfo, bulletInfo, playerInfo, m_pEffMag);
+			(*m_iter)->init(strKey, monNumber, moninfo, bulletInfo, playerInfo, m_pEffMag, tbulletInfo);
 			return;
 		}
 	}
 	monster * pMonster = new monster;
 
-	pMonster->init(strKey, monNumber, moninfo, bulletInfo, playerInfo, m_pEffMag);
+	pMonster->init(strKey, monNumber, moninfo, bulletInfo, playerInfo, m_pEffMag, tbulletInfo);
 	m_vecMonster.push_back((pMonster));
 	return;
 }

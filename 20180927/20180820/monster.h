@@ -43,7 +43,7 @@ private:
 	effectManager * m_pEffMag;
 
 public:
-	HRESULT init(const char * strKey, int monNumber, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint);
+	HRESULT init(const char * strKey, int monNumber, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint, tagBulletInfo tBulletInfo);
 
 	void release();
 

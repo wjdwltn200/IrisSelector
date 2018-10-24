@@ -117,7 +117,7 @@ HRESULT stageScene::init()
 	Moninfo.tPosX = 100;
 	Moninfo.tPosY = 100;
 
-	m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player);
+	m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);

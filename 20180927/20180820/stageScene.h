@@ -82,6 +82,8 @@ private:
 	tagSpawnTile SpawnTile;
 	tagMonInfo Moninfo;
 
+	tagBulletInfo m_tBulletInfo;
+
 	int m_buttonSetX;
 	int m_buttonSetY;
 	int m_isCount;

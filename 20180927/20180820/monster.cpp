@@ -9,7 +9,7 @@
 #include "soundManager.h"
 #include "itemManager.h"
 
-HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint)
+HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bulletManger* bulletP, PlayerCharacter* playerPoint, effectManager* effMagPoint, tagBulletInfo tBulletInfo)
 {
 	m_pBulletMag = bulletP;
 	m_PlayerCharPoint = playerPoint;
@@ -21,41 +21,44 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
 	m_tBulletInfo.tIsAlive = true;
-	m_tBulletInfo.tBulletSetNum = 1;
-	m_tBulletInfo.tScale = 2.0f;
+	m_tBulletInfo.tBulletSetNum = tBulletInfo.tBulletSetNum;
+	m_tBulletInfo.tScale = tBulletInfo.tScale;
 	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
-	m_tBulletInfo.tRadius = 0.5f;
-	m_tBulletInfo.tExpRadius = 0.5f;
-	m_tBulletInfo.tRange = 400.0f;
-	m_tBulletInfo.tBulletBoom = false;
+	m_tBulletInfo.tRadius = tBulletInfo.tRadius;
+	m_tBulletInfo.tExpRadius = tBulletInfo.tExpRadius;
+	m_tBulletInfo.tRange = tBulletInfo.tRange;
+	m_tBulletInfo.tBulletBoom = tBulletInfo.tBulletBoom;
 
-	m_tBulletInfo.tDmage = 1.0f + m_tMonInfo.tDamageSub;
-	m_tBulletInfo.tKnokBack = 0.0f;
-	m_tBulletInfo.tMoveSpeed = 5.0f;
+	m_tBulletInfo.tDmage = tBulletInfo.tDmage + m_tMonInfo.tDamageSub;
+	m_tBulletInfo.tKnokBack = tBulletInfo.tKnokBack;
+	m_tBulletInfo.tMoveSpeed = tBulletInfo.tMoveSpeed;
+	m_tBulletInfoSub.tScatter = tBulletInfo.tScatter;
 
-	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
-	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
+
+	m_tBulletInfo.tBoomType = tBulletInfo.tBoomType;
+	m_tBulletInfo.tShootType = tBulletInfo.tShootType;
 	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::MONSTER;
-	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
-	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
-	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfo.tMoveActType = tBulletInfo.tMoveActType;
+	m_tBulletInfo.tImageType = tBulletInfo.tImageType;
+	m_tBulletInfo.tMoveType = tBulletInfo.tMoveType;
 
 	// ¼­ºê ÅºÈ¯ (ÀÌÁß Æø¹ß)
 
 	memset(&m_tBulletInfoSub, 0, sizeof(m_tBulletInfoSub));
 
 	m_tBulletInfoSub.tIsAlive = true;
-	m_tBulletInfoSub.tBulletSetNum = 2;
-	m_tBulletInfoSub.tScale = 1.0f;
+	m_tBulletInfoSub.tBulletSetNum = 1;
+	m_tBulletInfoSub.tScale = m_tBulletInfo.tScale / 2;
 	m_tBulletInfoSub.tScaleMax = m_tBulletInfo.tScale * 2.0f;
-	m_tBulletInfoSub.tRadius = 0.5f;
-	m_tBulletInfoSub.tExpRadius = 0.5f;
-	m_tBulletInfoSub.tRange = 400.0f;
+	m_tBulletInfoSub.tRadius = m_tBulletInfo.tRadius / 2;
+	m_tBulletInfoSub.tExpRadius = m_tBulletInfo.tExpRadius / 2;
+	m_tBulletInfoSub.tRange = m_tBulletInfo.tRange / 2;
 	m_tBulletInfoSub.tBulletBoom = false;
 
-	m_tBulletInfoSub.tDmage = 1.0f + m_tMonInfo.tDamageSub;
-	m_tBulletInfoSub.tKnokBack = 5.0f;
-	m_tBulletInfoSub.tMoveSpeed = 5.0f;
+	m_tBulletInfoSub.tDmage = m_tBulletInfo.tDmage / 2;
+	m_tBulletInfoSub.tKnokBack = m_tBulletInfo.tKnokBack / 2;
+	m_tBulletInfoSub.tMoveSpeed = m_tBulletInfo.tMoveSpeed / 2;
+	m_tBulletInfoSub.tScatter = m_tBulletInfo.tScatter / 2;
 
 	m_tBulletInfoSub.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
 	m_tBulletInfoSub.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
