@@ -115,7 +115,6 @@ HRESULT stageScene::init()
 	//m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player);
 
 	m_pItemMag = new itemManager;
-	m_pItemMag = m_pItemMag;
 	m_pItemMag->init(10);
 	m_isSpawnCycle = false;
 	m_GateNum = 0;

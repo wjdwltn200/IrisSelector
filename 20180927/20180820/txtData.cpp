@@ -59,7 +59,7 @@ char * txtData::vectorArrayCombine(vector<string> vecArray)
 
 vector<string> txtData::txtLoad(const char * loadFileName)
 {
-	char str[2048];
+	char str[4096];
 	DWORD read;
 
 	HANDLE hFile;
@@ -71,7 +71,7 @@ vector<string> txtData::txtLoad(const char * loadFileName)
 		FILE_ATTRIBUTE_NORMAL,
 		NULL);
 
-	ReadFile(hFile, str, 2048, &read, NULL);
+	ReadFile(hFile, str, 4096, &read, NULL);
 
 	CloseHandle(hFile);
 
