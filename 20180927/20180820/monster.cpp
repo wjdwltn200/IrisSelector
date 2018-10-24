@@ -14,6 +14,9 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_pBulletMag = bulletP;
 	m_PlayerCharPoint = playerPoint;
 	m_pEffMag = effMagPoint;
+	m_RePosX = 0.0f;
+	m_RePosY = 0.0f;
+
 	// Monster Bullet 기본 셋팅 (메인)
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
 
@@ -111,9 +114,6 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_isMove = false;
 	m_SubDamgeAdd = 5.0f;
 
-
-
-
 	return S_OK;
 }
 
@@ -125,8 +125,14 @@ void monster::release()
 void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 {
 	if (!m_tMonInfo.tIsAlive) return;
-	m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY - SCROLL->GetY(), 30, 30);
-			m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX , m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
+	{
+		m_tMonInfo.m_rc = RectMakeCenter(m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY - SCROLL->GetY(), 30, 30);
+		m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX , m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
+	}
+
+	m_RePosX = m_tMonInfo.tPosX;
+	m_RePosY = m_tMonInfo.tPosY;
+
 	switch (m_moveTypeNum)
 	{
 	case MONSTER_MOVE::MONSTER_CRAWL:
@@ -473,6 +479,29 @@ void monster::render(HDC hdc)
 		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
 		(m_tMonInfo.tPosY - SCROLL->GetY()) - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale,
 		m_monsterMove, m_tMonInfo.tScale, true, 255);
+}
+
+void monster::rectNotMove(RECT rRc)
+{
+	if (rRc.left < m_tMonInfo.m_rc.right && rRc.left > m_tMonInfo.m_rc.left)
+	{
+		m_tMonInfo.tPosX -= m_tMonInfo.tMoveSpeed + RECT_SIZE;
+	}
+	
+	if (rRc.right > m_tMonInfo.m_rc.left && rRc.right < m_tMonInfo.m_rc.right)
+	{
+		m_tMonInfo.tPosX += m_tMonInfo.tMoveSpeed + RECT_SIZE;
+	}
+
+	if (rRc.top < m_tMonInfo.m_rc.bottom && rRc.top > m_tMonInfo.m_rc.top)
+	{
+		m_tMonInfo.tPosY -= m_tMonInfo.tMoveSpeed + RECT_SIZE;
+	}
+
+	if (rRc.bottom > m_tMonInfo.m_rc.top && rRc.bottom < m_tMonInfo.m_rc.bottom)
+	{
+		m_tMonInfo.tPosY += m_tMonInfo.tMoveSpeed + RECT_SIZE;
+	}
 }
 
 monster::monster()

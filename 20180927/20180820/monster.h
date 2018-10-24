@@ -8,6 +8,8 @@ class effectManager;
 class soundManager;
 class itemManager;
 
+#define RECT_SIZE 2.0f
+
 class monster
 {
 private:
@@ -35,6 +37,8 @@ private:
 	tagSpawnTile m_tSpawnTile;
 
 	tagMonInfo m_tMonInfo;
+	float m_RePosX;
+	float m_RePosY;
 
 	effectManager * m_pEffMag;
 
@@ -54,6 +58,8 @@ public:
 	void TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSubInfo, bool isTrance, int life);
 
 	void render(HDC hdc);
+
+	void rectNotMove(RECT rRc);
 
 	tagMonInfo getMonInfo() { return m_tMonInfo; }
 	void setAlive(bool Alive) { m_tMonInfo.tIsAlive = Alive; };

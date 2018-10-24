@@ -101,13 +101,8 @@ public:
 	HRESULT init();
 	void release();
 
-
-
 	void update();
 	void KeyEvent();
-	void MouseEvent();
-
-
 
 	void render(HDC hdc);
 	void LoadEvent();
