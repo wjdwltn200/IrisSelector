@@ -14,8 +14,6 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_pBulletMag = bulletP;
 	m_PlayerCharPoint = playerPoint;
 	m_pEffMag = effMagPoint;
-	m_RePosX = 0.0f;
-	m_RePosY = 0.0f;
 
 	// Monster Bullet 기본 셋팅 (메인)
 	memset(&m_tBulletInfo, 0, sizeof(m_tBulletInfo));
@@ -32,7 +30,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_tBulletInfo.tDmage = tBulletInfo.tDmage + m_tMonInfo.tDamageSub;
 	m_tBulletInfo.tKnokBack = tBulletInfo.tKnokBack;
 	m_tBulletInfo.tMoveSpeed = tBulletInfo.tMoveSpeed;
-	m_tBulletInfoSub.tScatter = tBulletInfo.tScatter;
+	m_tBulletInfo.tScatter = tBulletInfo.tScatter;
 
 
 	m_tBulletInfo.tBoomType = tBulletInfo.tBoomType;
@@ -134,9 +132,6 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 		m_tMonInfo.tMoveAngle = MY_UTIL::getAngle(m_tMonInfo.tPosX , m_tMonInfo.tPosY, m_PlayerCharPoint->getX(), m_PlayerCharPoint->getY());
 	}
 
-	m_RePosX = m_tMonInfo.tPosX;
-	m_RePosY = m_tMonInfo.tPosY;
-
 	switch (m_moveTypeNum)
 	{
 	case MONSTER_MOVE::MONSTER_CRAWL:
@@ -219,9 +214,9 @@ void monster::Move(int m_moveTypeNum)//int m_moveTypeNum)
 				m_monsterMove->setFPS(60);
 				for (int i = 0; i < 10; i++)
 				{
-					m_tMonInfo.tMoveAngle += i * 36;
-					m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 2);
-					m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 2);
+					m_tMonInfo.tMoveAngle += i * 36.0f;
+					m_tMonInfo.tPosX += cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 1.3f);
+					m_tMonInfo.tPosY += -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed * 1.3f);
 					if (i == 10)
 					{
 						i = 0;
@@ -301,14 +296,14 @@ void monster::fireAtk()
 
 }
 
-void monster::knokback(float playerkuokback, float monsterHitRecovery)
+void monster::knokback(float playerkuokback, float monsterHitRecovery, float bulletAngle)
 {
 	playerkuokback -= monsterHitRecovery;
 	if (playerkuokback > 0.0f)
 	{
 		m_Follow = false;
-		m_tMonInfo.tPosX -= cosf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed) + playerkuokback;
-		m_tMonInfo.tPosY -= -sinf(m_tMonInfo.tMoveAngle) * (m_tMonInfo.tMoveSpeed) + playerkuokback;
+		m_tMonInfo.tPosX += cosf(bulletAngle) * ((m_tMonInfo.tMoveSpeed) + playerkuokback);
+		m_tMonInfo.tPosY += -sinf(bulletAngle) * ((m_tMonInfo.tMoveSpeed) + playerkuokback);
 		m_Follow = true;
 	}
 
@@ -344,7 +339,7 @@ void monster::Damge(float dam, soundManager * soundMagPoint, itemManager * itemM
 		m_pEffMag->play("Monster_die", m_tMonInfo.tPosX - (512 / 4 / 2), m_tMonInfo.tPosY - (384 / 3 / 2));
 		m_tMonInfo.tScore += RANDOM->getInt(4);
 
-		int tempItem = RANDOM->getFromIntTo(1, tempItemValue + 10);
+		int tempItem = RANDOM->getFromIntTo(1, tempItemValue + 30);
 
 		if (tempItem <= tempItemValue)
 		{
@@ -416,7 +411,7 @@ void monster::TypeSub(float minGague, float maxGauge, int minSubInfo, int maxSub
 			m_tMonInfo.tDef = 4.0f;
 			break;
 		case MONSTER_SUB::MONSTER_SPEED_UP:
-			m_tMonInfo.tMoveSpeed = 2.0f;
+			m_tMonInfo.tMoveSpeed = 1.0f;
 			break;
 		case MONSTER_SUB::MONSTER_POWER_UP:
 			m_tMonInfo.tDamageSub += 10.0f;
@@ -476,8 +471,8 @@ void monster::Enemy_LevelUp(int type)
 
 void monster::render(HDC hdc)
 {
-	Rectangle(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
-	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 30, 30);
+	//Rectangle(hdc, m_tMonInfo.m_rc.left, m_tMonInfo.m_rc.top, m_tMonInfo.m_rc.right, m_tMonInfo.m_rc.bottom);
+	//EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 30, 30);
 
 	m_monsterType->aniRender(hdc,
 		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale*m_tMonInfo.tMonsterBoss,

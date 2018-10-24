@@ -11,7 +11,7 @@ HRESULT monsterManger::init(int vecMaxSize)
 	m_MaxMonster = atoi(m_Monsterlist[0].c_str());
 	for (int i = 0; i < m_MaxMonster; i++)
 	{
-		int temp = (i * 13) + 1;
+		int temp = (i * 12) + 1;
 		m_MonsterInfo[i].tMonsterNumber = atoi(m_Monsterlist[temp++].c_str());
 		m_MonsterInfo[i].tHp = atof(m_Monsterlist[temp++].c_str());
 		m_MonsterInfo[i].nScore = atoi(m_Monsterlist[temp++].c_str());
@@ -19,18 +19,12 @@ HRESULT monsterManger::init(int vecMaxSize)
 		m_MonsterInfo[i].tminGaugeInfo = atoi(m_Monsterlist[temp++].c_str());
 		m_MonsterInfo[i].tmaxGaugeSub = atof(m_Monsterlist[temp++].c_str());
 		m_MonsterInfo[i].tmaxGaugeInfo = atoi(m_Monsterlist[temp++].c_str());
-
 		m_MonsterInfo[i].tIslife = atoi(m_Monsterlist[temp++].c_str());
 		m_MonsterInfo[i].tMoveType = atoi(m_Monsterlist[temp++].c_str());
+
 		m_MonsterInfo[i].tMoveSpeed = atof(m_Monsterlist[temp++].c_str());
-		m_MonsterInfo[i].tScaleMax = atof(m_Monsterlist[temp++].c_str());
 		m_MonsterInfo[i].tUnKnokBack = atof(m_Monsterlist[temp++].c_str());
 		m_MonsterInfo[i].tFireDelay = atoi(m_Monsterlist[temp++].c_str());
-
-		//m_MonsterInfo[i].tScale = atof(m_Monsterlist[temp++].c_str());
-
-		//m_BulletInfo[i].tShootType = atoi(m_Monsterlist[temp++].c_str());
-		//m_BulletInfo[i].tBoomType = atoi(m_Monsterlist[temp++].c_str());
 	}
 
 
@@ -68,8 +62,6 @@ void monsterManger::Regeneration(const char*strKey, int monNumber, tagMonInfo mo
 	moninfo.tMoveType = m_MonsterInfo[monNumber].tMoveType;
 
 	moninfo.tMoveSpeed = m_MonsterInfo[monNumber].tMoveSpeed;
-	moninfo.tScale = m_MonsterInfo[monNumber].tScale;
-
 	moninfo.tUnKnokBack = m_MonsterInfo[monNumber].tUnKnokBack;
 	moninfo.tFireDelay = m_MonsterInfo[monNumber].tFireDelay;
 

@@ -114,10 +114,29 @@ HRESULT stageScene::init()
 	m_pMonsterMag->setEffMagPoint(m_pEffMagr);
 	m_pMonsterMag->init(50);
 
-	tMoninfo.tPosX = 100;
-	tMoninfo.tPosY = 100;
+	m_tBulletInfo.tIsAlive = true;
+	m_tBulletInfo.tBulletSetNum = 1;
+	m_tBulletInfo.tScale = 1.0f;
+	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
+	m_tBulletInfo.tRadius = IMAGEMANAGER->findImage("Bullet_R")->getFrameWidth() / 2;
+	m_tBulletInfo.tExpRadius = m_tBulletInfo.tRadius * 2.0f;
+	m_tBulletInfo.tRange = 500.0f;
+	m_tBulletInfo.tBulletBoom = false;
 
-	m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
+	m_tBulletInfo.tDmage = 1.0f;
+	m_tBulletInfo.tKnokBack = 0.5f;
+	m_tBulletInfo.tMoveSpeed = 3.0f;
+	m_tBulletInfo.tScatter = 10.0f;
+
+
+	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
+	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::BULLET_SHOOT_NUM;
+	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::MONSTER;
+	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
+	m_tBulletInfo.tImageType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfo.tMoveType = BULLET_IMAGE_TYPE::COLOR_R;
+
+	//m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
@@ -179,7 +198,6 @@ void stageScene::update()
 		// 최초 한번만 실행되는 부분
 		ShowCursor(FALSE);
 		m_bIsMiniMapOn = true;
-		m_bIsScoreOn = true;
 
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -243,7 +261,7 @@ void stageScene::update()
 		}
 
 
-			SpawnGateTime();
+
 
 		m_nTilesNumber = 0;
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
@@ -265,7 +283,7 @@ void stageScene::update()
 		}
 
 
-
+		SpawnGateTime();
 		m_player->update();
 		m_pMonsterMag->update();
 		m_pItemMag->update();
@@ -508,85 +526,132 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 	tSpawnTile.nSpawnOfNumber = SpawnOfNumber;
 	tSpawnTile.nSPawnNumber = MonNumber;
 
+	// 설정
+	m_tBulletInfo.tIsAlive = true;
+	m_tBulletInfo.tBulletSetNum = 1;
+	m_tBulletInfo.tScale = 1.0f;
+	m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
+	m_tBulletInfo.tRadius = IMAGEMANAGER->findImage("Bullet_R")->getFrameWidth() / 2;
+	m_tBulletInfo.tExpRadius = m_tBulletInfo.tRadius * 2.0f;
+	m_tBulletInfo.tRange = 500.0f;
+	m_tBulletInfo.tBulletBoom = false;
+
+	m_tBulletInfo.tDmage = 1.0f;
+	m_tBulletInfo.tKnokBack = 0.5f;
+	m_tBulletInfo.tMoveSpeed = 5.0f;
+	m_tBulletInfo.tScatter = 10.0f;
+
+
+	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
+	m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::ONE_SHOOT;
+	m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::PLAYER;
+	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
+	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
+	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+
+
 	for (int i = 0; i < tSpawnTile.nSpawnOfNumber; i++)
 	{
 		switch (tSpawnTile.nSPawnNumber)
 		{
 		case 0:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Beholder", 1, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Beholder", 1, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 1:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Blue_Guardian", 2, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Blue_Guardian", 2, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 2:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Blue_Mindflayer", 3, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Blue_Mindflayer", 3, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 3:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Bugman", 4, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Bugman", 4, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 4:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cetus", 5, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Cetus", 5, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 5:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Coven", 6, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Coven", 6, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 6:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cow", 7, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Cow", 7, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 7:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cyclops", 8, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Cyclops", 8, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 8:
+			// 설정
+			m_tBulletInfo.tIsAlive = true;
+			m_tBulletInfo.tBulletSetNum = 3;
+			m_tBulletInfo.tScale = 1.0f;
+			m_tBulletInfo.tScaleMax = m_tBulletInfo.tScale * 2.0f;
+			m_tBulletInfo.tRadius = IMAGEMANAGER->findImage("Bullet_R")->getFrameWidth() / 2;
+			m_tBulletInfo.tExpRadius = m_tBulletInfo.tRadius * 2.0f;
+			m_tBulletInfo.tRange = 500.0f;
+			m_tBulletInfo.tBulletBoom = false;
+
+			m_tBulletInfo.tDmage = 1.0f;
+			m_tBulletInfo.tKnokBack = 0.5f;
+			m_tBulletInfo.tMoveSpeed = 5.0f;
+			m_tBulletInfo.tScatter = 10.0f;
+
+
+			m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
+			m_tBulletInfo.tShootType = BULLET_SHOOT_TYPE::CUFF_SHOOT;
+			m_tBulletInfo.tMasterType = BULLET_MASTER_TYPE::MONSTER;
+			m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
+			m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
+			m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Dark_Lord", 9, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Dark_Lord", 9, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 9:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Dog", 10, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Dog", 10, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 10:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Eye_Slime", 11, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Eye_Slime", 11, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 11:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Faun_Archer", 12, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Faun_Archer", 12, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 12:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Firewolf", 13, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Firewolf", 13, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 13:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Gargoyle", 14, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Gargoyle", 14, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 14:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Giant_Run", 15, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Giant_Run", 15, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 15:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Gnome_Run", 16, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Gnome_Run", 16, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 16:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Igor", 17, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Igor", 17, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 17:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Itchy", 18, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Itchy", 18, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		case 18:
 			tMoninfo.tHpMax = tMoninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Knife_dude", 19, tMoninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Knife_dude", 19, tMoninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 			break;
 		}
 	}
@@ -687,7 +752,7 @@ void stageScene::ColRc()
 				{
 					// 몬스터 피격 처리
 					(*MonsIter)->Damge((*PlayerBulletIter)->getTagBulletInfo().tDmage, &m_soundMag, m_pItemMag);
-					(*MonsIter)->knokback((*PlayerBulletIter)->getTagBulletInfo().tKnokBack, (*MonsIter)->getMonInfo().tUnKnokBack);
+					(*MonsIter)->knokback((*PlayerBulletIter)->getTagBulletInfo().tKnokBack, (*MonsIter)->getMonInfo().tUnKnokBack, (*PlayerBulletIter)->getTagBulletInfo().tAngle);
 					(*PlayerBulletIter)->HitEff();
 					m_pUiMag->addHitTxt((*PlayerBulletIter)->getTagBulletInfo().tDmage, (*MonsIter)->getMonInfo().tPosX, (*MonsIter)->getMonInfo().tPosY);
 					m_soundMag.play("sound/sound_MonsterHit.wav", g_saveData.gSeValue);
@@ -741,15 +806,13 @@ void stageScene::SpawnGateTime()
 			for (int y = 0; y < g_saveData.gTileMaxCountX; y++)
 			{
 				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
+				
+				tMoninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left + 16.0f + SCROLL->GetX();
+				tMoninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top + 16.0f + SCROLL->GetY();
+				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
 				{
-					tMoninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right;
-					tMoninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
-					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
-					{
-						MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)
-					}
+					MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)
 				}
-
 			}
 		}
 	}
