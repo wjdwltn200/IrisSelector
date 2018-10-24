@@ -27,6 +27,9 @@ private:
 	image*		  m_pImg_rad[4];
 	image*        m_pImage_checkBox;
 	image*        m_pTileSet[4];
+	image*		  m_pMiniPlayer;
+	image*		  m_pMiniEnemy;
+	
 
 	RECT m_pTiles_Collide[TILE_MAXCOUNTX * TILE_MAXCOUNTY];
 

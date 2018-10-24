@@ -5,6 +5,7 @@
 #include "loadingScene.h"
 #include "editor.h"
 #include "EndingScene.h"
+#include "CreatorScene.h"
 
 
 void mainGame::setBackBuffer()
@@ -50,6 +51,11 @@ HRESULT mainGame::init()
 
 	m_pEndingScene = new EndingScene;
 	SCENEMANAGER->addScene("ending", m_pEndingScene);
+
+	m_pCreatorScene = new CreatorScene;
+	SCENEMANAGER->addScene("creator", m_pCreatorScene);
+	
+
 	// 민욱이는 과연 누구인가? 알랄라 내첫사랑 지수 ㅇㅇ
 	// 이순현 테스트
 	// 정지수 로그인 테스트
