@@ -4,6 +4,7 @@ class stageScene;
 class EndingScene;
 class titleScene;
 class editor;
+class CreatorScene;
 
 
 class mainGame
@@ -26,6 +27,7 @@ private:
 	stageScene * m_pStageScene;
 	titleScene * m_pTitleScene;
 	EndingScene * m_pEndingScene;
+	CreatorScene * m_pCreatorScene;
 
 public:
 	HRESULT init();

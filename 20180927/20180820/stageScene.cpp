@@ -65,6 +65,10 @@ HRESULT stageScene::init()
 	m_pTileSet[1] = IMAGEMANAGER->findImage("tileset2");
 	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
 	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
+	m_pMiniPlayer = IMAGEMANAGER->findImage("mini_player");
+	m_pMiniEnemy = IMAGEMANAGER->findImage("mini_enemy");
+
+
 
 
 	m_bIsMiniMapOn = false;
@@ -112,7 +116,7 @@ HRESULT stageScene::init()
 	Moninfo.tPosX = 100;
 	Moninfo.tPosY = 100;
 
-	//m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player);
+	m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player);
 
 	m_pItemMag = new itemManager;
 	m_pItemMag->init(10);
@@ -389,7 +393,7 @@ void stageScene::render(HDC hdc)
 		m_pItemMag->render(hdc);
 		m_pBulletMag->render(hdc);
 		m_pBulletMagMons->render(hdc);
-		m_pMonsterMag->render(hdc);
+		//m_pMonsterMag->render(hdc);
 		m_pItemMag->render(hdc);
 		m_pEffMagr->render(hdc);
 		m_player->render(hdc);
@@ -415,6 +419,35 @@ void stageScene::render(HDC hdc)
 					MiniMap_Ratio,
 					TILE_SIZEX,
 					TILE_SIZEY);
+
+				m_pMiniPlayer->RatioRender(hdc,
+					649 + m_player->getRect().left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
+					11 + m_player->getRect().top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
+					m_pMiniPlayer->getFrameX(),
+					m_pMiniPlayer->getFrameY(),
+					MiniMap_Ratio * 4,
+					54,
+					54);
+
+				
+				std::vector<monster*> vMonster = m_pMonsterMag->getVecMons();
+				std::vector<monster*>::iterator MonsIter;
+				for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 플레이어 총알 백터
+				{
+					if ((*MonsIter)->getMonInfo().tIsAlive)
+					{
+						m_pMiniEnemy->RatioRender(hdc,
+							649 + (*MonsIter)->getMonInfo().m_rc.left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
+							11 + (*MonsIter)->getMonInfo().m_rc.top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
+							m_pMiniEnemy->getFrameX(),
+							m_pMiniEnemy->getFrameY(),
+							MiniMap_Ratio * 4,
+							54,
+							54);
+					}
+				}
+
+
 			}
 		}
 	}

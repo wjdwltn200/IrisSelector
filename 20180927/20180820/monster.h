@@ -43,7 +43,7 @@ public:
 
 	void release();
 
-
+	image getImage() { return *m_monsterType; }
 
 	void update();
 	void Enemy_LevelUp(int type);
