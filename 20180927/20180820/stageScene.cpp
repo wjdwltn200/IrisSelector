@@ -114,8 +114,8 @@ HRESULT stageScene::init()
 	m_pMonsterMag->setEffMagPoint(m_pEffMagr);
 	m_pMonsterMag->init(50);
 
-	Moninfo.tPosX = 100;
-	Moninfo.tPosY = 100;
+	tMoninfo.tPosX = 100;
+	tMoninfo.tPosY = 100;
 
 	m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player, m_tBulletInfo);
 
@@ -242,7 +242,8 @@ void stageScene::update()
 			m_soundMag.play("sound/sound_StageBGM.wav", g_saveData.gMainBGMValue);
 		}
 
-		SpawnGateTime();
+
+			SpawnGateTime();
 
 		m_nTilesNumber = 0;
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
@@ -504,88 +505,88 @@ void stageScene::FixedLoadEvent()
 
 void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 {
-	SpawnTile.nSpawnOfNumber = SpawnOfNumber;
-	SpawnTile.nSPawnNumber = MonNumber;
-	for (int i = 0; i < SpawnTile.nSpawnOfNumber; i++)
+	tSpawnTile.nSpawnOfNumber = SpawnOfNumber;
+	tSpawnTile.nSPawnNumber = MonNumber;
+
+	for (int i = 0; i < tSpawnTile.nSpawnOfNumber; i++)
 	{
-		switch (SpawnTile.nSPawnNumber)
+		switch (tSpawnTile.nSPawnNumber)
 		{
 		case 0:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Beholder", 1, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Beholder", 1, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 1:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Blue_Guardian", 2, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Blue_Guardian", 2, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 2:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Blue_Mindflayer", 3, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Blue_Mindflayer", 3, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 3:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Bugman", 4, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Bugman", 4, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 4:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cetus", 5, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Cetus", 5, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 5:
-
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Coven", 6, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Coven", 6, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 6:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cow", 7, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Cow", 7, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 7:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cyclops", 8, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Cyclops", 8, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 8:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Dark_Lord", 9, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Dark_Lord", 9, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 9:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Dog", 10, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Dog", 10, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 10:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Eye_Slime", 11, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Eye_Slime", 11, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 11:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Faun_Archer", 12, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Faun_Archer", 12, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 12:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Firewolf", 13, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Firewolf", 13, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 13:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Gargoyle", 14, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Gargoyle", 14, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 14:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Giant_Run", 15, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Giant_Run", 15, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 15:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Gnome_Run", 16, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Gnome_Run", 16, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 16:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Igor", 17, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Igor", 17, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 17:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Itchy", 18, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Itchy", 18, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		case 18:
-			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Knife_dude", 19, Moninfo, m_pBulletMagMons, m_player);
+			tMoninfo.tHpMax = tMoninfo.tHp;
+			m_pMonsterMag->Regeneration("BG_Knife_dude", 19, tMoninfo, m_pBulletMagMons, m_player);
 			break;
 		}
 	}
@@ -696,7 +697,7 @@ void stageScene::ColRc()
 	}
 	for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++)
 	{
-		(*MonsIter)->TypeSub(Moninfo.tminGaugeSub, Moninfo.tmaxGaugeSub, Moninfo.tminGaugeInfo, Moninfo.tmaxGaugeInfo, true, 1);
+		(*MonsIter)->TypeSub(tMoninfo.tminGaugeSub, tMoninfo.tmaxGaugeSub, tMoninfo.tminGaugeInfo, tMoninfo.tmaxGaugeInfo, true, 1);
 	}
 
 	// 아이템 획득
@@ -722,7 +723,7 @@ void stageScene::ColRc()
 void stageScene::SpawnGateTime()
 {
 	m_isCount++; // 스폰되는 주기 카운트
-	if (m_isCount > 200.0f /*&& (MAX_SPAWN_NUMBER >= m_MaxSpawnNum)*/)
+	if (m_isCount > 100.0f /*&& (MAX_SPAWN_NUMBER >= m_MaxSpawnNum)*/)
 	{
 		m_isSpawnCycle = true;
 		m_GateNum++;
@@ -741,8 +742,8 @@ void stageScene::SpawnGateTime()
 			{
 				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == 20) continue;
 				{
-					Moninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right;
-					Moninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
+					tMoninfo.tPosX = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right;
+					tMoninfo.tPosY = m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top;
 					if (m_pTiles[x * g_saveData.gTileMaxCountX + y].MonsterNumber == m_GateNum)
 					{
 						MonSpawnCycle(m_GateMonsterNum, m_GateMonsterIndex); // (몬스터 한번에 생성 마리, 몬스터 ID)
