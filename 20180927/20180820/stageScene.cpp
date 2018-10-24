@@ -390,36 +390,40 @@ void stageScene::render(HDC hdc)
 					TILE_SIZEX,
 					TILE_SIZEY);
 
-				m_pMiniPlayer->RatioRender(hdc,
-					649 + m_player->getRect().left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
-					11 + m_player->getRect().top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
-					m_pMiniPlayer->getFrameX(),
-					m_pMiniPlayer->getFrameY(),
-					MiniMap_Ratio * 4,
-					54,
-					54);
+
 
 				
-				std::vector<monster*> vMonster = m_pMonsterMag->getVecMons();
-				std::vector<monster*>::iterator MonsIter;
-				for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 플레이어 총알 백터
-				{
-					if ((*MonsIter)->getMonInfo().tIsAlive)
-					{
-						m_pMiniEnemy->RatioRender(hdc,
-							649 + (*MonsIter)->getMonInfo().m_rc.left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
-							11 + (*MonsIter)->getMonInfo().m_rc.top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
-							m_pMiniEnemy->getFrameX(),
-							m_pMiniEnemy->getFrameY(),
-							MiniMap_Ratio * 4,
-							54,
-							54);
-					}
-				}
 
 
 			}
 		}
+
+
+		std::vector<monster*> vMonster = m_pMonsterMag->getVecMons();
+		std::vector<monster*>::iterator MonsIter;
+		for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 플레이어 총알 백터
+		{
+			if (!(*MonsIter)->getMonInfo().tIsAlive) continue;
+
+			m_pMiniEnemy->RatioRender(hdc,
+				649 + (*MonsIter)->getMonInfo().m_rc.left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
+				11 + (*MonsIter)->getMonInfo().m_rc.top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
+				m_pMiniEnemy->getFrameX(),
+				m_pMiniEnemy->getFrameY(),
+				MiniMap_Ratio * 4,
+				54,
+				54);
+		}
+
+		m_pMiniPlayer->RatioRender(hdc,
+			649 + m_player->getRect().left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
+			11 + m_player->getRect().top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
+			m_pMiniPlayer->getFrameX(),
+			m_pMiniPlayer->getFrameY(),
+			MiniMap_Ratio * 4,
+			54,
+			54);
+
 	}
 	//////////
 
