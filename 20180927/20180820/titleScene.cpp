@@ -90,6 +90,9 @@ HRESULT titleScene::init()
 	IMAGEMANAGER->addImage("prepared", "image/wook/button_prepared.bmp", 480, 120,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("help", "image/wook/help.bmp", 480, 600, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("player", "image/wook/player.bmp", 34, 34, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("mini_player", "image/wook/mini_player.bmp", 54, 54,1,1, true, RGB(255, 255, 255));
+	IMAGEMANAGER->addImage("mini_enemy", "image/wook/mini_enemy.bmp", 54, 54,1,1, true, RGB(255, 255, 255));
+
 
 
 	// 타이틀 이미지
@@ -145,7 +148,7 @@ void titleScene::update()
 			m_isOption = true;
 			break;
 		case TITEL::CREATERS_SC: // 만든이들
-			SCENEMANAGER->changeScene("stage");
+			SCENEMANAGER->changeScene("creator");
 			break;
 		case TITEL::EXIT_SC: // 나가기
 			PostQuitMessage(0);

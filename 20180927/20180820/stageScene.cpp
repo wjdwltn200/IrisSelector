@@ -39,7 +39,7 @@ HRESULT stageScene::init()
 	::SetWindowLong(g_hWnd, 2, dwStyle & ~dwRemove);
 	HDC hDC = ::GetWindowDC(NULL);
 	::LockWindowUpdate(NULL); // allow redrawing
-	::SetWindowPos(g_hWnd, NULL, 100, 100, 800, 800, SWP_FRAMECHANGED);
+	::SetWindowPos(g_hWnd, NULL, 100, 100, 816, 832, SWP_FRAMECHANGED);
 
 
 
@@ -65,9 +65,14 @@ HRESULT stageScene::init()
 	m_pTileSet[1] = IMAGEMANAGER->findImage("tileset2");
 	m_pTileSet[2] = IMAGEMANAGER->findImage("tileset3");
 	m_pTileSet[3] = IMAGEMANAGER->findImage("tileset4");
+	m_pMiniPlayer = IMAGEMANAGER->findImage("mini_player");
+	m_pMiniEnemy = IMAGEMANAGER->findImage("mini_enemy");
+
+
 
 
 	m_bIsMiniMapOn = false;
+	m_bIsScoreOn = false;
 	m_bIsCameraTextOn = false;
 	MiniMap_Ratio = 8;
 
@@ -112,10 +117,9 @@ HRESULT stageScene::init()
 	tMoninfo.tPosX = 100;
 	tMoninfo.tPosY = 100;
 
-	//m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, tMoninfo, m_pBulletMagMons, m_player);
+	m_pMonsterMag->Regeneration("BG_Blue_Guardian", 1, Moninfo, m_pBulletMagMons, m_player);
 
 	m_pItemMag = new itemManager;
-	m_pItemMag = m_pItemMag;
 	m_pItemMag->init(10);
 	m_isSpawnCycle = false;
 	m_GateNum = 0;
@@ -174,6 +178,8 @@ void stageScene::update()
 	{
 		// 최초 한번만 실행되는 부분
 		ShowCursor(FALSE);
+		m_bIsMiniMapOn = true;
+		m_bIsScoreOn = true;
 
 		for (int x = 0; x < g_saveData.gTileMaxCountX; x++)
 		{
@@ -192,6 +198,15 @@ void stageScene::update()
 					{
 						m_nNumber++;
 						m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = false;
+					}
+				}
+
+				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum == 3)
+				{
+					if ((m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 5 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 3))
+					{
+						m_player->setX(m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left + 16.0f);
+						m_player->setY(m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top + 16.0f);
 					}
 				}
 			}
@@ -238,6 +253,8 @@ void stageScene::update()
 				if (m_nTilesNumber < m_nNumber && !m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
 					m_pTiles_Collide[m_nTilesNumber] = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+					m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX - SCROLL->GetX(), y * TILE_SIZEY - SCROLL->GetY(), TILE_SIZEX, TILE_SIZEY);
+
 					m_nTilesNumber++;
 				}
 				else
@@ -268,13 +285,10 @@ void stageScene::update()
 			{
 				m_player->setTileRc(m_pTiles_Collide[i]);
 				m_player->ColP2T();
-				break;
-				//m_player->setIsRc(true);
+				//break;
 			}
 		}
 		SCROLL->update(m_player->getX(), m_player->getY());
-		//CAMERA->update();
-
 	}
 
 }
@@ -285,34 +299,6 @@ void stageScene::update()
 void stageScene::KeyEvent()
 {
 	// 단축키
-	if (KEYMANAGER->isOnceKeyDown('M'))
-	{
-		if (m_bIsMiniMapOn == false)
-			m_bIsMiniMapOn = true;
-		else if (m_bIsMiniMapOn == true)
-			m_bIsMiniMapOn = false;
-	}
-	if (KEYMANAGER->isOnceKeyDown('T'))
-	{
-		if (m_isTest)
-			m_isTest = false;
-		else
-			m_isTest = true;
-	}
-	if (KEYMANAGER->isOnceKeyDown('L'))
-	{
-		if (m_bIsFireOn)
-			m_bIsFireOn = false;
-		else
-			m_bIsFireOn = true;
-	}
-	if (KEYMANAGER->isOnceKeyDown('P'))
-	{
-		if (m_bIsScoreOn)
-			m_bIsScoreOn = false;
-		else
-			m_bIsScoreOn = true;
-	}
 	if (KEYMANAGER->isOnceKeyDown(VK_F6))
 	{
 		if (m_bIsCameraTextOn)
@@ -320,20 +306,7 @@ void stageScene::KeyEvent()
 		else
 			m_bIsCameraTextOn = true;
 	}
-	//CAMERA->keyUpdate();
-	/////////////////////////////
-
 }
-
-
-
-
-void stageScene::MouseEvent()
-{
-}
-
-
-
 
 void stageScene::render(HDC hdc)
 {
@@ -368,12 +341,12 @@ void stageScene::render(HDC hdc)
 			}
 		}
 
-		for (int i = 0; i < m_nNumber; ++i)
-		{
-			Rectangle(hdc, m_pTiles_Collide[i].left,
-				m_pTiles_Collide[i].top, m_pTiles_Collide[i].right,
-				m_pTiles_Collide[i].bottom);
-		}
+		//for (int i = 0; i < m_nNumber; ++i)
+		//{
+		//	Rectangle(hdc, m_pTiles_Collide[i].left,
+		//		m_pTiles_Collide[i].top, m_pTiles_Collide[i].right,
+		//		m_pTiles_Collide[i].bottom);
+		//}
 
 
 		char szText[256];
@@ -391,7 +364,7 @@ void stageScene::render(HDC hdc)
 		m_pItemMag->render(hdc);
 		m_pBulletMag->render(hdc);
 		m_pBulletMagMons->render(hdc);
-		m_pMonsterMag->render(hdc);
+		//m_pMonsterMag->render(hdc);
 		m_pItemMag->render(hdc);
 		m_pEffMagr->render(hdc);
 		m_player->render(hdc);
@@ -417,8 +390,41 @@ void stageScene::render(HDC hdc)
 					MiniMap_Ratio,
 					TILE_SIZEX,
 					TILE_SIZEY);
+
+
+
+				
+
+
 			}
 		}
+
+
+		std::vector<monster*> vMonster = m_pMonsterMag->getVecMons();
+		std::vector<monster*>::iterator MonsIter;
+		for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 플레이어 총알 백터
+		{
+			if (!(*MonsIter)->getMonInfo().tIsAlive) continue;
+
+			m_pMiniEnemy->RatioRender(hdc,
+				649 + (*MonsIter)->getMonInfo().m_rc.left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
+				11 + (*MonsIter)->getMonInfo().m_rc.top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
+				m_pMiniEnemy->getFrameX(),
+				m_pMiniEnemy->getFrameY(),
+				MiniMap_Ratio * 4,
+				54,
+				54);
+		}
+
+		m_pMiniPlayer->RatioRender(hdc,
+			649 + m_player->getRect().left / MiniMap_Ratio + (SCROLL->GetX() / MiniMap_Ratio),
+			11 + m_player->getRect().top / MiniMap_Ratio + (SCROLL->GetY() / MiniMap_Ratio),
+			m_pMiniPlayer->getFrameX(),
+			m_pMiniPlayer->getFrameY(),
+			MiniMap_Ratio * 4,
+			54,
+			54);
+
 	}
 	//////////
 
@@ -445,8 +451,8 @@ void stageScene::render(HDC hdc)
 		char szTextStage[128];
 		// TRANSPARENT : 투명, OPAQUE : 불투명
 		SetBkMode(hdc, TRANSPARENT);
-		SetTextColor(hdc, RGB(150, 0, 100));
-		MY_UTIL::FontOption(hdc, 25, 0);
+		SetTextColor(hdc, RGB(255, 255, 255));
+		MY_UTIL::FontOption(hdc, 25, 1000);
 		sprintf_s(szTextStage, "%s : %d", "스테이지", m_stageNum);
 		TextOut(hdc, 320, 42, szTextStage, strlen(szTextStage));
 		MY_UTIL::FontDelete(hdc);
@@ -455,8 +461,8 @@ void stageScene::render(HDC hdc)
 		char szTextScore[128];
 		// TRANSPARENT : 투명, OPAQUE : 불투명
 		SetBkMode(hdc, TRANSPARENT);
-		SetTextColor(hdc, RGB(150, 0, 100));
-		MY_UTIL::FontOption(hdc, 25, 0);
+		SetTextColor(hdc, RGB(255, 255, 255));
+		MY_UTIL::FontOption(hdc, 25, 1000);
 		sprintf_s(szTextScore, "%s : %d", "점수", m_ClearScore);
 		TextOut(hdc, 320, 15, szTextScore, strlen(szTextScore));
 		MY_UTIL::FontDelete(hdc);
@@ -599,11 +605,22 @@ void stageScene::ColRc()
 	std::vector<monster*>::iterator MonsIter;
 	for (MonsIter = vMonster.begin(); MonsIter != vMonster.end(); MonsIter++) // 플레이어 총알 백터
 	{
+		if (!(*MonsIter)->getMonInfo().tIsAlive) continue;
+
+		// 플레이어와 몬스터 충돌
 		RECT tempRC = (*MonsIter)->getMonInfo().m_rc;
 		if ((*MonsIter)->getMonInfo().tIsAlive && IntersectRect(&temp_rc, &m_player->getRect(), &tempRC))
 		{
 			if (!m_player->getHitState())
 				m_player->PlayerDamage(1.0f);
+		}
+
+		for (int i = 0; i < m_nNumber; i++)
+		{
+			if (IntersectRect(&temp_rc, &m_pTiles_Collide[i], &tempRC))
+			{
+				(*MonsIter)->rectNotMove(m_pTiles_Collide[i]);
+			}
 		}
 	}
 

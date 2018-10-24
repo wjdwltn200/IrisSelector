@@ -180,6 +180,9 @@
     <ClInclude Include="uiTxt.h">
       <Filter>2DGameFramework\ui</Filter>
     </ClInclude>
+    <ClInclude Include="CreatorScene.h">
+      <Filter>MainGame\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -289,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="uiTxt.cpp">
       <Filter>2DGameFramework\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="CreatorScene.cpp">
+      <Filter>MainGame\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

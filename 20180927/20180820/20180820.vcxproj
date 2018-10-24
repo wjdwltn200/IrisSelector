@@ -154,6 +154,7 @@
     <ClInclude Include="bulletManger.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="commonMacroFunction.h" />
+    <ClInclude Include="CreatorScene.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="bulletManger.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="CreatorScene.cpp" />
     <ClCompile Include="editor.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />

@@ -166,7 +166,7 @@ void PlayerCharacter::update()
 
 void PlayerCharacter::render(HDC hdc)
 {
-	Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	//Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	//EllipseMakeCenter(hdc, (m_fX - SCROLL->GetX()), (m_fY - SCROLL->GetY()), img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
 	//Ellipse(hdc, m_rc.lef(m_fY - SCROLL->GetY())t,(m_fY - SCROLL->GetY()) m_rc.top, m_rc.right, m_rc.bottom);
 
@@ -242,29 +242,26 @@ void PlayerCharacter::render(HDC hdc)
 
 void PlayerCharacter::ColP2T()
 {
-	switch (m_enumKey)
+	if (m_enumKey == 0)
 	{
-	case 0:
 		m_fY += m_fSpeed + RECT_BOX;
-		m_enumKey = -1;
-		break;
 
-	case 1:
+		m_enumKey = -1;
+	}
+	if (m_enumKey == 1)
+	{
 		m_fY -= m_fSpeed + RECT_BOX;
 		m_enumKey = -1;
-		break;
-
-	case 2:
+	}
+	if (m_enumKey == 2)
+	{
 		m_fX += m_fSpeed + RECT_BOX;
 		m_enumKey = -1;
-		break;
-
-	case 3:
+	}
+	if (m_enumKey == 3)
+	{
 		m_fX -= m_fSpeed + RECT_BOX;
 		m_enumKey = -1;
-		break;
-	default:
-		break;
 	}
 }
 
@@ -441,13 +438,13 @@ void PlayerCharacter::PlayerInfoUi(HDC hdc)
 	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
 	TempYSize += 20.0f;
 
-	sprintf_s(szText, "m_fX : %.1f", m_fX);
-	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
-	TempYSize += 20.0f;
+	//sprintf_s(szText, "m_fX : %.1f", m_fX);
+	//TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
+	//TempYSize += 20.0f;
 
-	sprintf_s(szText, "CurrX : %.1f", m_fCurrX);
-	TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
-	TempYSize += 20.0f;
+	//sprintf_s(szText, "CurrX : %.1f", m_fCurrX);
+	//TextOut(hdc, img_ItemUiBg->getX() + BULLET_STATE_X, TempYSize, szText, strlen(szText));
+	//TempYSize += 20.0f;
 
 
 
@@ -527,10 +524,6 @@ void PlayerCharacter::keyInput()
 		m_fY -= m_fSpeed;
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
-		/*	if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
-		{
-		m_fY += m_fSpeed + RECT_BOX;
-		}*/
 		m_enumKey = 0;
 	}
 
@@ -540,11 +533,6 @@ void PlayerCharacter::keyInput()
 		m_fY += m_fSpeed;
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
-		/*if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
-		{
-		m_fY -= m_fSpeed + RECT_BOX;
-
-		}*/
 		m_enumKey = 1;
 	}
 
@@ -554,11 +542,6 @@ void PlayerCharacter::keyInput()
 		m_fX -= m_fSpeed;
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
-		/*if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
-		{
-		m_fX += m_fSpeed + RECT_BOX;
-
-		}*/
 		m_enumKey = 2;
 		img_PlayerRun = IMAGEMANAGER->findImage("Player_L_Run");
 		img_PlayerIdle = IMAGEMANAGER->findImage("Player_L_Idle");
@@ -571,11 +554,6 @@ void PlayerCharacter::keyInput()
 		m_fX += m_fSpeed;
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
-		/*if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
-		{
-		m_fX -= m_fSpeed + RECT_BOX;
-
-		}*/
 		m_enumKey = 3;
 		img_PlayerRun = IMAGEMANAGER->findImage("Player_R_Run");
 		img_PlayerIdle = IMAGEMANAGER->findImage("Player_R_Idle");
