@@ -29,14 +29,14 @@ HRESULT stageScene::init()
 {
 	DWORD dwRemove = WS_CAPTION | WS_BORDER | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
 	// This should be kept for reverse operation
-	DWORD dwStyle = ::GetWindowLong(g_hWnd, GWL_STYLE);
+	DWORD dwStyle = ::GetWindowLong(g_hWnd, 2);
 	HMENU hMenu = ::GetMenu(g_hWnd);
 	WINDOWPLACEMENT wp = { sizeof WINDOWPLACEMENT };
 	::GetWindowPlacement(g_hWnd, &wp);
 
 	::LockWindowUpdate(g_hWnd); // prevent intermediate redrawing
 	::SetMenu(g_hWnd, NULL);
-	::SetWindowLong(g_hWnd, GWL_STYLE, dwStyle & ~dwRemove);
+	::SetWindowLong(g_hWnd, 2, dwStyle & ~dwRemove);
 	HDC hDC = ::GetWindowDC(NULL);
 	::LockWindowUpdate(NULL); // allow redrawing
 	::SetWindowPos(g_hWnd, NULL, 100, 100, 800, 800, SWP_FRAMECHANGED);
@@ -79,7 +79,7 @@ HRESULT stageScene::init()
 	m_pButton2 = new button;
 	m_pButton2->init("custom", WINSIZEX / 2, 480, PointMake(0, 1), PointMake(0, 0), Func_button2); // 사용자 지정게임
 
-	// 타이틀 CPP 이동
+																								   // 타이틀 CPP 이동
 
 	m_pEffMagr = new effectManager;
 	m_pEffMagr->addEffect("Bullet_End_0", "image/resources/bullet_image/Bullet_End_0.bmp", 238, 30, 34, 30, 15, 50);
@@ -129,7 +129,7 @@ HRESULT stageScene::init()
 
 	m_isTest = false; // 정지수 : 테스트용으로 만듦
 
-	//CAMERA->init();
+					  //CAMERA->init();
 	return S_OK;
 }
 
@@ -181,7 +181,7 @@ void stageScene::update()
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].rc = RectMake(x * TILE_SIZEX, y * TILE_SIZEY, TILE_SIZEX, TILE_SIZEY);
 				m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove = true; // 특정 타일의 이동불가// */
 
-				if(m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum == 1)
+				if (m_pTiles[x * g_saveData.gTileMaxCountX + y].SampleNum == 1)
 				{
 					if ((m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 3) ||
 						(m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameX == 6 && m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY == 4) ||
@@ -219,13 +219,13 @@ void stageScene::update()
 	if (buttonNum == 4)
 	{
 		KeyEvent();
-			   		 
+
 		if (!m_BGMreSet)
 		{
 			m_BGMreSet = true;
 			m_soundMag.play("sound/sound_StageBGM.wav", g_saveData.gMainBGMValue);
 		}
-		
+
 		SpawnGateTime();
 
 		m_nTilesNumber = 0;
@@ -265,6 +265,7 @@ void stageScene::update()
 			if (IntersectRect(&m_rc, &m_pTiles_Collide[i], &m_player->getRect()))
 			{
 				m_player->setTileRc(m_pTiles_Collide[i]);
+				m_player->ColP2T();
 				break;
 				//m_player->setIsRc(true);
 			}
@@ -357,11 +358,11 @@ void stageScene::render(HDC hdc)
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
 
 
-				   //Rectangle(hdc,
-					  // m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
-					  // m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
-					  // m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-					  // m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
+				//Rectangle(hdc,
+				// m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
+				// m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top,
+				// m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
+				// m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
 			}
 		}
 
@@ -460,7 +461,7 @@ void stageScene::render(HDC hdc)
 
 	}
 
-	
+
 }
 
 void stageScene::LoadEvent()
@@ -504,15 +505,15 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 		{
 		case 0:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Beholder",1, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Beholder", 1, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 1:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Blue_Guardian",2, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Blue_Guardian", 2, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 2:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Blue_Mindflayer",3, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Blue_Mindflayer", 3, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 3:
 			Moninfo.tHpMax = Moninfo.tHp;
@@ -520,64 +521,64 @@ void stageScene::MonSpawnCycle(int SpawnOfNumber, int MonNumber)
 			break;
 		case 4:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cetus",5, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Cetus", 5, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 5:
 
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Coven",6, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Coven", 6, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 6:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cow",7, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Cow", 7, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 7:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Cyclops",8, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Cyclops", 8, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 8:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Dark_Lord",9, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Dark_Lord", 9, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 9:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Dog",10, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Dog", 10, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 10:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Eye_Slime",11, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Eye_Slime", 11, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 11:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Faun_Archer",12, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Faun_Archer", 12, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 12:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Firewolf",13, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Firewolf", 13, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 13:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Gargoyle",14, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Gargoyle", 14, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 14:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Giant_Run",15, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Giant_Run", 15, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 15:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Gnome_Run",16, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Gnome_Run", 16, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 16:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Igor",17, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Igor", 17, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 17:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Itchy",18, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Itchy", 18, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		case 18:
 			Moninfo.tHpMax = Moninfo.tHp;
-			m_pMonsterMag->Regeneration("BG_Knife_dude",19, Moninfo, m_pBulletMagMons, m_player);
+			m_pMonsterMag->Regeneration("BG_Knife_dude", 19, Moninfo, m_pBulletMagMons, m_player);
 			break;
 		}
 	}
@@ -740,9 +741,9 @@ void stageScene::SpawnGateTime()
 
 	switch (m_stageNum)
 	{
-	case GATE_1 :
+	case GATE_1:
 		m_GateMonsterNum = 1;
-		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18); 
+		m_GateMonsterIndex = RANDOM->getFromIntTo(1, 18);
 		break;
 	case GATE_2:
 		m_GateMonsterNum = 1;
@@ -820,8 +821,8 @@ void stageScene::ClearEvent()
 {
 	if (m_stageNum >= 18 && m_ClearScore >= 500)
 		SCENEMANAGER->changeScene("ending");
-	
-	
+
+
 
 }
 

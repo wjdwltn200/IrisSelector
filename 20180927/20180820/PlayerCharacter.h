@@ -79,7 +79,7 @@ private:
 	int	m_bulletDelayCountMax;
 
 	// 정지수 끝
-	
+
 	RECT m_rc;
 	float m_fX = WINSIZEX / 2;
 	float m_fY = WINSIZEY / 2;
@@ -102,11 +102,14 @@ private:
 	tagBulletInfo * m_tBulletInfoSubPoint;
 
 	bulletManger** m_pBulletMag;
+	int			m_enumKey = -1;
 public:
 	HRESULT init(soundManager * soundPoint);
 	void release();
 	void update();
 	void render(HDC hdc);
+
+	void ColP2T();
 
 	void setBulletMagPointer(bulletManger** bulletP) { m_pBulletMag = bulletP; }
 

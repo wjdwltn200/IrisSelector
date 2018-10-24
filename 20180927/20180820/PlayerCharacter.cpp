@@ -104,7 +104,7 @@ HRESULT PlayerCharacter::init(soundManager * soundPoint)
 	m_tBulletInfo.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfo.tImageType = BULLET_IMAGE_TYPE::COLOR_Y;
 	m_tBulletInfo.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
-	
+
 	m_tBulletInfoPoint = &m_tBulletInfo;
 
 	// 서브 탄환 (이중 폭발)
@@ -135,7 +135,7 @@ HRESULT PlayerCharacter::init(soundManager * soundPoint)
 
 	return S_OK;
 }
- 
+
 void PlayerCharacter::release()
 {
 	SAFE_DELETE(ani_CrossHair);
@@ -148,7 +148,7 @@ void PlayerCharacter::update()
 	m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 	keyInput();
 	HitState();
-	
+
 	if (m_bulletDelayCount > 0)
 		m_bulletDelayCount--;
 
@@ -172,7 +172,7 @@ void PlayerCharacter::render(HDC hdc)
 
 	img_PlayerShadow->alphaRender(hdc,
 		(m_fX - SCROLL->GetX()) - (img_PlayerIdle->getFrameWidth() / 2) * 1.5f,
-		(m_fY - SCROLL->GetY())+ (img_PlayerIdle->getFrameHeight() / 2 - (5.0f * m_fPlayerScale)),
+		(m_fY - SCROLL->GetY()) + (img_PlayerIdle->getFrameHeight() / 2 - (5.0f * m_fPlayerScale)),
 		150);
 
 	// 캐릭터 이미지 랜더
@@ -196,7 +196,7 @@ void PlayerCharacter::render(HDC hdc)
 	// 체력 하트 표기
 	for (int i = 0; i < m_currHpMax / 2; i++)
 	{
-		if ((i+1) * 2 <= m_currHp)
+		if ((i + 1) * 2 <= m_currHp)
 		{
 			img_HpPoint[i]->frameRender(hdc,
 				10 + i * (img_HpPoint[0]->getFrameWidth() + 10),
@@ -238,6 +238,34 @@ void PlayerCharacter::render(HDC hdc)
 	// 조준점 UI 표기
 	img_CrossHair->aniRender(hdc, g_ptMouse.x - (img_CrossHair->getFrameWidth() / 2) * m_fCrossHairScale, g_ptMouse.y - (img_CrossHair->getFrameHeight() / 2) * m_fCrossHairScale, ani_CrossHair, m_fCrossHairScale);
 
+}
+
+void PlayerCharacter::ColP2T()
+{
+	switch (m_enumKey)
+	{
+	case 0:
+		m_fY += m_fSpeed + RECT_BOX;
+		m_enumKey = -1;
+		break;
+
+	case 1:
+		m_fY -= m_fSpeed + RECT_BOX;
+		m_enumKey = -1;
+		break;
+
+	case 2:
+		m_fX += m_fSpeed + RECT_BOX;
+		m_enumKey = -1;
+		break;
+
+	case 3:
+		m_fX -= m_fSpeed + RECT_BOX;
+		m_enumKey = -1;
+		break;
+	default:
+		break;
+	}
 }
 
 void PlayerCharacter::getItem(tagItemInfo itemInfo)
@@ -287,7 +315,7 @@ void PlayerCharacter::getItem(tagItemInfo itemInfo)
 		if (itemInfo.tImageType != BULLET_IMAGE_TYPE::BULLET_IMAGE_NUM)
 			m_tBulletInfoSub.tImageType = itemInfo.tImageType;
 	}
-	
+
 	// 2차 폭발 여부
 	if (itemInfo.tBulletBoom != 3)
 		m_tBulletInfo.tBulletBoom = itemInfo.tBulletBoom;
@@ -305,7 +333,7 @@ void PlayerCharacter::getItem(tagItemInfo itemInfo)
 
 	m_pItemInfo = new item;
 	itemInfo.tIsGet = true;
-	
+
 	m_itemNum++; // 아이템 개수 추가
 	if (m_itemNum > 6)
 	{
@@ -314,10 +342,10 @@ void PlayerCharacter::getItem(tagItemInfo itemInfo)
 	}
 
 	m_pItemInfo->init("ItemObject", itemInfo, NULL);
-	m_pItemInfo->setItemIdleCurrY(img_ItemUiBg->getY() + (ITEM_BAG_Y) + (m_itemNumY * ITEM_BAG_Size_Y));
-	m_pItemInfo->setItemIdleY(img_ItemUiBg->getY() + (ITEM_BAG_Y) + (m_itemNumY * ITEM_BAG_Size_Y));
-	m_pItemInfo->setX(img_ItemUiBg->getX() + (ITEM_BAG_X) + ((m_itemNum - 1) * ITEM_BAG_Size_X));
-	m_pItemInfo->setY(img_ItemUiBg->getY() + (ITEM_BAG_Y) + (m_itemNumY * ITEM_BAG_Size_Y));
+	m_pItemInfo->setItemIdleCurrY(img_ItemUiBg->getY() + (ITEM_BAG_Y)+(m_itemNumY * ITEM_BAG_Size_Y));
+	m_pItemInfo->setItemIdleY(img_ItemUiBg->getY() + (ITEM_BAG_Y)+(m_itemNumY * ITEM_BAG_Size_Y));
+	m_pItemInfo->setX(img_ItemUiBg->getX() + (ITEM_BAG_X)+((m_itemNum - 1) * ITEM_BAG_Size_X));
+	m_pItemInfo->setY(img_ItemUiBg->getY() + (ITEM_BAG_Y)+(m_itemNumY * ITEM_BAG_Size_Y));
 	m_pItemInfo->ItemGetSetting();
 	m_vecItem.push_back(m_pItemInfo);
 }
@@ -375,7 +403,7 @@ void PlayerCharacter::PlayerInfoUi(HDC hdc)
 	TempYSize += 20.0f;
 	sprintf_s(szText, "이동속도 : %.1f", m_fSpeed);
 	TextOut(hdc, img_ItemUiBg->getX() + PLAYER_STATE_X, TempYSize, szText, strlen(szText));
-	
+
 	TempYSize += 20.0f;
 	sprintf_s(szText, "크기 : %.1f", m_fPlayerScale);
 	TextOut(hdc, img_ItemUiBg->getX() + PLAYER_STATE_X, TempYSize, szText, strlen(szText));
@@ -449,7 +477,7 @@ void PlayerCharacter::keyInput()
 	{
 		if (m_bulletDelayCount == NULL)
 		{
-		//	m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
+			//	m_pSoundMag->play("sound/sound_playerAtt.wav", g_saveData.gSeValue);
 			if (m_fCrossHairScale < m_fCrossHairScaleMax)
 			{
 				m_fCrossHairScale += 0.1f;
@@ -493,29 +521,31 @@ void PlayerCharacter::keyInput()
 	RECT temp_rc;
 
 	m_isIdle = true;
-	if ( KEYMANAGER->isStayKeyDown('W'))
+	if (KEYMANAGER->isStayKeyDown('W'))
 	{
 		m_isIdle = false;
 		m_fY -= m_fSpeed;
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
-		if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
+		/*	if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
 		{
-			m_fY += m_fSpeed + RECT_BOX;
-		}
+		m_fY += m_fSpeed + RECT_BOX;
+		}*/
+		m_enumKey = 0;
 	}
-	
+
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
 		m_isIdle = false;
 		m_fY += m_fSpeed;
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
-		if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
+		/*if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
 		{
-			m_fY -= m_fSpeed + RECT_BOX;
+		m_fY -= m_fSpeed + RECT_BOX;
 
-		}
+		}*/
+		m_enumKey = 1;
 	}
 
 	if (KEYMANAGER->isStayKeyDown('A'))
@@ -524,32 +554,34 @@ void PlayerCharacter::keyInput()
 		m_fX -= m_fSpeed;
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
-		if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
+		/*if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
 		{
-			m_fX += m_fSpeed + RECT_BOX;
+		m_fX += m_fSpeed + RECT_BOX;
 
-		}
+		}*/
+		m_enumKey = 2;
 		img_PlayerRun = IMAGEMANAGER->findImage("Player_L_Run");
 		img_PlayerIdle = IMAGEMANAGER->findImage("Player_L_Idle");
 
 	}
-	
+
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
 		m_isIdle = false;
 		m_fX += m_fSpeed;
 		m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY() + 10.0f, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale);
 
-		if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
+		/*if ((IntersectRect(&temp_rc, &m_rc, &m_TileRc)))
 		{
-			m_fX -= m_fSpeed + RECT_BOX;
+		m_fX -= m_fSpeed + RECT_BOX;
 
-		}
+		}*/
+		m_enumKey = 3;
 		img_PlayerRun = IMAGEMANAGER->findImage("Player_R_Run");
 		img_PlayerIdle = IMAGEMANAGER->findImage("Player_R_Idle");
 	}
 
-	memset(&m_TileRc, 0, sizeof(m_TileRc));
+	//memset(&m_TileRc, 0, sizeof(m_TileRc));
 
 }
 
