@@ -59,7 +59,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_tBulletInfoSub.tMasterType = BULLET_MASTER_TYPE::MONSTER;
 	m_tBulletInfoSub.tMoveActType = BULLET_MOVE_ACT_TYPE::BULLET_MOVE_ACT_NUM;
 	m_tBulletInfoSub.tImageType = BULLET_IMAGE_TYPE::COLOR_R;
-	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::ONE_LINE;
+	m_tBulletInfoSub.tMoveType = BULLET_MOVE_TYPE::MOVE_NUM;
 
 	m_tBulletInfoSubPoint = &m_tBulletInfoSub;
 
@@ -99,6 +99,7 @@ HRESULT monster::init(const char * strKey, int monNumber, tagMonInfo monInfo, bu
 	m_tMonInfo.tMoveType = monInfo.tMoveType;
 	m_tMonInfo.tScore = monInfo.tScore;
 	m_tMonInfo.tMonsterNumber = monNumber;
+	m_tMonInfo.tMonsterBoss = monInfo.tMonsterBoss = 1.0f;
 
 
 	m_monsterMove->setDefPlayFrame(false, true);
@@ -470,9 +471,9 @@ void monster::render(HDC hdc)
 	EllipseMakeCenter(hdc, m_tMonInfo.tPosX - SCROLL->GetX(), m_tMonInfo.tPosY -SCROLL->GetY() , 30, 30);
 
 	m_monsterType->aniRender(hdc,
-		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale,
-		(m_tMonInfo.tPosY - SCROLL->GetY()) - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale,
-		m_monsterMove, m_tMonInfo.tScale, true, 255);
+		(m_tMonInfo.tPosX - SCROLL->GetX()) - (m_monsterType->getFrameWidth() / 2) * m_tMonInfo.tScale*m_tMonInfo.tMonsterBoss,
+		(m_tMonInfo.tPosY - SCROLL->GetY()) - (m_monsterType->getFrameHeight() / 2) * m_tMonInfo.tScale*m_tMonInfo.tMonsterBoss,
+		m_monsterMove, m_tMonInfo.tScale*m_tMonInfo.tMonsterBoss, true, 255);
 }
 
 monster::monster()
