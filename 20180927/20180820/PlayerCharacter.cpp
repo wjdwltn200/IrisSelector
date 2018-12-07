@@ -93,7 +93,7 @@ HRESULT PlayerCharacter::init(soundManager * soundPoint)
 
 	m_tBulletInfo.tDmage = 5.0f;
 	m_tBulletInfo.tKnokBack = 10.0f;
-	m_tBulletInfo.tMoveSpeed = 10.0f;
+	m_tBulletInfo.tMoveSpeed = 1.0f;
 	m_tBulletInfo.tScatter = m_fCrossHairScale * 10.0f;
 
 	m_tBulletInfo.tBoomType = BULLET_BOOM_TYPE::ANGLE_LINE;
@@ -164,7 +164,7 @@ void PlayerCharacter::update()
 			{
 				if (m_tBulletInfo.tBulletSetNum == 1)
 				{
-					(*m_pBulletMag)->fire("임시", m_fX, m_fY, MY_UTIL::getMouseAngle(m_fX, m_fY), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
+					(*m_pBulletMag)->fire("임시", m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY(), MY_UTIL::getMouseAngle(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY()), m_tBulletInfoPoint, m_tBulletInfoSubPoint);
 				}
 				else // 총알 개수 만큼 방향을 분리
 				{
@@ -200,7 +200,7 @@ void PlayerCharacter::update()
 	if (m_fCrossHairScale > m_fCrossHairScaleMin)
 		m_fCrossHairScale -= 0.1f;
 
-	m_rc = RectMakeCenter(m_fX, m_fY, img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
+	m_rc = RectMakeCenter(m_fX - SCROLL->GetX(), m_fY - SCROLL->GetY(), img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
 
 	ani_CrossHair->frameUpdate();
 	ani_PlayerIdle->frameUpdate();
@@ -210,6 +210,7 @@ void PlayerCharacter::update()
 void PlayerCharacter::render(HDC hdc)
 {
 	EllipseMakeCenter(hdc, (m_fX - SCROLL->GetX()), (m_fY - SCROLL->GetY()), img_PlayerIdle->getFrameWidth() * m_fPlayerScale, img_PlayerIdle->getFrameHeight() * m_fPlayerScale - 15);
+	Rectangle(hdc, m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 	//Ellipse(hdc, m_rc.lef(m_fY - SCROLL->GetY())t,(m_fY - SCROLL->GetY()) m_rc.top, m_rc.right, m_rc.bottom);
 
 	img_PlayerShadow->alphaRender(hdc,
@@ -545,6 +546,8 @@ void PlayerCharacter::movement()
 		m_fCurrX = 0.0f;
 	}
 
+	m_fX - SCROLL->GetX();
+	m_fY - SCROLL->GetY();
 }
 
 void PlayerCharacter::HitState()

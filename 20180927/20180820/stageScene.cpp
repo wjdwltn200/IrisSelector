@@ -330,14 +330,14 @@ void stageScene::render(HDC hdc)
 					m_pTiles[x * g_saveData.gTileMaxCountX + y].terrainFrameY);
 
 
-				/*if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
+				if (!m_pTiles[x * g_saveData.gTileMaxCountX + y].isMove)
 				{
 				   Rectangle(hdc, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.left,
 					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.top, m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.right,
-					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);*/
+					 m_pTiles[x * g_saveData.gTileMaxCountX + y].rc.bottom);
 
 
-					 //}
+					 }
 			}
 
 		}
